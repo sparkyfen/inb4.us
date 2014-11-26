@@ -11,10 +11,10 @@
     "filters": {
       "js": true,
       "html": true,
-      "sass": true,
+      "css": true,
       "uirouter": true,
-      "bootstrap": false,
-      "uibootstrap": false
+      "bootstrap": true,
+      "uibootstrap": true
     }
   },
   "generator-ng-component": {
@@ -30,7 +30,7 @@
     "extensions": [
       "js",
       "html",
-      "scss"
+      "css"
     ],
     "directiveSimpleTemplates": "",
     "directiveComplexTemplates": "",
