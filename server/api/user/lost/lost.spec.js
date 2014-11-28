@@ -24,6 +24,7 @@ describe('POST /api/user/lost', function() {
       if(error) {
         return done(error);
       }
+      userSchema.id = userId;
       done();
     });
   });

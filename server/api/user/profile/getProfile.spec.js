@@ -3,18 +3,22 @@
 var should = require('should');
 var bcrypt = require('bcrypt');
 var request = require('supertest');
+var path = require('path');
 var app = require('../../../app');
-var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
+var userSchema = require('../../../components/schema/user');
 var users = db.user;
 users.initialize();
 var utils = db.utils;
 utils.initialize();
 
-describe('POST /api/user/login', function() {
+var userId;
+var cookie;
+
+describe('GET /api/user', function() {
 
   beforeEach(function (done) {
-    var userId = userSchema.id;
+    userId = userSchema.id;
     delete userSchema.id;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
@@ -25,7 +29,23 @@ describe('POST /api/user/login', function() {
         return done(error);
       }
       userSchema.id = userId;
-      done();
+      request(app)
+      .post('/api/user/login')
+      .send({
+        username: 'mockuser',
+        password: 'mockpassword'
+      })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if (err) {
+          return done(err);
+        }
+        cookie = res.headers['set-cookie'];
+        res.body.should.be.instanceof(Object);
+        res.body.should.have.property('message');
+        done();
+      });
     });
   });
 
@@ -52,17 +72,44 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should successfully log the user in', function(done) {
+  it('should successfully return the user logged in', function(done) {
     request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'mockuser',
-      password: 'mockpassword'
-    })
+    .get('/api/user')
+    .set('cookie', cookie)
     .expect(200)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
-      if (err) {
+      if (err)  {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      done();
+    });
+  });
+
+  it('should successfully return the user based on their id', function(done) {
+    request(app)
+    .get('/api/user/' + userId)
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err)  {
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      done();
+    });
+  });
+
+  it('should fail when missing an user id and no session', function(done) {
+    request(app)
+    .get('/api/user')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err)  {
+        console.log(res.body);
         return done(err);
       }
       res.body.should.be.instanceof(Object);
@@ -71,77 +118,25 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should fail on an missing username', function(done) {
-    request(app)
-    .post('/api/user/login')
-    .send({
-      password: 'mockpassword'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
+  it('should fail when the user does not exist', function (done) {
+    users.deleteByUsername('mockuser', function (error, reply) {
+      if(error) {
+        return done(error);
       }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail on an missing password', function(done) {
-    request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'mockuser'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail on an invalid username', function(done) {
-    request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'invalidusername',
-      password: 'mockpassword'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail on an invalid password', function(done) {
-    request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'mockuser',
-      password: 'invalidpassword'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
+      request(app)
+      .get('/api/user')
+      .set('cookie', cookie)
+      .expect(400)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if (err)  {
+          console.log(res.body);
+          return done(err);
+        }
+        res.body.should.be.instanceof(Object);
+        res.body.should.have.property('message');
+        done();
+      });
     });
   });
 
@@ -157,15 +152,13 @@ describe('POST /api/user/login', function() {
           return done(error);
         }
         request(app)
-        .post('/api/user/login')
-        .send({
-          username: 'mockuser',
-          password: 'mockpassword'
-        })
+        .get('/api/user')
+        .set('cookie', cookie)
         .expect(400)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
-          if (err) {
+          if (err)  {
+            console.log(res.body);
             return done(err);
           }
           res.body.should.be.instanceof(Object);

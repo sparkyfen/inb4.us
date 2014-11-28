@@ -18,6 +18,14 @@ module.exports = {
     users: process.env.INB4_COUCHDB_USERS || 'inb4-users',
     admins: process.env.INB4_COUCHDB_ADMINS || 'inb4-admins'
   },
+  email: {
+    accounts: {
+      info: {
+        username: process.env.INB4_EMAIL_INFO_USERNAME || '',
+        password: process.env.INB4_EMAIL_INFO_PASSWORD || ''
+      }
+    }
+  },
   cookie: {
     secret: process.env.INB4_COOKIE_SECRET || 'dlfjsldkfj;lskjf;lskjdf;lskdjf;lskjd;lkdjf;lkj;ldkj;slkjf;dlskjfs;lfjd;lfjd'
   }

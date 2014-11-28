@@ -4,8 +4,8 @@ var should = require('should');
 var bcrypt = require('bcrypt');
 var request = require('supertest');
 var app = require('../../../app');
-var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
+var userSchema = require('../../../components/schema/user');
 var users = db.user;
 users.initialize();
 var utils = db.utils;
@@ -17,7 +17,6 @@ describe('POST /api/user/reset', function() {
 
   beforeEach(function (done) {
     var userId = userSchema.id;
-    delete userSchema.id;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
@@ -26,6 +25,7 @@ describe('POST /api/user/reset', function() {
       if(error) {
         return done(error);
       }
+      userSchema.id = userId;
       request(app)
       .post('/api/user/login')
       .send({

@@ -24,6 +24,7 @@ describe('GET /api/user/logout', function() {
       if(error) {
         return done(error);
       }
+      userSchema.id = userId;
       done();
     });
   });

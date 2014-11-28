@@ -350,3 +350,52 @@
 *     {"message":"Could not send lost password email."}
 *
 */
+
+/**
+* @api {get} /api/user Get Profile
+* @apiVersion 1.0.0
+* @apiName GetProfile
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Get a specific user based on their id or on current user based on their session.
+*
+* @apiParam {String} [id] The user id value of the profile requested.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Session-Based example:
+*     curl -X GET "https://inb4.us/api/user"
+*
+* @apiExample Default example:
+*     curl -X GET "https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da"
+*
+* @apiExample Default callback example:
+*     curl -X GET "https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da/?callback=foo"
+*
+* @apiSuccess (200 Success) user Returns a user object.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "mockuser@inb4.us","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
+*
+* @apiError (400 Bad Request) MissingId The user id is missing from the session.
+* @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (500 Internal Server Error) ServerError There was a problem with the request.
+*
+*@apiErrorExample Error-Response: (Missing Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing user id."}
+*
+*@apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+*@apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+*@apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not get user profile."}
+*/

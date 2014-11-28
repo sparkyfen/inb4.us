@@ -147,6 +147,7 @@ describe('POST /api/user/register', function() {
       if(error) {
         return done(error);
       }
+      userSchema.id = userId;
       request(app)
       .post('/api/user/register')
       .send({
@@ -177,6 +178,7 @@ describe('POST /api/user/register', function() {
       if(error) {
         return done(error);
       }
+      userSchema.id = userId;
       request(app)
       .post('/api/user/register')
       .send({

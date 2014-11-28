@@ -25,6 +25,7 @@ describe('POST /api/user/activate', function() {
       if(error) {
         return done(error);
       }
+      userSchema.id = userId;
       done();
     });
   });

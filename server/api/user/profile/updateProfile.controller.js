@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('lodash');
+var validator = require('validator');
 
-// Get list of profiles
+// Update user profile.
 exports.index = function(req, res) {
   res.json([]);
 };
