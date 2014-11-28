@@ -1,6 +1,7 @@
 # Grunt TODO
 
 
-## server/api/user/register/register.controller.js
+## client/app/user/activate/activate.controller.js
 
--  **TODO** `(line 81)`  Send email out to the user telling them they registered successfully.
+-  **TODO** `(line 14)`  Show notification upon success.
+-  **TODO** `(line 21)`  Show notification if there is an error.

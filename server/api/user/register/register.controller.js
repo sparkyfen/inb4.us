@@ -2,8 +2,14 @@
 
 var validator = require('validator');
 var bcrypt = require('bcrypt');
+var url = require('url');
+var nodemailer = require('nodemailer');
+var emailTemplates = require('email-templates');
+var path = require('path');
+var templatesDir = path.join(__dirname, '../../../components/emails/templates');
 var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
+var config = require('../../../config/environment');
 var utils = db.utils;
 utils.initialize();
 var users = db.user;
@@ -31,6 +37,25 @@ function _encryptPassword(password, callback) {
       return callback(error);
     }
     return callback(null, hash);
+  });
+}
+
+function _getEmailTemplate(options, callback) {
+  var activateUrl = url.resolve(config.domain, '/user/activate/');
+  activateUrl = url.resolve(activateUrl, options.userId + '/');
+  activateUrl = url.resolve(activateUrl, options.token + '/');
+  emailTemplates(templatesDir, function (error, templates) {
+    if(error) {
+      return callback(error);
+    }
+    templates('register', {
+      activateUrl: activateUrl
+    }, function (error, html, text) {
+      if(error) {
+        return callback(error);
+      }
+      return callback(null, html);
+    });
   });
 }
 
@@ -78,8 +103,33 @@ exports.index = function(req, res) {
               console.log(error);
               return res.status(500).jsonp({message: 'Could not register user.'});
             }
-            // TODO Send email out to the user telling them they registered successfully.
-            return res.jsonp({message: 'Registered, please check your email to activate your account.'});
+            _getEmailTemplate({
+              userId: userId,
+              token: userSchema.tokens.activate
+            }, function (error, emailBody) {
+              if(error) {
+                console.log(error);
+                return res.status(500).jsonp({message: 'Could not register user.'});
+              }
+              if(config.env !== 'test') {
+                var transport = nodemailer.createTransport({
+                  host: 'smtp.gmail.com',
+                  port: 465,
+                  secure: true,
+                  auth: {
+                    user: config.email.accounts.info.username,
+                    pass: config.email.accounts.info.password
+                  }
+                });
+                transport.sendMail({
+                  from: config.email.accounts.info.username,
+                  to: email,
+                  subject: 'New Account',
+                  html: emailBody
+                });
+              }
+              return res.jsonp({message: 'Registered, please check your email to activate your account.'});
+            });
           });
         });
       });

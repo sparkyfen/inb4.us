@@ -3,6 +3,21 @@
 // Development specific configuration
 // ==================================
 module.exports = {
+  domain: 'http://localhost:9000',
+  // CouchDB
+  couchdb: {
+    url: 'http://127.0.0.1:5984/',
+    users: 'inb4-users',
+    admins: 'inb4-admins'
+  },
+  email: {
+    accounts: {
+      info: {
+        username: '', // info@inb4.us
+        password: '' // password to account
+      }
+    }
+  },
   cookie: {
     secret: '' // 64+ char sting.
   }
