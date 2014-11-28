@@ -3,10 +3,13 @@
 // Development specific configuration
 // ==================================
 module.exports = {
-  // MongoDB connection options
-  mongo: {
-    uri: 'mongodb://localhost/inb4us-dev'
+  // CouchDB
+  couchdb: {
+    url: 'http://127.0.0.1:5984/',
+    users: 'inb4-users',
+    admins: 'inb4-admins'
   },
-
-  seedDB: true
+  cookie: {
+    secret: 'l;sdkjf;slkfj;sldkjf;skf;ldkfj;sdlkfj;dlkj;sdlkfjs;ldjfd'
+  }
 };

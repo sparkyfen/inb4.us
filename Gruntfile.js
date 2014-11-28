@@ -31,6 +31,8 @@ module.exports = function (grunt) {
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
+      docs: (require('./bower.json').appPath || 'client') + '/docs',
+      server: 'server',
       dist: 'dist'
     },
     express: {
@@ -369,6 +371,39 @@ module.exports = function (grunt) {
       }
     },
 
+    apidoc: {
+      dev: {
+        src: "<%= yeoman.docs %>/src/",
+        dest: "<%= yeoman.docs %>/output/"
+      },
+      dist: {
+        src: "<%= yeoman.docs %>/src/",
+        dest: "<%= yeoman.dist %>/public/docs/"
+      }
+    },
+
+    todo: {
+      options: {
+        marks: [{
+          name: "TODO",
+          pattern: /TODO/,
+          color: "yellow"
+        }],
+        file: 'TODO.md'
+      },
+      src: [
+        '<%= yeoman.client %>/*.html',
+        '<%= yeoman.client %>/app/**/*.js',
+        '<%= yeoman.client %>/components/**/*.js',
+        '<%= yeoman.client %>/app/**/*.css',
+        '<%= yeoman.client %>/app/**/*.html',
+        '<%= yeoman.server %>/**/*.js',
+        '<%= yeoman.docs %>/src/**/*.js',
+        'install.js',
+        'bower.json'
+      ],
+    },
+
     buildcontrol: {
       options: {
         dir: 'dist',
@@ -602,7 +637,9 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin',
+    'apidoc',
+    'todo'
   ]);
 
   grunt.registerTask('default', [

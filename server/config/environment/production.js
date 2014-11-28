@@ -4,20 +4,15 @@
 // =================================
 module.exports = {
   // Server IP
-  ip:       process.env.OPENSHIFT_NODEJS_IP ||
+  ip:  process.env.OPENSHIFT_NODEJS_IP ||
             process.env.IP ||
             undefined,
-
   // Server port
-  port:     process.env.OPENSHIFT_NODEJS_PORT ||
+  port: process.env.OPENSHIFT_NODEJS_PORT ||
             process.env.PORT ||
             8080,
 
-  // MongoDB connection options
-  mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://localhost/inb4us'
+  cookie: {
+    secret: process.env.INB4_COOKIE_SECRET || 'dlfjsldkfj;lskjf;lskjdf;lskdjf;lskjd;lkdjf;lkj;ldkj;slkjf;dlskjfs;lfjd;lfjd'
   }
 };
