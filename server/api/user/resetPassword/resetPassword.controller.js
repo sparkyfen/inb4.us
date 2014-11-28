@@ -2,7 +2,6 @@
 
 var validator = require('validator');
 var bcrypt = require('bcrypt');
-var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
 var config = require('../../../config/environment');
 var utils = db.utils;
@@ -26,7 +25,7 @@ function _validatePasswords(oldPass, newPass, confirmNew, callback) {
   return callback();
 }
 
-// Get list of resetPasswords
+// Reset's the users password.
 exports.index = function(req, res) {
   if(!req.session.username) {
     return res.status(401).jsonp({message: 'Please sign in.'});
@@ -35,10 +34,12 @@ exports.index = function(req, res) {
   var oldPass = req.body.old;
   var newPass = req.body.new;
   var confirmNew = req.body.confirm;
+  // Validate user input.
   _validatePasswords(oldPass, newPass, confirmNew, function (error) {
     if(error) {
       return res.status(400).jsonp({message: error});
     }
+    // Search for user by username
     users.searchByUsername(username, function (error, reply) {
       if(error) {
         console.log(error);
@@ -53,6 +54,7 @@ exports.index = function(req, res) {
       if(!user.active) {
         return res.status(400).jsonp({message: 'You must activate this account before using it.'});
       }
+      // Compare passwords
       bcrypt.compare(oldPass, user.password, function (error, isSame) {
         if(error) {
           console.log(error);
@@ -61,8 +63,22 @@ exports.index = function(req, res) {
         if(!isSame) {
           return res.status(400).jsonp({message: 'Passwords do not match.'});
         }
-        delete req.session.username;
-        return res.jsonp({message: 'Password reset, please log in again.'});
+        bcrypt.hash(newPass, 10, function (error, hash) {
+          if(error) {
+            console.log(error);
+            return res.status(500).jsonp({message: 'Could not reset password for user.'});
+          }
+          user.password = hash;
+          utils.insert(utils.users, user._id, user, function (error) {
+            if(error) {
+              console.log(error);
+              return res.status(500).jsonp({message: 'Could not reset password for user.'});
+            }
+            // Delete session so they sign in again.
+            delete req.session.username;
+            return res.jsonp({message: 'Password reset, please log in again.'});
+          });
+        });
       });
     });
   });

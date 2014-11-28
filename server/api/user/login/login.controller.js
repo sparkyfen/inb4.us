@@ -51,9 +51,23 @@ exports.index = function(req, res) {
         if(!isSame) {
           return res.status(400).jsonp({message: 'Passwords do not match.'});
         }
-        // Passwords are the same, lets log the user in.
-        req.session.username = username;
-        return res.jsonp({message: 'Logged in.'});
+        if(!validator.isNull(user.tokens.reset)) {
+          // The reset token was set, we can unset it here cause the user signed in successfully.
+          user.tokens.reset = null;
+          utils.insert(utils.users, user._id, user, function (error) {
+            if(error) {
+              console.log(error);
+              return res.status(500).jsonp({message: 'Could not log user in.'});
+            }
+            // Passwords are the same, lets log the user in.
+            req.session.username = username;
+            return res.jsonp({message: 'Logged in.'});
+          });
+        } else {
+          // Passwords are the same, lets log the user in.
+          req.session.username = username;
+          return res.jsonp({message: 'Logged in.'});
+        }
       });
     });
   });

@@ -4,4 +4,5 @@
 [![Built With Grunt](https://pixel-cookers.github.io/built-with-badges/grunt/grunt-short-flat.png)](http://gruntjs.com/)
 [![Built With Bootstrap](https://pixel-cookers.github.io/built-with-badges/bootstrap/bootstrap-short-flat.png)](http://getbootstrap.com/)
 [![Built With Node](https://pixel-cookers.github.io/built-with-badges/node/node-short-flat.png)](http://nodejs.org/)
+[![Built With Yeoman](https://pixel-cookers.github.io/built-with-badges/yeoman/yeoman-short-flat.png)](http://yeoman.io/)
 [![Build Status](https://magnum.travis-ci.com/brutalhonesty/inb4.us.svg?token=zxBYEzkCTAvkJDDncTbZ&branch=master)](https://magnum.travis-ci.com/brutalhonesty/inb4.us)

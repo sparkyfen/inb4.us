@@ -103,7 +103,7 @@
 * @apiError (400 Bad Request) MissingUsername The username was missing from the request.
 * @apiError (400 Bad Request) MissingPassword The password was missing from the request.
 * @apiError (400 Bad Request) UserNotExist The username does not exist in the database.
-* @apiError (400 Bad Request) ActivatationNeeded You must activate your account first before you sign in.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
 * @apiError (400 Bad Request) PasswordMismatch The password provided was invalid.
 * @apiError (500 Internal Server Error) ServerError There was a problem loggin the user in.
 *
@@ -257,7 +257,7 @@
  * @apiError (400 Bad Request) MissingConfirmPassword The new confirm password was not in the request.
  * @apiError (400 Bad Request) PasswordMismatch The new and confirm passwords were not the same.
  * @apiError (400 Bad Request) UserNotExist The user does not exist.
- * @apiError (400 Bad Request) ActivatationNeeded You must activate your account first before you sign in.
+ * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
  * @apiError (400 Bad Request) HashMismatch The old password did not match what the database has.
  * @apiError (500 Internal Server Error) ServerError There was a problem resetting the password.
  *
@@ -298,3 +298,55 @@
  *      {"message": "Could not reset password for user."}
  *
  */
+
+/**
+* @api {post} /api/user/lost Lost Password
+* @apiVersion 1.0.0
+* @apiName Lost Password
+* @apiGroup User
+* @apiPermission public
+*
+* @apiDescription Reset the user password given an email address.
+*
+* @apiParam {String} email The email of account associated with the user account..
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/lost' -d "email=mockuser@inb4.us"
+*
+* @apiExample Example with callback:
+*     curl -X POST 'https://inb4.us/api/user/lost' -d "email=mockuser@inb4.us&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The reset email has been sent to user.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Reset email sent."}
+*
+* @apiError (400 Bad Request) MissingEmail The email was missing from the request.
+* @apiError (400 Bad Request) InvalidEmail The email was invalid.
+* @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (500 Internal Server Error) ServerError There was a problem resetting the user password.
+*
+* @apiErrorExample Error-Response: (Missing Email)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing email."}
+*
+* @apiErrorExample Error-Response: (Invalid Email)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid email."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not send lost password email."}
+*
+*/

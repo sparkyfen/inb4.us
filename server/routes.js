@@ -12,6 +12,7 @@ module.exports = function(app) {
   app.use('/api/user', require('./api/user/profile'));
   app.use('/api/user/delete', require('./api/user/delete'));
   app.use('/api/user/reset', require('./api/user/resetPassword'));
+  app.use('/api/user/lost', require('./api/user/lost'));
   app.use('/api/user/activate', require('./api/user/activate'));
   app.use('/api/user/logout', require('./api/user/logout'));
   app.use('/api/user/register', require('./api/user/register'));
