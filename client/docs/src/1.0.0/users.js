@@ -224,3 +224,77 @@
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not log out user."}
 */
+
+/**
+ * @api {post} /api/user/reset Reset Password
+ * @apiVersion 1.0.0
+ * @apiName Reset Password
+ * @apiGroup User
+ * @apiPermission user
+ *
+ * @apiDescription Resets the user's password given the old password, new password, and confirmation.
+ *
+ * @apiParam {String} old The user's old password.
+ * @apiParam {String} new The user's new password.
+ * @apiParam {String} confirm The user's new password retyped to confirm they set it correctly.
+ * @apiParam {String} [callback] The name of the callback function.
+ *
+ * @apiExample {curl} Default example:
+ *      curl -X POST 'https://inb4.us/api/user/reset' -d "old=mockpassword&new=newmockpassword&confirm=newmockpassword"
+ *
+ * @apiExample {curl} Callback example:
+ *      curl -X POST 'https://inb4.us/api/user/reset' -d "old=mockpassword&new=newmockpassword&confirm=newmockpassword&callback=foo"
+ *
+ * @apiSuccess (200 Success) {String} message The password has been updated.
+ *
+ * @apiSuccessExample Success-Response:
+ *      HTTP/1.1 200 OK
+ *      {"message":"Password reset, please log in again."}
+ *
+ * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+ * @apiError (400 Bad Request) MissingOldPassword The old password was not in the request.
+ * @apiError (400 Bad Request) MissingNewPassword The new password was not in the request.
+ * @apiError (400 Bad Request) MissingConfirmPassword The new confirm password was not in the request.
+ * @apiError (400 Bad Request) PasswordMismatch The new and confirm passwords were not the same.
+ * @apiError (400 Bad Request) UserNotExist The user does not exist.
+ * @apiError (400 Bad Request) ActivatationNeeded You must activate your account first before you sign in.
+ * @apiError (400 Bad Request) HashMismatch The old password did not match what the database has.
+ * @apiError (500 Internal Server Error) ServerError There was a problem resetting the password.
+ *
+ * @apiErrorExample Error-Response: (Unauthorized)
+ *      HTTP/1.1 401 Unauthorized
+ *      {"message": "Please sign in."}
+ *
+ * @apiErrorExample Error-Response: (Missing Old Password)
+ *      HTTP/1.1 400 Bad Request
+ *      {"message": "Missing old password."}
+ *
+ * @apiErrorExample Error-Response: (Missing New Password)
+ *      HTTP/1.1 400 Bad Request
+ *      {"message": "Missing new password."}
+ *
+ * @apiErrorExample Error-Response: (Missing Confirm Password)
+ *      HTTP/1.1 400 Bad Request
+ *      {"message": "Missing confirm new password."}
+ *
+ * @apiErrorExample Error-Response: (Password Mismatch)
+ *      HTTP/1.1 400 Bad Request
+ *      {"message": "New passwords do not match."}
+ *
+ * @apiErrorExample Error-Response: (User Not Exist)
+ *    HTTP/1.1 400 Bad Request
+ *    {"message":"User does not exist."}
+ *
+ * @apiErrorExample Error-Response: (Activatation Needed)
+ *      HTTP/1.1 400 Bad Request
+ *      {"message": "You must activate this account before using it."}
+ *
+ * @apiErrorExample Error-Response: (Hash Mismatch)
+ *      HTTP/1.1 400 Bad Request
+ *      {"message": "Passwords do not match."}
+ *
+ * @apiErrorExample Error-Response: (Server Error)
+ *      HTTP/1.1 500 Internal Server Error
+ *      {"message": "Could not reset password for user."}
+ *
+ */

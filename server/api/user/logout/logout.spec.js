@@ -64,14 +64,18 @@ describe('GET /api/user/logout', function() {
       if (err) {
         return done(err);
       }
+      var cookie = res.headers['set-cookie'];
       res.body.should.be.instanceof(Object);
       res.body.should.have.property('message');
       request(app)
       .get('/api/user/logout')
+      .set('cookie', cookie)
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
-        if (err) return done(err);
+        if (err) {
+          return done(err);
+        }
         res.body.should.be.instanceof(Object);
         done();
       });

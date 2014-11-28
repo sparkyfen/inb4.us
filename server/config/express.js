@@ -40,6 +40,7 @@ module.exports = function(app) {
 
   if ('production' === env) {
     app.use(session({
+      key: 'user-session',
       cookie: {
         path: '/',
         secure: true,
@@ -56,6 +57,7 @@ module.exports = function(app) {
 
   if ('development' === env || 'test' === env) {
     app.use(session({
+      key: 'user-session',
       cookie: {
         path: '/',
         secure: false,
