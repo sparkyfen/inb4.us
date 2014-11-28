@@ -3,7 +3,6 @@
 var should = require('should');
 var bcrypt = require('bcrypt');
 var request = require('supertest');
-var path = require('path');
 var app = require('../../../app');
 var db = require('../../../components/database');
 var userSchema = require('../../../components/schema/user');

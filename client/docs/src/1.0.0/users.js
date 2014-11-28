@@ -196,31 +196,31 @@
  */
 
 /**
-*@api {get} /api/user/logout Logout
-*@apiVersion 1.0.0
-*@apiName Logout
-*@apiGroup User
-*@apiPermission public
+* @api {get} /api/user/logout Logout
+* @apiVersion 1.0.0
+* @apiName Logout
+* @apiGroup User
+* @apiPermission public
 *
-*@apiDescription Logs the user out.
+* @apiDescription Logs the user out.
 *
-*@apiParam {String} [callback] The name of the callback funciton.
+* @apiParam {String} [callback] The name of the callback funciton.
 *
-*@apiExample Default example:
-*     curl -X GET "https://inb4.us/api/user/logout"
+* @apiExample Default example:
+*     curl -X GET 'https://inb4.us/api/user/logout'
 *
-*@apiExample Default callback example:
-*     curl -X GET "https://inb4.us/api/user/logout?callback=foo"
+* @apiExample Default callback example:
+*     curl -X GET 'https://inb4.us/api/user/logout?callback=foo'
 *
-*@apiSuccess (200 Success) {String} message The user has been logged out.
+* @apiSuccess (200 Success) {String} message The user has been logged out.
 *
-*@apiSuccessExample Success-Response:
+* @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
 *     {"message":"Logged out."}
 *
-*@apiError (500 Internal Server Error) ServerError There was a problem logging the user out.
+* @apiError (500 Internal Server Error) ServerError There was a problem logging the user out.
 *
-*@apiErrorExample
+* @apiErrorExample
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not log out user."}
 */
@@ -354,7 +354,7 @@
 /**
 * @api {get} /api/user Get Profile
 * @apiVersion 1.0.0
-* @apiName GetProfile
+* @apiName Get Profile
 * @apiGroup User
 * @apiPermission user
 *
@@ -364,13 +364,13 @@
 * @apiParam {String} [callback] The name of the callback function.
 *
 * @apiExample Session-Based example:
-*     curl -X GET "https://inb4.us/api/user"
+*     curl -X GET 'https://inb4.us/api/user'
 *
 * @apiExample Default example:
-*     curl -X GET "https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da"
+*     curl -X GET 'https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da'
 *
 * @apiExample Default callback example:
-*     curl -X GET "https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da/?callback=foo"
+*     curl -X GET 'https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da/?callback=foo'
 *
 * @apiSuccess (200 Success) user Returns a user object.
 *
@@ -383,19 +383,85 @@
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
 * @apiError (500 Internal Server Error) ServerError There was a problem with the request.
 *
-*@apiErrorExample Error-Response: (Missing Id)
+* @apiErrorExample Error-Response: (Missing Id)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Missing user id."}
 *
-*@apiErrorExample Error-Response: (User Not Exist)
+* @apiErrorExample Error-Response: (User Not Exist)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"User does not exist."}
 *
-*@apiErrorExample Error-Response: (Activation Needed)
+* @apiErrorExample Error-Response: (Activation Needed)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"You must activate this account before using it."}
 *
-*@apiErrorExample Error-Response: (Server Error)
+* @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not get user profile."}
+*/
+
+/**
+* @api {post} /api/user Update Profile
+* @apiVersion 1.0.0
+* @apiName Update Profile
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Updates the user profile that is logged in.
+*
+* @apiParam {String} email The user email for updating the profile.
+* @apiParam {String} [firstName] The user's first name for updating the profile.
+* @apiParam {String} [lastName] The user's last name for updating the profile.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user' -d "email=mockuser@inb4.us&firstName=mock&lastName=user"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user' -d "email=mockuser@inb4.us&firstName=mock&lastName=user&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"messsage":"Profile updated."}
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Profile updated, please reactivate your account."}
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Nothing to change for profile."}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (400 Bad Request) MissingEmail The email is missing from the request.
+* @apiError (400 Bad Request) InvalidEmail The email specified in the request is invalid.
+* @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (500 Internal Server Error) ServerError There was a problem upadting the user profile.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Missing Email)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing email."}
+*
+* @apiErrorExample Error-Response: (Invalid Email)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid email."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not update user profile."}
 */
