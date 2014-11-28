@@ -28,14 +28,6 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser(config.cookie.secret));
-  app.use(session({
-    cookie: {
-      path: '/',
-      secure: false,
-      maxAge: 3600000 * 24 * 7,
-      httpOnly: true
-    }
-  }));
   app.use(helmet.noSniff());
   app.use(helmet.hidePoweredBy());
   app.use(helmet.hsts({
@@ -47,6 +39,14 @@ module.exports = function(app) {
   app.use(helmet.frameguard('deny'));
 
   if ('production' === env) {
+    app.use(session({
+      cookie: {
+        path: '/',
+        secure: true,
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true
+      }
+    }));
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
     app.use(express.static(path.join(config.root, 'public')));
     app.use('/api/docs', express.static(path.join(config.root, 'public/docs')));
@@ -55,6 +55,14 @@ module.exports = function(app) {
   }
 
   if ('development' === env || 'test' === env) {
+    app.use(session({
+      cookie: {
+        path: '/',
+        secure: false,
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true
+      }
+    }));
     app.use(require('connect-livereload')());
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));

@@ -194,3 +194,33 @@
  *    {"message":"Could not activate account."}
  *
  */
+
+/**
+*@api {get} /api/user/logout Logout
+*@apiVersion 1.0.0
+*@apiName Logout
+*@apiGroup User
+*@apiPermission public
+*
+*@apiDescription Logs the user out.
+*
+*@apiParam {String} [callback] The name of the callback funciton.
+*
+*@apiExample Default example:
+*     curl -X GET "https://inb4.us/api/user/logout"
+*
+*@apiExample Default callback example:
+*     curl -X GET "https://inb4.us/api/user/logout?callback=foo"
+*
+*@apiSuccess (200 Success) {String} message The user has been logged out.
+*
+*@apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Logged out."}
+*
+*@apiError (500 Internal Server Error) ServerError There was a problem logging the user out.
+*
+*@apiErrorExample
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not log out user."}
+*/
