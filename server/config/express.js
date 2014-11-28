@@ -32,7 +32,7 @@ module.exports = function(app) {
     cookie: {
       path: '/',
       secure: false,
-      maxAge: 3600000 * 24,
+      maxAge: 3600000 * 24 * 7,
       httpOnly: true
     }
   }));

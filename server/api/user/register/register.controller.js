@@ -2,12 +2,12 @@
 
 var validator = require('validator');
 var bcrypt = require('bcrypt');
+var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
 var utils = db.utils;
 utils.initialize();
 var users = db.user;
 users.initialize();
-var userSchema = require('../../../components/schema/user');
 
 function _validateRegistration(username, email, password, callback) {
   if(validator.isNull(username)) {

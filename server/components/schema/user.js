@@ -13,6 +13,7 @@ module.exports = {
     activate: uuid.v4(),
     reset: null
   },
+  active: false,
   dibs: [],
   address: {
     streetAddress: null,

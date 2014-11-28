@@ -70,7 +70,64 @@
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Username already registered."}
 *
-* @apiErrorExample Error-Response: (Problem)
+* @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not register user."}
+*/
+
+/**
+* @api {post} /api/user/login Login
+* @apiVersion 1.0.0
+* @apiName Login
+* @apiGroup User
+* @apiPermission public
+*
+* @apiDescription Log the user into the site.
+*
+* @apiParam {String} username The user's username that they used to register to the site.
+* @apiParam {String} password The user's passsword they used to register to the site.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default Example:
+*     curl -X POST 'https://inb4.us/api/user/login' -d 'username=mockuser&password=mockpassword'
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/login' -d 'username=mockuser&password=mockpassword&callback=foo'
+*
+* @apiSuccess (200 Success) {String} message The specific user was logged in.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Logged in."}
+*
+* @apiError (400 Bad Request) MissingUsername The username was missing from the request.
+* @apiError (400 Bad Request) MissingPassword The password was missing from the request.
+* @apiError (400 Bad Request) UserNotExist The username does not exist in the database.
+* @apiError (400 Bad Request) ActivatationNeeded You must activate your account first before you sign in.
+* @apiError (400 Bad Request) PasswordMismatch The password provided was invalid.
+* @apiError (500 Internal Server Error) ServerError There was a problem loggin the user in.
+*
+* @apiErrorExample Error-Response: (Missing Username)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing username."}
+*
+* @apiErrorExample Error-Response: (Missing Password)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing password."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Username does not exist."}
+*
+* @apiErrorExample Error-Response: (Activatation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before signing in."}
+*
+* @apiErrorExample Error-Response: (Password Mismatch)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Passwords do not match."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not log user in."}
 */
