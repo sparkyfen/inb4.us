@@ -5,6 +5,8 @@ var config = require('../../config/environment');
 exports.initialize = function() {
   this.nano = require('nano')({url: config.couchdb.url});
   this.users = this.nano.use(config.couchdb.users);
+  this.admins = this.nano.use(config.couchdb.admins);
+  this.dibs = this.nano.use(config.couchdb.dibs);
 };
 
 exports.create = function(dbName, callback) {
@@ -21,6 +23,6 @@ exports.insert = function(db, key, data, callback) {
     if(err) {
       return callback(err);
     }
-    return callback(null);
+    return callback(null, body);
   });
 };

@@ -3,5 +3,6 @@
 module.exports = {
   user: require('./user'),
   utils: require('./utils'),
-  admin: require('./admin')
+  admin: require('./admin'),
+  dib: require('./dib')
 };

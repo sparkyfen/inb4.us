@@ -38,9 +38,9 @@
 *     HTTP/1.1 200 OK
 *     {"message":"Registered, please check your email to activate your account."}
 *
-* @apiError (400 Bad Request) MissingUsername The username is missing from the request
-* @apiError (400 Bad Request) MissingEmail The email is missing from the request
-* @apiError (400 Bad Request) MissingPass The password is missing form the request.
+* @apiError (400 Bad Request) MissingUsername The username was missing from the request
+* @apiError (400 Bad Request) MissingEmail The email was missing from the request
+* @apiError (400 Bad Request) MissingPass The password was missing form the request.
 * @apiError (400 Bad Request) InvalidEmail The email provided in the request is invalid.
 * @apiError (400 Bad Request) EmailExists The email provided already exists in the database.
 * @apiError (400 Bad Request) UserExists The user provided already exists in the database.
@@ -378,7 +378,7 @@
 *     HTTP/1.1 200 OK
 *    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "mockuser@inb4.us","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
 *
-* @apiError (400 Bad Request) MissingId The user id is missing from the session.
+* @apiError (400 Bad Request) MissingId The user id was missing from the session.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
 * @apiError (500 Internal Server Error) ServerError There was a problem getting the user profile.
@@ -435,7 +435,7 @@
 *     {"message":"Nothing to change for profile."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
-* @apiError (400 Bad Request) MissingEmail The email is missing from the request.
+* @apiError (400 Bad Request) MissingEmail The email was missing from the request.
 * @apiError (400 Bad Request) InvalidEmail The email specified in the request is invalid.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.

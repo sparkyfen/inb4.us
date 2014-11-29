@@ -16,13 +16,17 @@ module.exports = {
   couchdb: {
     url: process.env.INB4_COUCHDB_URL || 'http://127.0.0.1:5984/',
     users: process.env.INB4_COUCHDB_USERS || 'inb4-users',
-    admins: process.env.INB4_COUCHDB_ADMINS || 'inb4-admins'
+    admins: process.env.INB4_COUCHDB_ADMINS || 'inb4-admins',
+    dibs: process.env.INB4_COUCHDB_DIBS || 'inb4-dibs'
   },
   email: {
     accounts: {
+      sendgrid: {
+        username: process.env.INB4_SENDGRID_USERNAME || '',
+        password: process.env.INB4_SENDGRID_PASSWORD || ''
+      },
       info: {
-        username: process.env.INB4_EMAIL_INFO_USERNAME || '',
-        password: process.env.INB4_EMAIL_INFO_PASSWORD || ''
+        username: process.env.INB4_EMAIL_INFO_USERNAME || ''
       }
     }
   },
