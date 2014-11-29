@@ -18,15 +18,13 @@ module.exports = function(config) {
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-route/angular-route.js',
-      'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
-      'client/bower_components/angular-ui-router/release/angular-ui-router.js',
+      'client/bower_components/snackbarjs/src/snackbar.js',
+      'client/bower_components/semantic-ui/dist/semantic.js',
+      'client/bower_components/angular-semantic-ui/dist/angular-semantic-ui-0.0.1.js',
       'client/app/app.js',
-      'client/app/app.coffee',
       'client/app/**/*.js',
-      'client/app/**/*.coffee',
       'client/components/**/*.js',
-      'client/components/**/*.coffee',
       'client/app/**/*.jade',
       'client/components/**/*.jade',
       'client/app/**/*.html',
@@ -35,8 +33,7 @@ module.exports = function(config) {
 
     preprocessors: {
       '**/*.jade': 'ng-jade2js',
-      '**/*.html': 'html2js',
-      '**/*.coffee': 'coffee',
+      '**/*.html': 'html2js'
     },
 
     ngHtml2JsPreprocessor: {
