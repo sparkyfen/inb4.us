@@ -58,7 +58,7 @@ exports.index = function(req, res) {
       }
       var user = reply.rows[0].value;
       if(validator.isNull(user.tokens.reset)) {
-        return res.status(400).jsonp({message: 'A reset request was not issued for this user.'});
+        return res.status(400).jsonp({message: 'A reset token was not issued for this user.'});
       }
       if(user.tokens.reset !== token) {
         return res.status(400).jsonp({message: 'Invalid token for requested id.'});
@@ -70,7 +70,7 @@ exports.index = function(req, res) {
         }
         user.password = hash;
         user.tokens.reset = null;
-        utils.insert(utils.users, user._id, users, function (error, reply) {
+        utils.insert(utils.users, user._id, user, function (error, reply) {
           if(error) {
             console.log(error);
             return res.status(500).jsonp({message: 'Could not reset user password.'});

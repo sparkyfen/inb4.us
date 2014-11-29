@@ -12,9 +12,9 @@
       "js": true,
       "html": true,
       "css": true,
-      "uirouter": true,
-      "bootstrap": true,
-      "uibootstrap": true
+      "ngroute": true,
+      "bootstrap": false,
+      "uibootstrap": false
     }
   },
   "generator-ng-component": {
@@ -25,7 +25,7 @@
     "basePath": "client",
     "moduleName": "",
     "filters": [
-      "uirouter"
+      "ngroute"
     ],
     "extensions": [
       "js",

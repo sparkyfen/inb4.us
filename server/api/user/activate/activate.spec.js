@@ -4,6 +4,7 @@ var should = require('should');
 var app = require('../../../app');
 var request = require('supertest');
 var bcrypt = require('bcrypt');
+var uuid = require('node-uuid');
 var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
 var utils = db.utils;
@@ -15,17 +16,17 @@ var userId, token;
 describe('POST /api/user/activate', function() {
 
   beforeEach(function (done) {
-    userId = userSchema.id;
-    delete userSchema.id;
+    userId = uuid.v4();
+    userSchema._id = userId;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
+    userSchema.tokens.activate = uuid.v4();
     token = userSchema.tokens.activate;
     utils.insert(utils.users, userId, userSchema, function (error) {
       if(error) {
         return done(error);
       }
-      userSchema.id = userId;
       done();
     });
   });
@@ -63,7 +64,9 @@ describe('POST /api/user/activate', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
-        if (err) return done(err);
+        if (err) {
+          return done(err);
+        }
         res.body.should.be.instanceof(Object);
         res.body.should.have.property('message');
         done();

@@ -3,6 +3,7 @@
 var should = require('should');
 var bcrypt = require('bcrypt');
 var request = require('supertest');
+var uuid = require('node-uuid');
 var app = require('../../../app');
 var userSchema = require('../../../components/schema/user');
 var db = require('../../../components/database');
@@ -138,16 +139,16 @@ describe('POST /api/user/register', function() {
   });
 
   it('should fail on existing email', function(done) {
-    var userId = userSchema.id;
-    delete userSchema.id;
+    var userId = uuid.v4();
+    userSchema._id = userId;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'newmockuser';
     userSchema.email = 'mockuser@inb4.us';
+    userSchema.tokens.activate = uuid.v4();
     utils.insert(utils.users, userId, userSchema, function (error) {
       if(error) {
         return done(error);
       }
-      userSchema.id = userId;
       request(app)
       .post('/api/user/register')
       .send({
@@ -169,16 +170,16 @@ describe('POST /api/user/register', function() {
   });
 
   it('should fail on existing username', function(done) {
-    var userId = userSchema.id;
-    delete userSchema.id;
+    var userId = uuid.v4();
+    userSchema._id = userId;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'newmockuser@inb4.us';
+    userSchema.tokens.activate = uuid.v4();
     utils.insert(utils.users, userId, userSchema, function (error) {
       if(error) {
         return done(error);
       }
-      userSchema.id = userId;
       request(app)
       .post('/api/user/register')
       .send({

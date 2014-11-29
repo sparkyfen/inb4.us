@@ -3,6 +3,7 @@
 var should = require('should');
 var bcrypt = require('bcrypt');
 var request = require('supertest');
+var uuid = require('node-uuid');
 var app = require('../../../app');
 var db = require('../../../components/database');
 var userSchema = require('../../../components/schema/user');
@@ -17,8 +18,9 @@ var cookie;
 describe('GET /api/user', function() {
 
   beforeEach(function (done) {
-    userId = userSchema.id;
-    delete userSchema.id;
+    userId = uuid.v4();
+    userSchema._id = userId;
+    userSchema.tokens.activate = null;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
@@ -27,7 +29,6 @@ describe('GET /api/user', function() {
       if(error) {
         return done(error);
       }
-      userSchema.id = userId;
       request(app)
       .post('/api/user/login')
       .send({
@@ -145,6 +146,7 @@ describe('GET /api/user', function() {
         return done(error);
       }
       var user = reply.rows[0].value;
+      user.tokens.activate = uuid.v4();
       user.active = false;
       utils.insert(utils.users, user._id, user, function (error) {
         if(error) {

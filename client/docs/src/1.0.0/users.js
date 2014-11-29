@@ -189,7 +189,7 @@
  *    HTTP/1.1 400 Bad Request
  *    {"message":"Invalid token for user."}
  *
- * @apiErrorExample Error-Response: (Activatoin Issue)
+ * @apiErrorExample Error-Response: (Activation Issue)
  *    HTTP/1.1 500 Internal Server Error
  *    {"message":"Could not activate account."}
  *
@@ -259,7 +259,7 @@
  * @apiError (400 Bad Request) UserNotExist The user does not exist.
  * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
  * @apiError (400 Bad Request) HashMismatch The old password did not match what the database has.
- * @apiError (500 Internal Server Error) ServerError There was a problem resetting the password.
+ * @apiError (500 Internal Server Error) ServerError There was a problem changing the password.
  *
  * @apiErrorExample Error-Response: (Unauthorized)
  *      HTTP/1.1 401 Unauthorized
@@ -381,7 +381,7 @@
 * @apiError (400 Bad Request) MissingId The user id is missing from the session.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
-* @apiError (500 Internal Server Error) ServerError There was a problem with the request.
+* @apiError (500 Internal Server Error) ServerError There was a problem getting the user profile.
 *
 * @apiErrorExample Error-Response: (Missing Id)
 *     HTTP/1.1 400 Bad Request
@@ -439,7 +439,7 @@
 * @apiError (400 Bad Request) InvalidEmail The email specified in the request is invalid.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
-* @apiError (500 Internal Server Error) ServerError There was a problem upadting the user profile.
+* @apiError (500 Internal Server Error) ServerError There was a problem updating the user profile.
 *
 * @apiErrorExample Error-Response: (Unauthorized)
 *      HTTP/1.1 401 Unauthorized
@@ -491,7 +491,7 @@
 *     {"messsage":"Profile deleted."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
-* @apiError (500 Internal Server Error) ServerError There was a problem upadting the user profile.
+* @apiError (500 Internal Server Error) ServerError There was a problem deleting the user profile.
 *
 * @apiErrorExample Error-Response: (Unauthorized)
 *      HTTP/1.1 401 Unauthorized
@@ -500,4 +500,88 @@
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not delete user profile."}
+*/
+
+/**
+* @api {post} /api/user/reset Reset Password
+* @apiVersion 1.0.0
+* @apiName Reset Password
+* @apiGroup User
+* @apiPermission public
+*
+* @apiDescription Reset the user password given the token and new passwords.
+*
+* @apiParam {String} id The user id.
+* @apiParam {String} token The reset token.
+* @apiParam {String} new The new password.
+* @apiParam {String} confirm The confirmed new password.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/reset' -d "id=2f24954f-edea-425c-aaf3-b1e421a2ce08&token=c4b98f80-9c7a-4660-9edb-cc1472ba0cc1&new=newmockpassword&confirm=newmockpassword"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/reset' -d "id=2f24954f-edea-425c-aaf3-b1e421a2ce08&token=c4b98f80-9c7a-4660-9edb-cc1472ba0cc1&new=newmockpassword&confirm=newmockpassword&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"messsage":"Password reset."}
+*
+* @apiError (400 Bad Request) MissingId The user id was missing from the request.
+* @apiError (400 Bad Request) MissingToken The reset token was missing from the request.
+* @apiError (400 Bad Request) MissingNewPassword The new password was missing from the request.
+* @apiError (400 Bad Request) MissingConfirmPassword The confirm password was missing from the request.
+* @apiError (400 Bad Request) PasswordMismatch The new and confirm password were not the same.
+* @apiError (400 Bad Request) InvalidId The user id was not a UUID value.
+* @apiError (400 Bad Request) InvalidToken The reset token was not a UUID value.
+* @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
+* @apiError (400 Bad Request) TokenNotForUser The reset token was not issued for this user.
+* @apiError (400 Bad Request) InvalidTokenForUser The token in the request did not match the token in the database.
+* @apiError (500 Internal Server Error) ServerError There was a problem resetting the user password.
+*
+* @apiErrorExample Error-Response: (Missing Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing user id."}
+*
+* @apiErrorExample Error-Response: (Missing Token)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing reset token."}
+*
+* @apiErrorExample Error-Response: (Missing New Password)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing new password."}
+*
+* @apiErrorExample Error-Response: (Missing Confirm Password)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing confirmed password."}
+*
+* @apiErrorExample Error-Response: (Password Mismatch)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"New passwords do not match."}
+*
+* @apiErrorExample Error-Response: (Invalid id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid user id."}
+*
+* @apiErrorExample Error-Response: (Invalid Token)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid reset token."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Token Not For User)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"A reset token was not issued for this user."}
+*
+* @apiErrorExample Error-Response: (Invalid Token For User)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid token for requested id."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not reset user password."}
 */

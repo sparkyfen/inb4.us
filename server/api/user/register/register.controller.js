@@ -3,6 +3,7 @@
 var validator = require('validator');
 var bcrypt = require('bcrypt');
 var url = require('url');
+var uuid = require('node-uuid');
 var nodemailer = require('nodemailer');
 var emailTemplates = require('email-templates');
 var path = require('path');
@@ -84,11 +85,11 @@ exports.index = function(req, res) {
             console.log(error);
             return res.status(500).jsonp({message: 'Could not register user.'});
           }
-          var userId = userSchema.id;
+          var userId = uuid.v4();
           userSchema.username = username;
           userSchema.password = hash;
           userSchema.email = email;
-          delete userSchema.id;
+          userSchema.tokens.activate = uuid.v4();
           _getEmailTemplate({
             userId: userId,
             token: userSchema.tokens.activate

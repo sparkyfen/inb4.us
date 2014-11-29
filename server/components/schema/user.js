@@ -1,16 +1,13 @@
 'use strict';
 
-var uuid = require('node-uuid');
-
 module.exports = {
-  id: uuid.v4(),
   username: '',
   firstname: '',
   lastname: '',
   password: null,
   email: '',
   tokens: {
-    activate: uuid.v4(),
+    activate: null,
     reset: null
   },
   active: false,

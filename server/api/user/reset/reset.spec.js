@@ -18,8 +18,9 @@ var resetToken = uuid.v4();
 describe('POST /api/user/reset', function() {
 
   beforeEach(function (done) {
-    userId = userSchema.id;
-    delete userSchema.id;
+    userId = uuid.v4();
+    userSchema._id = userId;
+    userSchema.tokens.activate = null;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
@@ -29,7 +30,6 @@ describe('POST /api/user/reset', function() {
       if(error) {
         return done(error);
       }
-      userSchema.id = userId;
       done();
     });
   });
@@ -57,26 +57,209 @@ describe('POST /api/user/reset', function() {
     });
   });
 
-  it('should respond with JSON array', function(done) {
-    // TODO Fix this reset test.
+  it('should reset the user password', function(done) {
     request(app)
-      .post('/api/user/reset')
-      .send({
-        id: userId,
-        token: resetToken,
-        new: 'newmockpassword',
-        confirm: 'newmockpassword'
-      })
-      .expect(500)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if (err) {
-          console.log(res.body);
-          return done(err);
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      token: resetToken,
+      new: 'newmockpassword',
+      confirm: 'newmockpassword'
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail on missing user id', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      token: resetToken,
+      new: 'newmockpassword',
+      confirm: 'newmockpassword'
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail on missing user id', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      token: resetToken,
+      new: 'newmockpassword',
+      confirm: 'newmockpassword'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail on missing reset token', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      new: 'newmockpassword',
+      confirm: 'newmockpassword'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail on missing new password', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      token: resetToken,
+      confirm: 'newmockpassword'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail on missing confirm password', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      token: resetToken,
+      new: 'newmockpassword'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail when user does not exist', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: uuid.v4(),
+      token: resetToken,
+      new: 'newmockpassword',
+      confirm: 'newmockpassword'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should fail when reset token is not set', function(done) {
+    users.searchByUsername('mockuser', function (error, reply) {
+      if(error) {
+        return done(error);
+      }
+      var user = reply.rows[0].value;
+      user.tokens.reset = null;
+      utils.insert(utils.users, user._id, user, function (error) {
+        if(error) {
+          return done(error);
         }
-        res.body.should.be.instanceof(Object);
-        res.body.should.have.property('message');
-        done();
+        request(app)
+        .post('/api/user/reset')
+        .send({
+          id: userId,
+          token: uuid.v4(),
+          new: 'newmockpassword',
+          confirm: 'newmockpassword'
+        })
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if (err) {
+            console.log(res.body);
+            return done(err);
+          }
+          res.body.should.be.instanceof(Object);
+          res.body.should.have.property('message');
+          done();
+        });
       });
+    });
+  });
+
+  it('should fail when reset token does not match user', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      token: uuid.v4(),
+      new: 'newmockpassword',
+      confirm: 'newmockpassword'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
   });
 });
