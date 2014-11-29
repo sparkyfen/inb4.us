@@ -13,7 +13,7 @@ utils.initialize();
 
 var cookie;
 
-describe('POST /api/user/reset', function() {
+describe('POST /api/user/change', function() {
 
   beforeEach(function (done) {
     var userId = userSchema.id;
@@ -69,9 +69,9 @@ describe('POST /api/user/reset', function() {
     });
   });
 
-  it('should successfully reset the user\'s password', function(done) {
+  it('should successfully change the user\'s password', function(done) {
     request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         old: 'mockpassword',
         new: 'newmockpassword',
@@ -92,7 +92,7 @@ describe('POST /api/user/reset', function() {
 
   it('should fail when missing the session', function(done) {
     request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         old: 'mockpassword',
         new: 'newmockpassword',
@@ -112,7 +112,7 @@ describe('POST /api/user/reset', function() {
 
   it('should fail when missing the old password', function(done) {
     request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         new: 'newmockpassword',
         confirm: 'newmockpassword'
@@ -132,7 +132,7 @@ describe('POST /api/user/reset', function() {
 
   it('should fail when missing the new password', function(done) {
     request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         old: 'mockpassword',
         confirm: 'newmockpassword'
@@ -152,7 +152,7 @@ describe('POST /api/user/reset', function() {
 
   it('should fail when missing the new confirm password', function(done) {
     request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         old: 'mockpassword',
         new: 'newmockpassword'
@@ -172,7 +172,7 @@ describe('POST /api/user/reset', function() {
 
   it('should fail when the new passwords do not match', function(done) {
     request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         old: 'mockpassword',
         new: 'newmockpassword',
@@ -203,7 +203,7 @@ describe('POST /api/user/reset', function() {
           return done(error);
         }
         request(app)
-        .post('/api/user/reset')
+        .post('/api/user/change')
         .send({
           old: 'mockpassword',
           new: 'newmockpassword',
@@ -230,7 +230,7 @@ describe('POST /api/user/reset', function() {
         return done(error);
       }
       request(app)
-      .post('/api/user/reset')
+      .post('/api/user/change')
       .send({
         old: 'mockpassword',
         new: 'newmockpassword',

@@ -25,7 +25,7 @@ function _validatePasswords(oldPass, newPass, confirmNew, callback) {
   return callback();
 }
 
-// Reset's the users password.
+// Changes the users password.
 exports.index = function(req, res) {
   if(!req.session.username) {
     return res.status(401).jsonp({message: 'Please sign in.'});
@@ -58,7 +58,7 @@ exports.index = function(req, res) {
       bcrypt.compare(oldPass, user.password, function (error, isSame) {
         if(error) {
           console.log(error);
-          return res.status(500).jsonp({message: 'Could not reset password for user.'});
+          return res.status(500).jsonp({message: 'Could not change password for user.'});
         }
         if(!isSame) {
           return res.status(400).jsonp({message: 'Passwords do not match.'});
@@ -66,17 +66,17 @@ exports.index = function(req, res) {
         bcrypt.hash(newPass, 10, function (error, hash) {
           if(error) {
             console.log(error);
-            return res.status(500).jsonp({message: 'Could not reset password for user.'});
+            return res.status(500).jsonp({message: 'Could not change password for user.'});
           }
           user.password = hash;
           utils.insert(utils.users, user._id, user, function (error) {
             if(error) {
               console.log(error);
-              return res.status(500).jsonp({message: 'Could not reset password for user.'});
+              return res.status(500).jsonp({message: 'Could not change password for user.'});
             }
             // Delete session so they sign in again.
             delete req.session.username;
-            return res.jsonp({message: 'Password reset, please log in again.'});
+            return res.jsonp({message: 'Password changed, please log in again.'});
           });
         });
       });

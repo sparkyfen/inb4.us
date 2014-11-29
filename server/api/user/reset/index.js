@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./resetPassword.controller');
+var controller = require('./reset.controller');
 
 var router = express.Router();
 

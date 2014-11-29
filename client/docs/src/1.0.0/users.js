@@ -226,13 +226,13 @@
 */
 
 /**
- * @api {post} /api/user/reset Reset Password
+ * @api {post} /api/user/change Change Password
  * @apiVersion 1.0.0
- * @apiName Reset Password
+ * @apiName Change Password
  * @apiGroup User
  * @apiPermission user
  *
- * @apiDescription Resets the user's password given the old password, new password, and confirmation.
+ * @apiDescription Change the user's password given the old password, new password, and confirmation.
  *
  * @apiParam {String} old The user's old password.
  * @apiParam {String} new The user's new password.
@@ -240,16 +240,16 @@
  * @apiParam {String} [callback] The name of the callback function.
  *
  * @apiExample {curl} Default example:
- *      curl -X POST 'https://inb4.us/api/user/reset' -d "old=mockpassword&new=newmockpassword&confirm=newmockpassword"
+ *      curl -X POST 'https://inb4.us/api/user/change' -d "old=mockpassword&new=newmockpassword&confirm=newmockpassword"
  *
  * @apiExample {curl} Callback example:
- *      curl -X POST 'https://inb4.us/api/user/reset' -d "old=mockpassword&new=newmockpassword&confirm=newmockpassword&callback=foo"
+ *      curl -X POST 'https://inb4.us/api/user/change' -d "old=mockpassword&new=newmockpassword&confirm=newmockpassword&callback=foo"
  *
  * @apiSuccess (200 Success) {String} message The password has been updated.
  *
  * @apiSuccessExample Success-Response:
  *      HTTP/1.1 200 OK
- *      {"message":"Password reset, please log in again."}
+ *      {"message":"Password changed, please log in again."}
  *
  * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
  * @apiError (400 Bad Request) MissingOldPassword The old password was not in the request.
@@ -295,7 +295,7 @@
  *
  * @apiErrorExample Error-Response: (Server Error)
  *      HTTP/1.1 500 Internal Server Error
- *      {"message": "Could not reset password for user."}
+ *      {"message": "Could not change password for user."}
  *
  */
 

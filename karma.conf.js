@@ -11,7 +11,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'client/bower_components/jquery/dist/jquery.js',
+      'client/bower_components/jquery/jquery.js',
       'client/bower_components/angular/angular.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       'client/bower_components/angular-resource/angular-resource.js',
@@ -25,8 +25,6 @@ module.exports = function(config) {
       'client/app/app.js',
       'client/app/**/*.js',
       'client/components/**/*.js',
-      'client/app/**/*.jade',
-      'client/components/**/*.jade',
       'client/app/**/*.html',
       'client/components/**/*.html'
     ],

@@ -115,6 +115,7 @@ exports.index = function(req, res) {
               });
             }
             utils.insert(utils.users, userId, userSchema, function (error) {
+              userSchema.id = userId;
               if(error) {
                 console.log(error);
                 return res.status(500).jsonp({message: 'Could not register user.'});

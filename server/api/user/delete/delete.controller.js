@@ -1,6 +1,5 @@
 'use strict';
 
-var validator = require('validator');
 var db = require('../../../components/database');
 var users = db.user;
 users.initialize();

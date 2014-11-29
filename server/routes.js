@@ -11,7 +11,8 @@ module.exports = function(app) {
   // Insert routes below
   app.use('/api/user', require('./api/user/profile'));
   app.use('/api/user/delete', require('./api/user/delete'));
-  app.use('/api/user/reset', require('./api/user/resetPassword'));
+  app.use('/api/user/reset', require('./api/user/reset'));
+  app.use('/api/user/change', require('./api/user/change'));
   app.use('/api/user/lost', require('./api/user/lost'));
   app.use('/api/user/activate', require('./api/user/activate'));
   app.use('/api/user/logout', require('./api/user/logout'));
