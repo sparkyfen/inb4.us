@@ -8,17 +8,19 @@ module.exports = {
   couchdb: {
     url: 'http://127.0.0.1:5984/',
     users: 'inb4-users',
-    admins: 'inb4-admins'
+    admins: 'inb4-admins',
+    dibs: 'inb4-dibs'
   },
   email: {
     accounts: {
-      info: {
-        username: '', // info@inb4.us
-        password: '' // password to account
-      }
+      sendgrid: {
+        username: '', // https://sendgrid.com/credentials
+        password: ''
+      },
+      info: 'info@inb4.us'
     }
   },
   cookie: {
-    secret: '' // 64+ char sting.
+    secret: 'l;sdkjf;slkfj;sldkjf;skf;ldkfj;sdlkfj;dlkj;sdlkfjs;ldjfd' // 64+ char string
   }
 };

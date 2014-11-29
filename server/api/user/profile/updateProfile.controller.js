@@ -2,6 +2,7 @@
 
 var validator = require('validator');
 var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
 var emailTemplates = require('email-templates');
 var path = require('path');
 var url = require('url');
@@ -52,17 +53,14 @@ function _emailUser(user) {
       console.log(error);
     }
     if(config.env !== 'test') {
-      var transport = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+      var transport = nodemailer.createTransport(sgTransport({
         auth: {
-          user: config.email.accounts.info.username,
-          pass: config.email.accounts.info.password
+          api_user: config.email.accounts.sendgrid.username,
+          api_key: config.email.accounts.sendgrid.password
         }
-      });
+      }));
       transport.sendMail({
-        from: config.email.accounts.info.username,
+        from: config.email.accounts.info,
         to: user.email,
         subject: 'Update Profile',
         html: emailBody

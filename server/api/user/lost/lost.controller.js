@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt');
 var uuid = require('node-uuid');
 var url = require('url');
 var nodemailer = require('nodemailer');
+var sgTransport = require('nodemailer-sendgrid-transport');
 var emailTemplates = require('email-templates');
 var path = require('path');
 var templatesDir = path.join(__dirname, '../../../components/emails/templates');
@@ -73,17 +74,14 @@ exports.index = function(req, res) {
           return res.status(500).jsonp({message: 'Could not send lost password email.'});
         }
         if(config.env !== 'test') {
-          var transport = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
+          var transport = nodemailer.createTransport(sgTransport({
             auth: {
-              user: config.email.accounts.info.username,
-              pass: config.email.accounts.info.password
+              api_user: config.email.accounts.sendgrid.username,
+              api_key: config.email.accounts.sendgrid.password
             }
-          });
+          }));
           transport.sendMail({
-            from: config.email.accounts.info.username,
+            from: config.email.accounts.info,
             to: email,
             subject: 'Reset Password',
             html: emailBody
