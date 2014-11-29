@@ -31,7 +31,7 @@ module.exports = function(app) {
   app.use(helmet.noSniff());
   app.use(helmet.hidePoweredBy());
   app.use(helmet.hsts({
-    maxAge: 10886400000,     // Must be at least 18 weeks to be approved by Google
+    maxAge: 10886410000,     // Must be at least 18 weeks to be approved by Google
     includeSubdomains: true, // Must be enabled to be approved by Google
     preload: true,
     force: true
@@ -39,8 +39,10 @@ module.exports = function(app) {
   app.use(helmet.frameguard('deny'));
 
   if ('production' === env) {
+    app.set('trust proxy', 1)
     app.use(session({
       key: 'user-session',
+      proxy: true,
       cookie: {
         path: '/',
         secure: true,

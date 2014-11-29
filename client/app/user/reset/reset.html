@@ -1,3 +1,20 @@
-<div class="col-md-12">
-This is the reset view.
+<div class="hero-unit" id="banner">
+  <div class="ui form">
+    <h4 class="ui dividing header">Reset Password</h4>
+    <form name="resetForm" ng-submit="reset()">
+      <div ng-class="{'field': true, 'ui input error': error}">
+        <label for="newPass">New Password</label>
+        <input type="password" id="newPass" ng-model="newPass" tabindex="10" autofocus required>
+      </div>
+      <div ng-class="{'field': true, 'ui input error': error}">
+        <label for="confirm">Confirm New Password</label>
+        <input type="password" id="confirm" ng-model="confirm" tabindex="15" required>
+      </div>
+      <div class="field">
+        <button type="submit" ng-class="{'ui': true, 'blue': true, 'basic': true, 'button': true, 'loading': submitting}" tabindex="20">Submit</button>
+      </div>
+    </form>
+  </div>
 </div>
+
+<div ng-include="'components/footer/footer.html'"></div>

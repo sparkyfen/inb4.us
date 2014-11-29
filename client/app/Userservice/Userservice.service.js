@@ -8,6 +8,13 @@ angular.module('inb4usApp').service('Userservice', ['$http', function ($http) {
         url: '/api/user/activate',
         data: activateData
       });
+    },
+    reset: function (resetData) {
+      return $http({
+        method: 'POST',
+        url: '/api/user/reset',
+        data: resetData
+      });
     }
   };
 }]);
