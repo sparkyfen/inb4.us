@@ -1,8 +1,21 @@
 'use strict';
 
-var _ = require('lodash');
+var validator = require('validator');
+var db = require('../../../components/database');
+var users = db.user;
+users.initialize();
 
-// Get list of deletes
+// Deletes an account.
 exports.index = function(req, res) {
-  res.json([]);
+  if(!req.session.username) {
+    return res.status(401).jsonp({message: 'Please sign in.'});
+  }
+  var username = req.session.username;
+  users.deleteByUsername(username, function (error) {
+    if(error) {
+      console.log(error);
+      return res.status(500).jsonp({message: 'Could not delete user profile.'});
+    }
+    return res.jsonp({message: 'Profile deleted.'});
+  });
 };

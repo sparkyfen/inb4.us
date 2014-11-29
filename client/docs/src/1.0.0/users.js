@@ -465,3 +465,39 @@
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not update user profile."}
 */
+
+
+/**
+* @api {post} /api/user/delete Delete Profile
+* @apiVersion 1.0.0
+* @apiName Delete Profile
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Deletes the user profile.
+*
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/delete'
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/delete' -d "callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"messsage":"Profile deleted."}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (500 Internal Server Error) ServerError There was a problem upadting the user profile.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not delete user profile."}
+*/
