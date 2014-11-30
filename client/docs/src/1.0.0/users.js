@@ -372,7 +372,7 @@
 * @apiExample Default callback example:
 *     curl -X GET 'https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da/?callback=foo'
 *
-* @apiSuccess (200 Success) user Returns a user object.
+* @apiSuccess (200 Success) user The user object.
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK

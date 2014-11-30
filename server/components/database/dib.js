@@ -79,44 +79,48 @@ exports.getAll = function (callback) {
   });
 };
 
-exports.deleteByUsername = function (username, callback) {
+exports.deleteByCreator = function (creator, callback) {
   var _self = this;
-  _self.dibs.view('dibs', 'by_username', {reduce: false, key: username}, function (error, reply, headers) {
+  _self.dibs.view('dibs', 'by_creator', {reduce: false, key: creator}, function (error, reply, headers) {
     if(error) {
       return callback(error);
     }
     if(reply.rows.length === 0) {
-      return callback('User does not exist.');
+      return callback();
     }
-    var user = reply.rows[0].value;
-    console.log('Deleting user from DB.');
-    console.log(user);
-    _self.dibs.destroy(user._id, user._rev, function (error, body, headers) {
+    var docs = reply.rows.map(function (row) {
+      row.value._deleted = true;
+      return row.value;
+    });
+    console.log('Deleting dibs for user ' + creator + ' from DB.');
+    this.dibs.bulk({docs: docs}, function (error, reply, headers) {
       if(error) {
         return callback(error);
       }
-      return callback(null, body);
+      return callback(null, reply);
     });
   });
 };
 
-exports.deleteByEmail = function (email, callback) {
+exports.deleteById = function (id, callback) {
   var _self = this;
-  _self.dibs.view('dibs', 'by_email', {reduce: false, key: email}, function (error, reply, headers) {
+  _self.dibs.view('dibs', 'by_id', {reduce: false, key: id}, function (error, reply, headers) {
     if(error) {
       return callback(error);
     }
     if(reply.rows.length === 0) {
-      return callback('User does not exist.');
+      return callback();
     }
-    var user = reply.rows[0].value;
-    console.log('Deleting user from DB.');
-    console.log(user);
-    _self.dibs.destroy(user._id, user._rev, function (error, body, headers) {
+    var docs = reply.rows.map(function (row) {
+      row.value._deleted = true;
+      return row.value;
+    });
+    console.log('Deleting dibs for user ' + creator + ' from DB.');
+    this.dibs.bulk({docs: docs}, function (error, reply, headers) {
       if(error) {
         return callback(error);
       }
-      return callback(null, body);
+      return callback(null, reply);
     });
   });
 };
