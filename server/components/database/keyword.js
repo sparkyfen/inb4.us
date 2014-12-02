@@ -52,6 +52,15 @@ exports.getMultipleIds = function (ids, callback) {
   });
 };
 
+exports.getAll = function (callback) {
+  this.keywords.view('keywords', 'all', {reduce: false}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
 exports.deleteById = function (id, callback) {
   var _self = this;
   _self.keywords.view('keywords', 'by_id', {reduce: false, key: id}, function (error, reply, headers) {

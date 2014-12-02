@@ -37,6 +37,7 @@ exports.index = function(req, res) {
   var description = req.body.description;
   var type = req.body.type;
   // TODO If we want someone to add more data in this request, we can offer it and update this to include that data.
+  // An example is if they want to add the url and image early.
   _validateRequest(name, description, type, function (error) {
     if(error) {
       return res.status(400).jsonp({message: error});
@@ -73,12 +74,19 @@ exports.index = function(req, res) {
         dibSchema.type = type;
         dibSchema.creator = user._id;
         dibSchema.dates.created = Date.now(Date.UTC());
+        user.dibs.push(dibSchema._id);
         utils.insert(utils.dibs, dibSchema._id, dibSchema, function (error) {
           if(error) {
             console.log(error);
             return res.status(500).jsonp({message: 'Could not add new dibs.'});
           }
-          return res.jsonp({message: 'Dib called!'});
+          utils.insert(utils.users, user._id, user, function (error) {
+            if(error) {
+              console.log(error);
+              return res.status(500).jsonp({message: 'Could not add new dibs.'});
+            }
+            return res.jsonp({message: 'Dib called!'});
+          });
         });
       });
     });

@@ -79,7 +79,7 @@ describe('GET /api/dibs', function() {
                   return done(error);
                 }
                 done();
-              })
+              });
             });
           });
         });

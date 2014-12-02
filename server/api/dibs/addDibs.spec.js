@@ -84,7 +84,7 @@ describe('POST /api/dibs', function() {
                   return done(error);
                 }
                 done();
-              })
+              });
             });
           });
         });

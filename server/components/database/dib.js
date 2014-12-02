@@ -102,6 +102,34 @@ exports.deleteByCreator = function (creator, callback) {
   });
 };
 
+exports.deleteByNameType = function (name, type, callback) {
+  var _self = this;
+  _self.dibs.view('dibs', 'by_name', {reduce: false, key: name}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    if(reply.rows.length === 0) {
+      return callback();
+    }
+    var dib = null;
+    for (var i = 0; i < reply.rows.length; i++) {
+      if(reply.rows[i].value.type === type) {
+        dib = reply.rows[i].value;
+      }
+    }
+    if(!dib) {
+      return callback();
+    }
+    console.log('Deleting dibs for id ' + dib._id + ' name ' + dib.name + ' and type ' + dib.type+ ' from DB.');
+    _self.dibs.destroy(dib._id, dib._rev, function (error, reply, headers) {
+      if(error) {
+        return callback(error);
+      }
+      return callback(null, reply);
+    });
+  });
+};
+
 exports.deleteById = function (id, callback) {
   var _self = this;
   _self.dibs.view('dibs', 'by_id', {reduce: false, key: id}, function (error, reply, headers) {
@@ -111,12 +139,9 @@ exports.deleteById = function (id, callback) {
     if(reply.rows.length === 0) {
       return callback();
     }
-    var docs = reply.rows.map(function (row) {
-      row.value._deleted = true;
-      return row.value;
-    });
-    console.log('Deleting dibs for user id ' + id + ' from DB.');
-    this.dibs.bulk({docs: docs}, function (error, reply, headers) {
+    var dib = reply.rows[0].value;
+    console.log('Deleting dibs for id ' + dib._id + ' name ' + dib.name + ' and type ' + dib.type+ ' from DB.');
+    _self.dibs.destroy(dib._id, dib._rev, function (error, reply, headers) {
       if(error) {
         return callback(error);
       }

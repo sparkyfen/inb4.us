@@ -17,5 +17,5 @@
 
 ## server/api/dibs/edit/edit.controller.js
 
--  **TODO** `(line 17)`  We can do some more validation on checking for "similar" keywords here, example: "foobar" and "FooBar" are similar.
--  **TODO** `(line 18)`  Allow image links other than Imgur and upload them.
+-  **TODO** `(line 16)`  We can do some more validation on checking for "similar" keywords here, example: "foobar" and "FooBar" are similar.
+-  **TODO** `(line 17)`  Allow image links other than Imgur and upload them.
