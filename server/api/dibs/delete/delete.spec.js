@@ -170,8 +170,7 @@ describe('POST /api/dibs/delete', function() {
       .post('/api/dibs/delete')
       .set('cookie', cookie)
       .send({
-        name: 'inb4.us',
-        type: 'thing'
+        id: dibId
       })
       .expect(400)
       .expect('Content-Type', /json/)
@@ -201,8 +200,7 @@ describe('POST /api/dibs/delete', function() {
         .post('/api/dibs/delete')
         .set('cookie', cookie)
         .send({
-          name: 'inb4.us',
-          type: 'thing'
+          id: dibId
         })
         .expect(400)
         .expect('Content-Type', /json/)
@@ -233,8 +231,7 @@ describe('POST /api/dibs/delete', function() {
         .post('/api/dibs/delete')
         .set('cookie', cookie)
         .send({
-          name: 'inb4.us',
-          type: 'thing'
+          id: dibId
         })
         .expect(400)
         .expect('Content-Type', /json/)
@@ -266,8 +263,7 @@ describe('POST /api/dibs/delete', function() {
         .post('/api/dibs/delete')
         .set('cookie', cookie)
         .send({
-          name: 'inb4.us',
-          type: 'thing'
+          id: dibId
         })
         .expect(400)
         .expect('Content-Type', /json/)

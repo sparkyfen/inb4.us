@@ -101,38 +101,9 @@ describe('GET /api/dibs', function() {
     });
   });
 
-  it('should successfully return the dib based on the name', function(done) {
-    request(app)
-    .get('/api/dibs/thing/inb4.us')
-    .expect(200)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      done();
-    });
-  });
-
   it('should fail if the dib does not exist', function(done) {
     request(app)
     .get('/api/dibs/thing/foobar')
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail if the dib and type do not match', function(done) {
-    request(app)
-    .get('/api/dibs/place/inb4.us')
     .expect(400)
     .expect('Content-Type', /json/)
     .end(function(err, res) {

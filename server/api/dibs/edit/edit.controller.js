@@ -51,7 +51,7 @@ function _checkAndAddKeywords(keywords, callback) {
   });
 }
 
-// Validates the incoming user input not including the id or name/type pair, thats done below.
+// Validates the incoming user input.
 function _validateRequest(params, callback) {
   if(validator.isNull(params.id)) {
     return callback({code: 400, message: 'Missing id.'});

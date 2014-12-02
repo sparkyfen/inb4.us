@@ -271,8 +271,7 @@ describe('POST /api/dibs/edit', function() {
       .post('/api/dibs/edit')
       .set('cookie', cookie)
       .send({
-        name: 'inb4.us',
-        type: 'thing',
+        id: dibId,
         keywords: ['website', 'inb4', 'dibs']
       })
       .expect(400)
@@ -293,8 +292,7 @@ describe('POST /api/dibs/edit', function() {
     .post('/api/dibs/edit')
     .set('cookie', cookie)
     .send({
-      name: 'foobar',
-      type: 'thing',
+      id: uuid.v4(),
       keywords: ['website', 'inb4', 'dibs']
     })
     .expect(400)
@@ -325,8 +323,7 @@ describe('POST /api/dibs/edit', function() {
         .post('/api/dibs/edit')
         .set('cookie', cookie)
         .send({
-          name: 'foobar',
-          type: 'thing',
+          id: dibId,
           keywords: ['website', 'inb4', 'dibs']
         })
         .expect(400)
