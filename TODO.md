@@ -23,7 +23,3 @@
 ## server/api/dibs/report/report.controller.js
 
 -  **TODO** `(line 22)`  Sanitize reason report.
-
-## server/api/dibs/report/report.spec.js
-
--  **TODO** `(line 21)`  Finish writing this test.

@@ -21,6 +21,7 @@ module.exports = function(app) {
 
   app.use('/api/dibs', require('./api/dibs'));
   app.use('/api/dibs/edit', require('./api/dibs/edit'));
+  app.use('/api/dibs/report', require('./api/dibs/report'));
   app.use('/api/dibs/delete', require('./api/dibs/delete'));
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
