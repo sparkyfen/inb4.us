@@ -7,6 +7,7 @@ exports.initialize = function() {
   this.users = this.nano.use(config.couchdb.users);
   this.admins = this.nano.use(config.couchdb.admins);
   this.dibs = this.nano.use(config.couchdb.dibs);
+  this.keywords = this.nano.use(config.couchdb.keywords);
 };
 
 exports.create = function(dbName, callback) {

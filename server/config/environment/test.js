@@ -8,7 +8,8 @@ module.exports = {
     url: 'http://127.0.0.1:5984/',
     users: 'inb4-test-users',
     admins: 'inb4-test-admins',
-    dibs: 'inb4-test-dibs'
+    dibs: 'inb4-test-dibs',
+    keywords: 'inb4-test-keywords'
   },
   cookie: {
     secret: 'mySecret'

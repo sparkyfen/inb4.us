@@ -17,7 +17,8 @@ module.exports = {
     url: process.env.INB4_COUCHDB_URL || 'http://127.0.0.1:5984/',
     users: process.env.INB4_COUCHDB_USERS || 'inb4-users',
     admins: process.env.INB4_COUCHDB_ADMINS || 'inb4-admins',
-    dibs: process.env.INB4_COUCHDB_DIBS || 'inb4-dibs'
+    dibs: process.env.INB4_COUCHDB_DIBS || 'inb4-dibs',
+    keywords: process.env.INB4_COUCHDB_KEYWORDS || 'inb4-keywords'
   },
   email: {
     accounts: {

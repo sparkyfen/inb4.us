@@ -103,7 +103,7 @@
 * @apiError (400 Bad Request) MissingUsername The username was missing from the request.
 * @apiError (400 Bad Request) MissingPassword The password was missing from the request.
 * @apiError (400 Bad Request) UserNotExist The username does not exist in the database.
-* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (400 Bad Request) PasswordMismatch The password provided was invalid.
 * @apiError (500 Internal Server Error) ServerError There was a problem loggin the user in.
 *
@@ -257,7 +257,7 @@
  * @apiError (400 Bad Request) MissingConfirmPassword The new confirm password was not in the request.
  * @apiError (400 Bad Request) PasswordMismatch The new and confirm passwords were not the same.
  * @apiError (400 Bad Request) UserNotExist The user does not exist.
- * @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+ * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
  * @apiError (400 Bad Request) HashMismatch The old password did not match what the database has.
  * @apiError (500 Internal Server Error) ServerError There was a problem changing the password.
  *
@@ -326,7 +326,7 @@
 * @apiError (400 Bad Request) MissingEmail The email was missing from the request.
 * @apiError (400 Bad Request) InvalidEmail The email was invalid.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
-* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (500 Internal Server Error) ServerError There was a problem resetting the user password.
 *
 * @apiErrorExample Error-Response: (Missing Email)
@@ -380,7 +380,7 @@
 *
 * @apiError (400 Bad Request) MissingId The user id was missing from the session.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
-* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (500 Internal Server Error) ServerError There was a problem getting the user profile.
 *
 * @apiErrorExample Error-Response: (Missing Id)
@@ -438,7 +438,7 @@
 * @apiError (400 Bad Request) MissingEmail The email was missing from the request.
 * @apiError (400 Bad Request) InvalidEmail The email specified in the request is invalid.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
-* @apiError (400 Bad Request) ActivationNeeded You must activate your account first before you sign in.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (500 Internal Server Error) ServerError There was a problem updating the user profile.
 *
 * @apiErrorExample Error-Response: (Unauthorized)

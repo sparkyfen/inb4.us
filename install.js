@@ -10,6 +10,8 @@ var admin = db.admin;
 admin.initialize();
 var dibs = db.dib;
 dibs.initialize();
+var keywords = db.keyword;
+keywords.initialize();
 var utils = db.utils;
 utils.initialize();
 
@@ -25,8 +27,9 @@ if(process.env.NODE_ENV === 'development') {
 var userView = {views: {"all": {"map": "function(doc) {emit(null, doc)}","reduce": "_count"}, "by_username": {"map": "function(doc) {emit(doc.username, doc)}","reduce": "_count"}, "by_email": {"map": "function(doc) {emit(doc.email, doc)}","reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}}};
 var adminView = {views: {"all": {"map": "function(doc) {emit(null, doc)}","reduce": "_count"}, "by_username": {"map": "function(doc) {emit(doc.username, doc)}","reduce": "_count"}, "by_email": {"map": "function(doc) {emit(doc.email, doc)}","reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}}};
 var dibView = {views: {"all": {"map": "function(doc) {emit(null, doc)}","reduce": "_count"}, "by_name": {"map": "function(doc) {emit(doc.name, doc)}","reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}, "by_creator": {"map": "function(doc) {emit(doc.creator, doc)}", "reduce": "_count"}, "by_date_created": {"map": "function(doc) {emit(doc.dates.created, doc)}", "reduce": "_count"}, "by_reported": {"map": "function(doc) {emit(doc.report.reported, doc)}", "reduce": "_count"}}};
+var keywordsView = {views: {"all": {"map": "function(doc) {emit(null, doc)}", "reduce": "_count"}, "by_name": {"map": "function(doc) {emit(doc.name, doc)}", "reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}}};
 
-utils.create(config.couchdb.users, function (err, body) {
+utils.create(config.couchdb.users, function (err) {
   if(err && err.statusCode !== 412) {
     console.log('Error creating users database.'.red);
     return console.log(err);
@@ -37,7 +40,7 @@ utils.create(config.couchdb.users, function (err, body) {
       console.log('Error inserting user view.'.red);
       return console.log(err);
     }
-    utils.create(config.couchdb.admins, function (err, body) {
+    utils.create(config.couchdb.admins, function (err) {
       if(err && err.statusCode !== 412) {
         console.log('Error creating admins database.'.red);
         return console.log(err);
@@ -48,7 +51,7 @@ utils.create(config.couchdb.users, function (err, body) {
           console.log('Error inserting admins view.'.red);
           return console.log(err);
         }
-        utils.create(config.couchdb.dibs, function (err, body) {
+        utils.create(config.couchdb.dibs, function (err) {
           if(err && err.statusCode !== 412) {
             console.log('Error creating dibs database.'.red);
             return console.log(err);
@@ -59,7 +62,20 @@ utils.create(config.couchdb.users, function (err, body) {
               console.log('Error inserting dibs view.'.red);
               return console.log(err);
             }
-            console.log('DB Installation successful.'.green);
+            utils.create(config.couchdb.keywords, function (err) {
+              if(err && err.statusCode !== 412) {
+                console.log('Error creating keywords database.'.red);
+                return console.log(err);
+              }
+              utils.insert(keywords.keywords, '_design/keywords', keywordsView, function (err) {
+                // 409 is Document update conflict.
+                if(err && err.statusCode !== 409) {
+                  console.log('Error inserting dibs view.'.red);
+                  return console.log(err);
+                }
+                console.log('DB Installation successful.'.green);
+              });
+            });
           });
         });
       });

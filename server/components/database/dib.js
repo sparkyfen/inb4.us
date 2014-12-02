@@ -115,7 +115,7 @@ exports.deleteById = function (id, callback) {
       row.value._deleted = true;
       return row.value;
     });
-    console.log('Deleting dibs for user ' + creator + ' from DB.');
+    console.log('Deleting dibs for user id ' + id + ' from DB.');
     this.dibs.bulk({docs: docs}, function (error, reply, headers) {
       if(error) {
         return callback(error);

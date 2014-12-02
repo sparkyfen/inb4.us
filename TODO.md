@@ -14,3 +14,8 @@
 ## server/api/dibs/addDibs.controller.js
 
 -  **TODO** `(line 39)`  If we want someone to add more data in this request, we can offer it and update this to include that data.
+
+## server/api/dibs/edit/edit.controller.js
+
+-  **TODO** `(line 17)`  We can do some more validation on checking for "similar" keywords here, example: "foobar" and "FooBar" are similar.
+-  **TODO** `(line 18)`  Allow image links other than Imgur and upload them.
