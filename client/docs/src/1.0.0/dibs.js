@@ -141,7 +141,7 @@
 * @apiExample Default name example:
 *     curl -H 'Content-Type: application/json' -X POST 'https://inb4.us/api/dibs/edit' -d '{"name": "inb4.us","type": "thing", "keywords": ["website","dibs","inb4"],"image": "http://i.imgur.com/Tghu1Wj.png","url": "https://inb4.us"}'
 *
-* @apiExample Default id example:
+* @apiExample Default callback example:
 *     curl -H 'Content-Type: application/json' -X POST 'https://inb4.us/api/dibs/edit' -d '{"id": "3cb1126e-80ee-4d26-897b-f0f5016ad590","keywords": ["website","dibs","inb4"],"image": "http://i.imgur.com/Tghu1Wj.png","url": "https://inb4.us", "callback": "foo"}'
 *
 * @apiSuccess (200 Success) {String} message The successful response message.
