@@ -16,6 +16,7 @@ module.exports = {
     dates: [],
     reported: false,
     count: 0,
+    reporter: [],
     seen: [],
     reasons: [],
   },

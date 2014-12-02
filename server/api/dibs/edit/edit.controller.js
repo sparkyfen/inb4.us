@@ -53,6 +53,12 @@ function _checkAndAddKeywords(keywords, callback) {
 
 // Validates the incoming user input not including the id or name/type pair, thats done below.
 function _validateRequest(params, callback) {
+  if(validator.isNull(params.id)) {
+    return callback({code: 400, message: 'Missing id.'});
+  }
+  if(!validator.isUUID(params.id)) {
+    return callback({code: 400, message: 'Invalid id.'});
+  }
   if(!validator.isNull(params.image) && !validator.isURL(params.image)) {
     return callback({code: 400, message: 'Invalid image.'});
   }
@@ -77,61 +83,22 @@ function _validateRequest(params, callback) {
   }
 }
 
-// Validates name/type pair.
-function _validateNameType(name, type, callback) {
-  if(validator.isNull(name)) {
-    return callback('Missing name.');
-  }
-  if(validator.isNull(type)) {
-    return callback('Missing type.');
-  }
-  if(!validator.isType(type)) {
-    return callback('Invalid type.');
-  }
-  return callback();
-}
-
-// Gets the dib from the database, whether via id or from name/type pair.
-function _searchForDib(reqType, params, callback) {
-  if(reqType === 'name') {
-    dibs.searchByName(params.name, function (error, reply) {
-      if(error) {
-        console.log(error);
-        return callback({code: 500, message: 'Could not edit dib.'});
-      }
-      if(reply.rows.length === 0) {
-        return callback({code: 400, message: 'Dib does not exist.'});
-      }
-      var dib = null;
-      for (var i = 0; i < reply.rows.length; i++) {
-        if(reply.rows[i].value.type === params.type) {
-          dib = reply.rows[i].value;
-        }
-      }
-      if(!dib) {
-        return callback({code: 400, message: 'Dib does not exist with requested type.'});
-      }
-      if(!dib.active) {
-        return callback({code: 400, message: 'Dib is not active, please reactivate it before editing.'});
-      }
-      return callback(null, dib);
-    });
-  } else {
-    dibs.searchById(params.id, function (error, reply) {
-      if(error) {
-        console.log(error);
-        return callback({code: 500, message: 'Could not edit dib.'});
-      }
-      if(reply.rows.length === 0) {
-        return callback({code: 400, message: 'Dib does not exist.'});
-      }
-      var dib = reply.rows[0].value;
-      if(!dib.active) {
-        return callback({code: 400, message: 'Dib is not active, please reactivate it before editing.'});
-      }
-      return callback(null, dib);
-    });
-  }
+// Gets the dib from the database.
+function _searchForDib(id, callback) {
+  dibs.searchById(id, function (error, reply) {
+    if(error) {
+      console.log(error);
+      return callback({code: 500, message: 'Could not edit dib.'});
+    }
+    if(reply.rows.length === 0) {
+      return callback({code: 400, message: 'Dib does not exist.'});
+    }
+    var dib = reply.rows[0].value;
+    if(!dib.active) {
+      return callback({code: 400, message: 'Dib is not active, please reactivate it before editing.'});
+    }
+    return callback(null, dib);
+  });
 }
 
 // Validates whether the user can edit this dib.
@@ -165,114 +132,49 @@ exports.index = function(req, res) {
   var url = req.body.url;
   var description = req.body.description;
   var keywords = req.body.keywords;
-  _validateRequest({image: image, url: url, keywords: keywords}, function (error, keywordIds) {
+  var id = req.body.id;
+  _validateRequest({image: image, url: url, keywords: keywords, id: id}, function (error, keywordIds) {
     if(error) {
       return res.status(error.code).jsonp({message: error.message});
     }
-    var id = req.body.id;
-    // We have a name/type pair
-    if(validator.isNull(id)) {
-      var name = req.body.name;
-      var type = req.body.type;
-      _validateNameType(name, type, function (error) {
-        if(error) {
-          return res.status(400).jsonp({message: error});
-        }
-        _searchForDib('name', {name: name, type: type}, function (error, dib) {
-          if(error) {
-            return res.status(error.code).jsonp({message: error.message});
-          }
-          _validateUser(username, dib, function (error) {
-            if(error) {
-              return res.status(error.code).jsonp({message: error.message});
-            }
-            var edited = false;
-            if(!validator.isNull(url)) {
-              dib.url = url;
-              edited = true;
-            }
-            if(!validator.isNull(image)) {
-              dib.image = image;
-              edited = true;
-            }
-            if(keywordIds && keywordIds.length !== 0) {
-              dib.keywords = keywordIds;
-              edited = true;
-            }
-            if(!validator.isNull(description)) {
-              dib.description = description;
-              edited = true;
-            }
-            if(edited) {
-              dib.dates.edited = Date.now(Date.UTC());
-              utils.insert(utils.dibs, dib._id, dib, function (error) {
-                if(error) {
-                  console.log(error);
-                  return res.status(500).jsonp({message: 'Could not edit dib.'});
-                }
-                return res.jsonp({message: 'Dib edited.'});
-              });
-            } else {
-              return res.jsonp({message: 'Nothing to change for dib.'});
-            }
-          });
-        });
-      });
-    } else {
-      // We are using the id value.
-      if(!validator.isUUID(id)) {
-        return res.status(400).jsonp({message: 'Invalid id.'});
-      }
-      _searchForDib('id', {id: id}, function (error, dib) {
+    _searchForDib(id, function (error, dib) {
         if(error) {
           return res.status(error.code).jsonp({message: error.message});
         }
-        _validateUser(username, dib, function (error) {
-          if(error) {
-            return res.status(error.code).jsonp({message: error.message});
-          }
-          var edited = false;
-          if(!validator.isNull(url)) {
-            dib.url = url;
-            edited = true;
-          }
-          if(!validator.isNull(image)) {
-            dib.image = image;
-            edited = true;
-          }
-          if(keywordIds && keywordIds.length !== 0) {
-            dib.keywords = keywordIds;
-            edited = true;
-          }
-          if(!validator.isNull(description)) {
-            dib.description = description;
-            edited = true;
-          }
-          if(edited) {
-            dib.dates.edited = Date.now(Date.UTC());
-            utils.insert(utils.dibs, dib._id, dib, function (error) {
-              if(error) {
-                console.log(error);
-                return res.status(500).jsonp({message: 'Could not edit dib.'});
-              }
-              return res.jsonp({message: 'Dib edited.'});
-            });
-          } else {
-            return res.jsonp({message: 'Nothing to change for dib.'});
-          }
-        });
+      _validateUser(username, dib, function (error) {
+        if(error) {
+          return res.status(error.code).jsonp({message: error.message});
+        }
+        var edited = false;
+        if(!validator.isNull(url)) {
+          dib.url = url;
+          edited = true;
+        }
+        if(!validator.isNull(image)) {
+          dib.image = image;
+          edited = true;
+        }
+        if(keywordIds && keywordIds.length !== 0) {
+          dib.keywords = keywordIds;
+          edited = true;
+        }
+        if(!validator.isNull(description)) {
+          dib.description = description;
+          edited = true;
+        }
+        if(edited) {
+          dib.dates.edited = Date.now(Date.UTC());
+          utils.insert(utils.dibs, dib._id, dib, function (error) {
+            if(error) {
+              console.log(error);
+              return res.status(500).jsonp({message: 'Could not edit dib.'});
+            }
+            return res.jsonp({message: 'Dib edited.'});
+          });
+        } else {
+          return res.jsonp({message: 'Nothing to change for dib.'});
+        }
       });
-    }
+    });
   });
 };
-
-validator.extend('isType', function (str) {
-  switch(str.toLowerCase()) {
-    case 'person':
-    case 'place':
-    case 'thing':
-    return true;
-    default:
-    return false;
-  }
-});

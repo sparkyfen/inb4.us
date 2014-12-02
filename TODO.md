@@ -19,3 +19,11 @@
 
 -  **TODO** `(line 16)`  We can do some more validation on checking for "similar" keywords here, example: "foobar" and "FooBar" are similar.
 -  **TODO** `(line 17)`  Allow image links other than Imgur and upload them.
+
+## server/api/dibs/report/report.controller.js
+
+-  **TODO** `(line 22)`  Sanitize reason report.
+
+## server/api/dibs/report/report.spec.js
+
+-  **TODO** `(line 21)`  Finish writing this test.

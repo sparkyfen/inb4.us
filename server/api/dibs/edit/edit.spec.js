@@ -109,8 +109,7 @@ describe('POST /api/dibs/edit', function() {
     .post('/api/dibs/edit')
     .set('cookie', cookie)
     .send({
-      type: 'thing',
-      name: 'inb4.us',
+      id: dibId,
       keywords: ['website', 'inb4', 'dibs']
     })
     .expect(200)
@@ -130,8 +129,7 @@ describe('POST /api/dibs/edit', function() {
     .post('/api/dibs/edit')
     .set('cookie', cookie)
     .send({
-      type: 'thing',
-      name: 'inb4.us'
+      id: dibId
     })
     .expect(200)
     .expect('Content-Type', /json/)
@@ -149,72 +147,10 @@ describe('POST /api/dibs/edit', function() {
     request(app)
     .post('/api/dibs/edit')
     .send({
-      type: 'thing',
-      name: 'inb4.us',
+      id: dibId,
       keywords: ['website', 'inb4', 'dibs']
     })
     .expect(401)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail when the name is missing', function(done) {
-    request(app)
-    .post('/api/dibs/edit')
-    .set('cookie', cookie)
-    .send({
-      type: 'thing',
-      keywords: ['website', 'inb4', 'dibs']
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail when the type is missing', function(done) {
-    request(app)
-    .post('/api/dibs/edit')
-    .set('cookie', cookie)
-    .send({
-      name: 'inb4.us',
-      keywords: ['website', 'inb4', 'dibs']
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail when the type is invalid', function(done) {
-    request(app)
-    .post('/api/dibs/edit')
-    .set('cookie', cookie)
-    .send({
-      name: 'inb4.us',
-      type: 'foobar',
-      keywords: ['website', 'inb4', 'dibs']
-    })
-    .expect(400)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
       if (err) {
@@ -313,26 +249,6 @@ describe('POST /api/dibs/edit', function() {
     .send({
       id: dibId,
       url: 'foobar'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail if the dib and type do not match', function(done) {
-    request(app)
-    .post('/api/dibs/edit')
-    .set('cookie', cookie)
-    .send({
-      name: 'inb4.us',
-      type: 'place'
     })
     .expect(400)
     .expect('Content-Type', /json/)

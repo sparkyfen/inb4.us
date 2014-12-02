@@ -124,11 +124,9 @@
 * @apiGroup Dib
 * @apiPermission user
 *
-* @apiDescription Edits an existing dib in the database. Use either name/type pair or the unique id.
+* @apiDescription Edits an existing dib in the database.
 *
-* @apiParam {String} [name] The name of the dib.
-* @apiParam {String} [type] The type of dib it is (person, place, or thing).
-* @apiParam {String} [id] The dib id.
+* @apiParam {String} id The dib id.
 * @apiParam {String} [description] The description of the dib.
 * @apiParam {String} [image] The dib image.
 * @apiParam {String} [url] The url that provides more information about the dib.
@@ -137,9 +135,6 @@
 *
 * @apiExample Default id example:
 *     curl -H 'Content-Type: application/json' -X POST 'https://inb4.us/api/dibs/edit' -d '{"id": "3cb1126e-80ee-4d26-897b-f0f5016ad590","keywords": ["website","dibs","inb4"],"image": "http://i.imgur.com/Tghu1Wj.png","url": "https://inb4.us"}'
-*
-* @apiExample Default name example:
-*     curl -H 'Content-Type: application/json' -X POST 'https://inb4.us/api/dibs/edit' -d '{"name": "inb4.us","type": "thing", "keywords": ["website","dibs","inb4"],"image": "http://i.imgur.com/Tghu1Wj.png","url": "https://inb4.us"}'
 *
 * @apiExample Default callback example:
 *     curl -H 'Content-Type: application/json' -X POST 'https://inb4.us/api/dibs/edit' -d '{"id": "3cb1126e-80ee-4d26-897b-f0f5016ad590","keywords": ["website","dibs","inb4"],"image": "http://i.imgur.com/Tghu1Wj.png","url": "https://inb4.us", "callback": "foo"}'
@@ -150,18 +145,18 @@
 *     HTTP/1.1 200 OK
 *     {"message":"Dib edited."}
 *
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Nothing to change for dib."}
+*
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
-* @apiError (400 Bad Request) MissingName The dib name was missing from the request.
-* @apiError (400 Bad Request) MissingType The dib type was missing from the request.
 * @apiError (400 Bad Request) MissingDescription The dib description was missing from the request.
 * @apiError (400 Bad Request) InvalidId The dib id was not a UUID value.
-* @apiError (400 Bad Request) InvalidType The dib type was not "person", "place" or "thing".
 * @apiError (400 Bad Request) InvalidImage The dib image url was not an valid URL.
 * @apiError (400 Bad Request) InvalidImgurLink The dib image url not an Imgur Link.
 * @apiError (400 Bad Request) InvalidURL The dib url was not an valid URL.
 * @apiError (400 Bad Request) KeywordsNotList The keywords value was not a list.
 * @apiError (400 Bad Request) DibNotExist The dib requested was not in the database.
-* @apiError (400 Bad Request) DibNotExistWithType The dib requested did not have same type as requested.
 * @apiError (400 Bad Request) DibNotActive The dib requested was not active.
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
@@ -172,21 +167,9 @@
 *      HTTP/1.1 401 Unauthorized
 *      {"message": "Please sign in."}
 *
-* @apiErrorExample Error-Response: (Missing Name)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Missing name."}
-*
-* @apiErrorExample Error-Response: (Missing Type)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Missing type."}
-*
 * @apiErrorExample Error-Response: (Missing Description)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Missing description."}
-*
-* @apiErrorExample Error-Response: (Invalid Type)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Invalid type."}
 *
 * @apiErrorExample Error-Response: (Invalid Id)
 *     HTTP/1.1 400 Bad Request
@@ -211,10 +194,6 @@
 * @apiErrorExample Error-Response: (Dib Not Exist)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Dib does not exist."}
-*
-* @apiErrorExample Error-Response: (Dib Not Exist WIth Type)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Dib does not exist with requested type."}
 *
 * @apiErrorExample Error-Response: (Dib Not Active)
 *     HTTP/1.1 400 Bad Request
