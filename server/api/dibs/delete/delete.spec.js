@@ -142,90 +142,12 @@ describe('POST /api/dibs/delete', function() {
     });
   });
 
-  it('should fail when the name is missing', function(done) {
-    request(app)
-    .post('/api/dibs/delete')
-    .set('cookie', cookie)
-    .send({
-      type: 'thing'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail when the type is missing', function(done) {
-    request(app)
-    .post('/api/dibs/delete')
-    .set('cookie', cookie)
-    .send({
-      name: 'inb4.us'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
   it('should fail when the id is invalid', function(done) {
     request(app)
     .post('/api/dibs/delete')
     .set('cookie', cookie)
     .send({
       id: 'foobar'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail when the type is invalid', function(done) {
-    request(app)
-    .post('/api/dibs/delete')
-    .set('cookie', cookie)
-    .send({
-      name: 'inb4.us',
-      type: 'foobar'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail if the dib and type do not match', function(done) {
-    request(app)
-    .post('/api/dibs/delete')
-    .set('cookie', cookie)
-    .send({
-      name: 'inb4.us',
-      type: 'place'
     })
     .expect(400)
     .expect('Content-Type', /json/)

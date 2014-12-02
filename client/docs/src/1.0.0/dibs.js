@@ -223,21 +223,16 @@
 * @apiGroup Dib
 * @apiPermission user
 *
-* @apiDescription Delete a dib from the database. Use either name/type pair or the unique id.
+* @apiDescription Delete a dib from the database.
 *
-* @apiParam {String} [name] The name of the dib.
-* @apiParam {String} [type] The type of the dib.
-* @apiParam {String} [id] The dib id.
+* @apiParam {String} id The dib id.
 * @apiParam {String} [callback] The name of the callback function.
-*
-* @apiExample Default name example:
-*     curl -X POST 'https://inb4.us/api/dibs/delete' -d "name=inb4.us&type=thing"
 *
 * @apiExample Default id example:
 *     curl -X POST 'https://inb4.us/api/dibs/delete' -d "id=3cb1126e-80ee-4d26-897b-f0f5016ad590"
 *
 * @apiExample Default callback example:
-*     curl -X POST 'https://inb4.us/api/dibs/delete' -d "name=inb4.us&type=thing&callback=foo"
+*     curl -X POST 'https://inb4.us/api/dibs/delete' -d "id=3cb1126e-80ee-4d26-897b-f0f5016ad590&callback=foo"
 *
 * @apiSuccess (200 Success) {String} message The successful response message.
 *
@@ -246,15 +241,11 @@
 *     {"message":"Dib deleted."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
-* @apiError (400 Bad Request) MissingName The dib name was missing from the request.
-* @apiError (400 Bad Request) MissingType The dib type was missing from the request.
 * @apiError (400 Bad Request) InvalidId The dib id was not a UUID value.
-* @apiError (400 Bad Request) InvalidType The dib type was not "person", "place" or "thing".
 * @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (400 Bad Request) UserNoDibs The user does not have any dibs to delete.
 * @apiError (400 Bad Request) DibNotExist The dib requested was not in the database.
-* @apiError (400 Bad Request) DibNotExistWithType The dib requested did not have same type as requested.
 * @apiError (400 Bad Request) NoDibsForUser The dib is not tied to that user.
 * @apiError (500 Internal Server Error) ServerError There was a problem adding the new dib.
 *
@@ -262,21 +253,9 @@
 *      HTTP/1.1 401 Unauthorized
 *      {"message": "Please sign in."}
 *
-* @apiErrorExample Error-Response: (Missing Name)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Missing name."}
-*
-* @apiErrorExample Error-Response: (Missing Type)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Missing type."}
-*
 * @apiErrorExample Error-Response: (Invalid Id)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Invalid id."}
-*
-* @apiErrorExample Error-Response: (Invalid Type)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Invalid type."}
 *
 * @apiErrorExample Error-Response: (User Not Exist)
 *     HTTP/1.1 400 Bad Request
@@ -293,10 +272,6 @@
 * @apiErrorExample Error-Response: (Dib Not Exist)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Dib does not exist."}
-*
-* @apiErrorExample Error-Response: (Dib Not Exist WIth Type)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Dib does not exist with requested type."}
 *
 * @apiErrorExample Error-Response: (No Dibs For User)
 *     HTTP/1.1 400 Bad Request
