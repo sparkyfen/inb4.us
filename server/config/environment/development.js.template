@@ -20,6 +20,11 @@ module.exports = {
       info: 'info@inb4.us'
     }
   },
+  admin: {
+    username: 'inb4-admin',
+    password: '', // 99+ char password here
+    email: 'admin@inb4.us'
+  },
   cookie: {
     secret: 'l;sdkjf;slkfj;sldkjf;skf;ldkfj;sdlkfj;dlkj;sdlkfjs;ldjfd' // 64+ char string
   }

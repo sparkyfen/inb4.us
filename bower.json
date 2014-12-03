@@ -32,7 +32,9 @@
         "angular": "latest",
         "semantic-ui": "latest"
       },
-      "main": ["dist/angular-semantic-ui-0.0.1.js"]
+      "main": [
+        "dist/angular-semantic-ui-0.0.1.js"
+      ]
     }
   }
 }

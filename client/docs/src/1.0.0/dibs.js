@@ -366,5 +366,72 @@
 *
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
-*     {"message":"Could not add new dibs."}
+*     {"message":"Could not report dib."}
 */
+
+/**
+* @api {post} /api/dibs/deactivate Deactivate Dib
+* @apiVersion 1.0.0
+* @apiName Deactive Dib
+* @apiGroup Dib
+* @apiPermission admin
+*
+* @apiDescription Deactivate a dib.
+*
+* @apiParam {String} id The dib id.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default id example:
+*     curl -X POST 'https://inb4.us/api/dibs/deactivate' -d "id=3cb1126e-80ee-4d26-897b-f0f5016ad590"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/dibs/deactivate' -d "id=3cb1126e-80ee-4d26-897b-f0f5016ad590&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Dib deactivated."}
+*
+* @apiError (401 Unauthorized) UnauthorizedAdmin The admin did not sign in.
+* @apiError (401 Unauthorized) UnauthorizedUser The user attempting to use this page is not an admin.
+* @apiError (400 Bad Request) MissingId The dib id was not in the request.
+* @apiError (400 Bad Request) InvalidId The dib id was not a UUID value.
+* @apiError (400 Bad Request) AdminNotExist The username based on the session was not in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
+* @apiError (400 Bad Request) DibNotExist The dib requested was not in the database.
+* @apiError (500 Internal Server Error) ServerError There was a problem deactivating the dib.
+*
+* @apiErrorExample Error-Response: (Unauthorized Admin)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Unauthorized User)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Admins only."}
+*
+* @apiErrorExample Error-Response: (Missing Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing id."}
+*
+* @apiErrorExample Error-Response: (Invalid Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid id."}
+*
+* @apiErrorExample Error-Response: (Admin Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Admin does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Dib Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Dib does not exist."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not deactivate dib."}
+*/
+

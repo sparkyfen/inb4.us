@@ -2,8 +2,11 @@
 
 var colors = require('colors');
 var fs =  require('fs');
+var uuid = require('node-uuid');
+var bcrypt = require('bcrypt');
 var config = require('./server/config/environment');
 var db = require('./server/components/database');
+var adminSchema = require('./server/components/schema/admin');
 var user = db.user;
 user.initialize();
 var admin = db.admin;
@@ -45,35 +48,49 @@ utils.create(config.couchdb.users, function (err) {
         console.log('Error creating admins database.'.red);
         return console.log(err);
       }
-      utils.insert(admin.admins, '_design/admins', userView, function (err) {
+      utils.insert(admin.admins, '_design/admins', adminView, function (err) {
         // 409 is Document update conflict.
         if(err && err.statusCode !== 409) {
           console.log('Error inserting admins view.'.red);
           return console.log(err);
         }
-        utils.create(config.couchdb.dibs, function (err) {
-          if(err && err.statusCode !== 412) {
-            console.log('Error creating dibs database.'.red);
+        adminSchema._id = uuid.v4();
+        adminSchema.username = config.admin.username,
+        adminSchema.password = bcrypt.hashSync(config.admin.password, 10);
+        adminSchema.email = config.admin.email;
+        adminSchema.firstname = 'Admin';
+        adminSchema.lastname = 'Admin';
+        adminSchema.active = true;
+        utils.insert(utils.admins, adminSchema._id, adminSchema, function (err) {
+          // 409 is Document update conflict.
+          if(err && err.statusCode !== 409) {
+            console.log('Error inserting admins view.'.red);
             return console.log(err);
           }
-          utils.insert(dibs.dibs, '_design/dibs', dibView, function (err) {
-            // 409 is Document update conflict.
-            if(err && err.statusCode !== 409) {
-              console.log('Error inserting dibs view.'.red);
+          utils.create(config.couchdb.dibs, function (err) {
+            if(err && err.statusCode !== 412) {
+              console.log('Error creating dibs database.'.red);
               return console.log(err);
             }
-            utils.create(config.couchdb.keywords, function (err) {
-              if(err && err.statusCode !== 412) {
-                console.log('Error creating keywords database.'.red);
+            utils.insert(dibs.dibs, '_design/dibs', dibView, function (err) {
+              // 409 is Document update conflict.
+              if(err && err.statusCode !== 409) {
+                console.log('Error inserting dibs view.'.red);
                 return console.log(err);
               }
-              utils.insert(keywords.keywords, '_design/keywords', keywordsView, function (err) {
-                // 409 is Document update conflict.
-                if(err && err.statusCode !== 409) {
-                  console.log('Error inserting dibs view.'.red);
+              utils.create(config.couchdb.keywords, function (err) {
+                if(err && err.statusCode !== 412) {
+                  console.log('Error creating keywords database.'.red);
                   return console.log(err);
                 }
-                console.log('DB Installation successful.'.green);
+                utils.insert(keywords.keywords, '_design/keywords', keywordsView, function (err) {
+                  // 409 is Document update conflict.
+                  if(err && err.statusCode !== 409) {
+                    console.log('Error inserting dibs view.'.red);
+                    return console.log(err);
+                  }
+                  console.log('DB Installation successful.'.green);
+                });
               });
             });
           });

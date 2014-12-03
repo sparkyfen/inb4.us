@@ -27,10 +27,10 @@
 * @apiParam {String} [callback] The name of the callback function.
 *
 * @apiExample Default example:
-*     curl -X POST 'https://inb4.us/api/user/register' -d 'email=email@domain&password=waffles'
+*     curl -X POST 'https://inb4.us/api/user/register' -d 'email=mockuser@inb4.us&password=mockpassword'
 *
 * @apiExample Default callback example:
-*     curl -X POST 'https://inb4.us/api/user/register' -d 'email=email@domain&password=waffles&callback=foo'
+*     curl -X POST 'https://inb4.us/api/user/register' -d 'email=mockuser@inb4.us&password=mockpassword&callback=foo'
 *
 * @apiSuccess (200 Success) {String} message The response message.
 *
@@ -43,12 +43,13 @@
 * @apiError (400 Bad Request) MissingPass The password was missing form the request.
 * @apiError (400 Bad Request) InvalidEmail The email provided in the request is invalid.
 * @apiError (400 Bad Request) EmailExists The email provided already exists in the database.
-* @apiError (400 Bad Request) UserExists The user provided already exists in the database.
+* @apiError (400 Bad Request) UserExists The username provided already exists in the user database.
+* @apiError (400 Bad Request) AdminExists The username provided already exists in the admin database.
 * @apiError (500 Internal Server Error) ServerError There was a problem registering the user.
 *
 * @apiErrorExample Error-Response: (Missing Username)
 *     HTTP/1.1 400 Bad Request
-*     {"message":"Missing email."}
+*     {"message":"Missing username."}
 *
 * @apiErrorExample Error-Response: (Missing Email)
 *     HTTP/1.1 400 Bad Request
@@ -68,7 +69,11 @@
 *
 * @apiErrorExample Error-Response: (User Exists)
 *     HTTP/1.1 400 Bad Request
-*     {"message":"Username already registered."}
+*     {"message":"User already registered with that username."}
+*
+* @apiErrorExample Error-Response: (Admin Exists)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Admin already registered with that username."}
 *
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
@@ -105,7 +110,7 @@
 * @apiError (400 Bad Request) UserNotExist The username does not exist in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (400 Bad Request) PasswordMismatch The password provided was invalid.
-* @apiError (500 Internal Server Error) ServerError There was a problem loggin the user in.
+* @apiError (500 Internal Server Error) ServerError There was a problem logging the user in.
 *
 * @apiErrorExample Error-Response: (Missing Username)
 *     HTTP/1.1 400 Bad Request

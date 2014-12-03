@@ -22,6 +22,7 @@ exports.index = function(req, res) {
         console.log(error);
         return res.status(500).jsonp({message: 'Could not delete user profile.'});
       }
+      delete req.session.username;
       return res.jsonp({message: 'Profile deleted.'});
     });
   });

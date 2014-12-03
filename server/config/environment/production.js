@@ -31,6 +31,11 @@ module.exports = {
       }
     }
   },
+  admin: {
+    username: process.env.INB4_ADMIN_USERNAME || 'inb4-admin',
+    password: process.env.INB4_ADMIN_PASSWORD || 'dxk8Yl*AfDySF9gWDA07Ir9WTopOZGjjLIicY1&ejzPKe3aDbu2Tacc08MeFLI8ARupT@q1ZPKWfsfSFZrt@&@Wuk5!5Cb4@rEa',
+    email: process.env.INB4_ADMIN_EMAIL || 'admin@inb4.us'
+  },
   cookie: {
     secret: process.env.INB4_COOKIE_SECRET || 'dlfjsldkfj;lskjf;lskjdf;lskdjf;lskjd;lkdjf;lkj;ldkj;slkjf;dlskjfs;lfjd;lfjd'
   }
