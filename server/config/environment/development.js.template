@@ -20,6 +20,10 @@ module.exports = {
       info: 'info@inb4.us'
     }
   },
+  usps: {
+    server: 'http://production.shippingapis.com/ShippingAPI.dll',
+    userId: '' // https://www.usps.com/business/web-tools-apis/welcome.htm
+  },
   admin: {
     username: 'inb4-admin',
     password: '', // 99+ char password here

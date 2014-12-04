@@ -31,6 +31,10 @@ module.exports = {
       }
     }
   },
+  usps: {
+    server: process.env.USPS_SERVER || 'http://production.shippingapis.com/ShippingAPI.dll',
+    userId: process.env.USPS_USERID || '' // https://www.usps.com/business/web-tools-apis/welcome.htm
+  },
   admin: {
     username: process.env.INB4_ADMIN_USERNAME || 'inb4-admin',
     password: process.env.INB4_ADMIN_PASSWORD || 'dxk8Yl*AfDySF9gWDA07Ir9WTopOZGjjLIicY1&ejzPKe3aDbu2Tacc08MeFLI8ARupT@q1ZPKWfsfSFZrt@&@Wuk5!5Cb4@rEa',

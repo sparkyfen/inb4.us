@@ -9,6 +9,7 @@ var errors = require('./components/errors');
 module.exports = function(app) {
 
   // Insert routes below
+  app.use('/api/email', require('./api/email'));
   app.use('/api/user', require('./api/user/profile'));
   app.use('/api/user/delete', require('./api/user/delete'));
   app.use('/api/user/reset', require('./api/user/reset'));
@@ -18,6 +19,7 @@ module.exports = function(app) {
   app.use('/api/user/logout', require('./api/user/logout'));
   app.use('/api/user/register', require('./api/user/register'));
   app.use('/api/user/login', require('./api/user/login'));
+  app.use('/api/user/address', require('./api/user/address'));
 
   app.use('/api/dibs', require('./api/dibs'));
   app.use('/api/dibs/edit', require('./api/dibs/edit'));

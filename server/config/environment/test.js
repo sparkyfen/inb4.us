@@ -11,6 +11,10 @@ module.exports = {
     dibs: 'inb4-test-dibs',
     keywords: 'inb4-test-keywords'
   },
+  usps: {
+    server: 'http://production.shippingapis.com/ShippingAPI.dll',
+    userId: 'testUserId' // https://www.usps.com/business/web-tools-apis/welcome.htm
+  },
   admin: {
     username: 'inb4-test-admin',
     password: 'testpassword',
