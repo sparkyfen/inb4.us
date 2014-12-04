@@ -25,6 +25,15 @@ exports.searchByUsername = function (username, callback) {
   });
 };
 
+exports.searchPartialUsername = function(username, callback) {
+  this.admins.view('admins', 'by_username', {reduce: false, startkey: username, limit: 50}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
 exports.searchById = function (id, callback) {
   this.admins.view('admins', 'by_id', {reduce: false, key: id}, function (error, reply, headers) {
     if(error) {

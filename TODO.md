@@ -29,6 +29,11 @@
 
 -  **TODO** `(line 22)`  Sanitize reason report.
 
+## server/api/search/admins/admins.controller.js
+
+-  **TODO** `(line 28)`  If we want more data on the admins, we can update the usernames list with these values.
+-  **TODO** `(line 46)`  If we want more data on the users, we can update the usernames list with these values.
+
 ## server/api/search/users/users.controller.js
 
 -  **TODO** `(line 28)`  If we want more data on the users, we can update the usernames list with these values.

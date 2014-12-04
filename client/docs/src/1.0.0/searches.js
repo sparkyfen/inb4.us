@@ -23,11 +23,11 @@
 * @apiSuccess (200 Success) {String} message The successful response message.
 * @apiSuccess (200 Success) {String[]} results The usernames found given the search query.
 *
-* @apiSuccessExample Success-Response:
+* @apiSuccessExample Success-Response: (Results Found)
 *     HTTP/1.1 200 OK
 *     {"message":"Results found.","results":["mockuser"]}
 *
-* @apiSuccessExample Success-Response:
+* @apiSuccessExample Success-Response: (No Results)
 *     HTTP/1.1 200 OK
 *     {"message":"No results.","results":[]}
 *
@@ -75,11 +75,11 @@
 * @apiSuccess (200 Success) {String} message The successful response message.
 * @apiSuccess (200 Success) {String[]} results The dib names found given the search query.
 *
-* @apiSuccessExample Success-Response:
+* @apiSuccessExample Success-Response: (Results Found)
 *     HTTP/1.1 200 OK
 *     {"message":"Results found.","results":["inb4.us"]}
 *
-* @apiSuccessExample Success-Response:
+* @apiSuccessExample Success-Response: (No Results)
 *     HTTP/1.1 200 OK
 *     {"message":"No results.","results":[]}
 *
@@ -108,4 +108,55 @@
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not search for dibs."}
+*/
+
+/**
+* @api {get} /api/search/admins Admins
+* @apiVersion 1.0.0
+* @apiName Admins
+* @apiGroup Search
+* @apiPermission public
+*
+* @apiDescription Searches for a admin based on their username or admin id.
+*
+* @apiParam {String} [id] The admin id to search for.
+* @apiParam {String} [username] The username to search for.
+* @apiParam {String} [callback] The name of the callback funciton.
+*
+* @apiExample Default name example:
+*     curl -X GET 'https://inb4.us/api/search/admins/mockadmin'
+*
+* @apiExample Default id example:
+*     curl -X GET 'https://inb4.us/api/search/admins/fc34e015-36a4-4547-a395-12a0a476ee33'
+*
+* @apiExample Default callback example:
+*     curl -X GET 'https://inb4.us/api/search/admins/mockadmin?callback=foo'
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+* @apiSuccess (200 Success) {String[]} results The usernames found given the search query.
+*
+* @apiSuccessExample Success-Response: (Results Found)
+*     HTTP/1.1 200 OK
+*     {"message":"Results found.","results":["mockadmin"]}
+*
+* @apiSuccessExample Success-Response: (No Results)
+*     HTTP/1.1 200 OK
+*     {"message":"No results.","results":[]}
+*
+* @apiError (400 Bad Request) MissingUsernameOrId The username or user id was missing from the request.
+* @apiError (400 Bad Request) InvalidId The user id provided was not a UUID value.
+* @apiError (500 Internal Server Error) ServerError There was a problem searching for the user.
+*
+* @apiErrorExample Error-Response: (Missing Username Or Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing id or name."}
+*
+* @apiErrorExample Error-Response: (Invalid Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid id."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not search for admin."}
+*
 */
