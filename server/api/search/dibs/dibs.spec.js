@@ -6,23 +6,23 @@ var uuid = require('node-uuid');
 var request = require('supertest');
 var app = require('../../../app');
 var db = require('../../../components/database');
-var userSchema = require('../../../components/schema/user');
-var users = db.user;
-users.initialize();
+var dibSchema = require('../../../components/schema/dib');
+var dibs = db.dib;
+dibs.initialize();
 var utils = db.utils;
 utils.initialize();
 
-var userId;
+var dibId;
 
-describe('GET /api/search/users/', function() {
+describe('GET /api/search/dibs', function() {
+
   beforeEach(function (done) {
-    userId = uuid.v4();
-    userSchema._id = userId;
-    userSchema.password = bcrypt.hashSync('mockpassword', 10);
-    userSchema.username = 'mockuser';
-    userSchema.email = 'mockuser@inb4.us';
-    userSchema.active = true;
-    utils.insert(utils.users, userId, userSchema, function (error) {
+    dibId = uuid.v4();
+    dibSchema._id = dibId;
+    dibSchema.name = 'mockuser';
+    dibSchema.description = 'My Website!';
+    dibSchema.type = 'thing';
+    utils.insert(utils.dibs, dibId, dibSchema, function (error) {
       if(error) {
         return done(error);
       }
@@ -31,7 +31,7 @@ describe('GET /api/search/users/', function() {
   });
 
   afterEach(function (done) {
-    users.getAll(function (error, reply) {
+    dibs.getAll(function (error, reply) {
       if(error) {
         return done(error);
       }
@@ -39,11 +39,11 @@ describe('GET /api/search/users/', function() {
         row.value._deleted = true;
         return row.value;
       });
-      users.bulk(docs, function (error) {
+      dibs.bulk(docs, function (error) {
         if(error) {
           return done(error);
         }
-        users.compact(function (error) {
+        dibs.compact(function (error) {
           if(error) {
             return done(error);
           }
@@ -53,9 +53,9 @@ describe('GET /api/search/users/', function() {
     });
   });
 
-  it('should successfully search for a known username', function(done) {
+  it('should successfully search for a dib with a name and type', function(done) {
     request(app)
-    .get('/api/search/users/mockuser')
+    .get('/api/search/dibs/thing/inb4.us')
     .expect(200)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
@@ -70,9 +70,9 @@ describe('GET /api/search/users/', function() {
     });
   });
 
-  it('should successfully search for a known id', function(done) {
+  it('should successfully search for a dib with an id', function(done) {
     request(app)
-    .get('/api/search/users/' + userId)
+    .get('/api/search/dibs/' + dibId)
     .expect(200)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
@@ -87,9 +87,9 @@ describe('GET /api/search/users/', function() {
     });
   });
 
-  it('should successfully search for no user matched', function(done) {
+  it('should successfully search for a dib with an id that does not exist', function(done) {
     request(app)
-    .get('/api/search/users/winter')
+    .get('/api/search/dibs/' + uuid.v4())
     .expect(200)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
@@ -104,37 +104,33 @@ describe('GET /api/search/users/', function() {
     });
   });
 
-  it('should successfully search for more than one user', function(done) {
-    userId = uuid.v4();
-    userSchema._id = userId;
-    userSchema.password = bcrypt.hashSync('mockpassword', 10);
-    userSchema.username = 'mocktestuser';
-    userSchema.email = 'mocktestuser@inb4.us';
-    userSchema.active = true;
-    utils.insert(utils.users, userId, userSchema, function (error) {
-      if(error) {
-        return done(error);
+  it('should successfully search for a dib with an name that does not exist', function(done) {
+    request(app)
+    .get('/api/search/dibs/')
+    .send({
+      name: 'foobar',
+      type: 'person'
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        return done(err);
       }
-      request(app)
-      .get('/api/search/users/mock')
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if (err) {
-          return done(err);
-        }
-        res.body.should.be.instanceof(Object);
-        res.body.should.have.property('message');
-        res.body.should.have.property('results');
-        res.body.results.should.have.length(2);
-        done();
-      });
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      res.body.should.have.property('results');
+      res.body.results.should.have.length(0);
+      done();
     });
   });
 
-  it('should fail if missing the username and the id', function(done) {
+  it('should if missing a name', function(done) {
     request(app)
-    .get('/api/search/users/')
+    .get('/api/search/dibs/')
+    .send({
+      type: 'thing'
+    })
     .expect(400)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
@@ -147,9 +143,27 @@ describe('GET /api/search/users/', function() {
     });
   });
 
-  it('should fail if the id is invalid', function(done) {
+  it('should if missing a type', function(done) {
     request(app)
-    .get('/api/search/users')
+    .get('/api/search/dibs/')
+    .send({
+      name: 'inb4.us'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
+  it('should if using an invalid id', function(done) {
+    request(app)
+    .get('/api/search/dibs/')
     .send({
       id: 'foobar'
     })
