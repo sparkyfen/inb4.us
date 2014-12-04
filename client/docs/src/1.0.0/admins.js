@@ -202,3 +202,33 @@
  *    {"message":"Could not activate account."}
  *
  */
+
+/**
+* @api {get} /api/admin/logout Logout
+* @apiVersion 1.0.0
+* @apiName Logout
+* @apiGroup Admin
+* @apiPermission public
+*
+* @apiDescription Logs the admin out.
+*
+* @apiParam {String} [callback] The name of the callback funciton.
+*
+* @apiExample Default example:
+*     curl -X GET 'https://inb4.us/api/admin/logout'
+*
+* @apiExample Default callback example:
+*     curl -X GET 'https://inb4.us/api/admin/logout?callback=foo'
+*
+* @apiSuccess (200 Success) {String} message The admin has been logged out.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Logged out."}
+*
+* @apiError (500 Internal Server Error) ServerError There was a problem logging the admin out.
+*
+* @apiErrorExample
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not log out admin."}
+*/

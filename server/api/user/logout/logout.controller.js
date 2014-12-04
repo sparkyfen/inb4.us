@@ -1,6 +1,6 @@
 'use strict';
 
-// Get list of logouts
+// Logout user
 exports.index = function(req, res) {
   delete req.session.username;
   req.session.destroy(function (error) {

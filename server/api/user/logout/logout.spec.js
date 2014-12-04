@@ -12,6 +12,8 @@ users.initialize();
 var utils = db.utils;
 utils.initialize();
 
+var cookie;
+
 describe('GET /api/user/logout', function() {
 
   beforeEach(function (done) {
@@ -25,7 +27,23 @@ describe('GET /api/user/logout', function() {
       if(error) {
         return done(error);
       }
-      done();
+      request(app)
+      .post('/api/user/login')
+      .send({
+        username: 'mockuser',
+        password: 'mockpassword'
+      })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if (err) {
+          return done(err);
+        }
+        cookie = res.headers['set-cookie'];
+        res.body.should.be.instanceof(Object);
+        res.body.should.have.property('message');
+        done();
+      });
     });
   });
 
@@ -54,32 +72,17 @@ describe('GET /api/user/logout', function() {
 
   it('should successfully log the user out', function(done) {
     request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'mockuser',
-      password: 'mockpassword'
-    })
+    .get('/api/user/logout')
+    .set('cookie', cookie)
     .expect(200)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
       if (err) {
         return done(err);
       }
-      var cookie = res.headers['set-cookie'];
       res.body.should.be.instanceof(Object);
       res.body.should.have.property('message');
-      request(app)
-      .get('/api/user/logout')
-      .set('cookie', cookie)
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if (err) {
-          return done(err);
-        }
-        res.body.should.be.instanceof(Object);
-        done();
-      });
+      done();
     });
   });
 });
