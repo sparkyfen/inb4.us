@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: ActivateCtrl', function () {
+describe('Controller: ActivateUserCtrl', function () {
 
   // load the controller's module
   beforeEach(module('inb4usApp'));
 
-  var ActivateCtrl, scope;
+  var ActivateUserCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ActivateCtrl = $controller('ActivateCtrl', {
+    ActivateUserCtrl = $controller('ActivateUserCtrl', {
       $scope: scope
     });
   }));
