@@ -5,6 +5,6 @@ angular.module('inb4usApp')
     $routeProvider
       .when('/user/activate/:userId/:token', {
         templateUrl: 'app/user/activate/activate.html',
-        controller: 'ActivateCtrl'
+        controller: 'ActivateUserCtrl'
       });
   });

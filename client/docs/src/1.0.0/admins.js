@@ -139,3 +139,66 @@
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not log admin in."}
 */
+
+/**
+ * @api {post} /api/admin/activate Activate
+ * @apiVersion 1.0.0
+ * @apiGroup Admin
+ * @apiName Activate
+ * @apiPermission public
+ *
+ * @apiDescription Activates a requested admin.
+ *
+ * @apiParam {String} id The id of the admin being requested
+ * @apiParam {String} token The activation token.
+ * @apiParam [callback] The name of the callback function.
+ *
+ * @apiExample {curl} Default example:
+ *     curl -X POST 'https://inb4.us/api/admin/activate' -d "id=59ea532b-e772-4764-9cad-e04b388885d3&token=91828ea8-a616-409e-b950-957259cc9e27"
+ *
+ * @apiExample {curl} Callback example:
+ *     curl -X POST 'https://inb4.us/api/admin/activate' -d "id=59ea532b-e772-4764-9cad-e04b388885d3&token=91828ea8-a616-409e-b950-957259cc9e27&callback=foo"
+ *
+ * @apiSuccess (200 Success) {String} message Account activated.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {"message":"Account activated."}
+ *
+ * @apiError (400 Bad Request) MissingId The user id was not in the request.
+ * @apiError (400 Bad Request) MissingToken The token was not in the request.
+ * @apiError (400 Bad Request) InvalidId The id is not a vaild ID.
+ * @apiError (400 Bad Request) InvalidToken The token is not a valid token.
+ * @apiError (400 Bad Request) UserNotExist The user does not exist.
+ * @apiError (400 Bad Request) InvalidIdToken The token for the specified id is invalid.
+ * @apiError (500 Internal Server Error) ServerError There has been an issue activating the account.
+ *
+ * @apiErrorExample Error-Response: (Missing ID)
+ *     HTTP/1.1 400 Bad Request
+ *     {"message":"Missing user id."}
+ *
+ * @apiErrorExample Error-Response: (Missing Token)
+ *     HTTP/1.1 400 Bad Request
+ *     {"message: Missing activation token."}
+ *
+ * @apiErrorExample Error-Response: (Invalid Id)
+ *     HTTP/1.1 400 Bad Request
+ *     {"message":"Invalid user id."}
+ *
+ * @apiErrorExample Error-Response: (Invalid Token)
+ *    HTTP/1.1 400 Bad Request
+ *    {"message":"Invalid activation token."}
+ *
+ * @apiErrorExample Error-Response: (User Not Exist)
+ *    HTTP/1.1 400 Bad Request
+ *    {"message":"User does not exist."}
+ *
+ * @apiErrorExample Error-Response: (Invalid Id Token)
+ *    HTTP/1.1 400 Bad Request
+ *    {"message":"Invalid token for user."}
+ *
+ * @apiErrorExample Error-Response: (Activation Issue)
+ *    HTTP/1.1 500 Internal Server Error
+ *    {"message":"Could not activate account."}
+ *
+ */

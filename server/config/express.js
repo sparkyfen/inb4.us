@@ -31,7 +31,7 @@ module.exports = function(app) {
   app.use(helmet.noSniff());
   app.use(helmet.hidePoweredBy());
   app.use(helmet.hsts({
-    maxAge: 10886500000,     // Must be at least 18 weeks to be approved by Google
+    maxAge: 315360000000,     // Must be at least 18 weeks to be approved by Google
     includeSubdomains: true, // Must be enabled to be approved by Google
     preload: true,
     force: true

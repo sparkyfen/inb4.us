@@ -1,16 +1,16 @@
 'use strict';
 
-angular.module('inb4usApp').controller('ActivateUserCtrl', ['$scope', 'Userservice', '$routeParams', '$timeout', '$location', function ($scope, Userservice, $routeParams, $timeout, $location) {
-  $scope.userId = $routeParams.userId;
+angular.module('inb4usApp').controller('ActivateAdminCtrl', ['$scope', 'Adminservice', '$routeParams', '$timeout', '$location', function ($scope, Adminservice, $routeParams, $timeout, $location) {
+  $scope.adminId = $routeParams.adminId;
   $scope.token = $routeParams.token;
-  if(!$scope.userId || !$scope.token) {
+  if(!$scope.adminId || !$scope.token) {
     $scope.validAccount = false;
   }
   var activateData = {
-    id: $scope.userId,
+    id: $scope.adminId,
     token: $scope.token
   };
-  Userservice.activate(activateData).success(function (activateResp) {
+  Adminservice.activate(activateData).success(function (activateResp) {
     // TODO Show notification upon success.
     $scope.validAccount = true;
     $timeout(function () {

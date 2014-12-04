@@ -141,7 +141,7 @@ exports.index = function(req, res) {
                       if(error) {
                         console.log(error);
                       }
-                      console.log(reply);
+                      console.log('Register user email sent for email '+ email + ' with email server reply of ' + reply.message);
                     });
                 }
                 utils.insert(utils.admins, adminId, adminSchema, function (error) {

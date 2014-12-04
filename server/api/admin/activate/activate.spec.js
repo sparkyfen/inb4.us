@@ -5,25 +5,25 @@ var app = require('../../../app');
 var request = require('supertest');
 var bcrypt = require('bcrypt');
 var uuid = require('node-uuid');
-var userSchema = require('../../../components/schema/user');
+var adminSchema = require('../../../components/schema/admin');
 var db = require('../../../components/database');
 var utils = db.utils;
 utils.initialize();
-var users = db.user;
-users.initialize();
-var userId, token;
+var admins = db.admin;
+admins.initialize();
+var adminId, token;
 
-describe('POST /api/user/activate', function() {
+describe('POST /api/admin/activate', function() {
 
   beforeEach(function (done) {
-    userId = uuid.v4();
-    userSchema._id = userId;
-    userSchema.password = bcrypt.hashSync('mockpassword', 10);
-    userSchema.username = 'mockuser';
-    userSchema.email = 'mockuser@inb4.us';
-    userSchema.tokens.activate = uuid.v4();
-    token = userSchema.tokens.activate;
-    utils.insert(utils.users, userId, userSchema, function (error) {
+    adminId = uuid.v4();
+    adminSchema._id = adminId;
+    adminSchema.password = bcrypt.hashSync('mockpassword', 10);
+    adminSchema.username = 'mockadmin';
+    adminSchema.email = 'mockadmin@inb4.us';
+    adminSchema.tokens.activate = uuid.v4();
+    token = adminSchema.tokens.activate;
+    utils.insert(utils.admins, adminId, adminSchema, function (error) {
       if(error) {
         return done(error);
       }
@@ -32,7 +32,7 @@ describe('POST /api/user/activate', function() {
   });
 
   afterEach(function (done) {
-    users.getAll(function (error, reply) {
+    admins.getAll(function (error, reply) {
       if(error) {
         return done(error);
       }
@@ -40,11 +40,11 @@ describe('POST /api/user/activate', function() {
         row.value._deleted = true;
         return row.value;
       });
-      users.bulk(docs, function (error) {
+      admins.bulk(docs, function (error) {
         if(error) {
           return done(error);
         }
-        users.compact(function (error) {
+        admins.compact(function (error) {
           if(error) {
             return done(error);
           }
@@ -54,11 +54,11 @@ describe('POST /api/user/activate', function() {
     });
   });
 
-  it('should successfully activate an account', function(done) {
+  it('should successfully activate the admin account', function(done) {
     request(app)
-    .post('/api/user/activate')
+    .post('/api/admin/activate')
     .send({
-      id: userId,
+      id: adminId,
       token: token
     })
     .expect(200)
@@ -75,7 +75,7 @@ describe('POST /api/user/activate', function() {
 
   it('should fail when the id is missing', function(done) {
     request(app)
-    .post('/api/user/activate')
+    .post('/api/admin/activate')
     .send({
       token: token
     })
@@ -93,9 +93,9 @@ describe('POST /api/user/activate', function() {
 
   it('should fail when the token is missing', function(done) {
     request(app)
-    .post('/api/user/activate')
+    .post('/api/admin/activate')
     .send({
-      id: userId
+      id: adminId
     })
     .expect(400)
     .expect('Content-Type', /json/)
@@ -109,9 +109,9 @@ describe('POST /api/user/activate', function() {
     });
   });
 
-   it('should fail when the id is invalid', function(done) {
+  it('should fail when the id is invalid', function(done) {
     request(app)
-    .post('/api/user/activate')
+    .post('/api/admin/activate')
     .send({
       id: 'foobar',
       token: token
@@ -128,11 +128,11 @@ describe('POST /api/user/activate', function() {
     });
   });
 
-   it('should fail when the token is invalid', function(done) {
+  it('should fail when the token is invalid', function(done) {
     request(app)
-    .post('/api/user/activate')
+    .post('/api/admin/activate')
     .send({
-      id: userId,
+      id: adminId,
       token: 'foobar'
     })
     .expect(400)
