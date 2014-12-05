@@ -13,7 +13,7 @@
  */
 
 /**
-* @api {post} /user/api/register Register
+* @api {post} /api/user/register Register
 * @apiVersion 1.0.0
 * @apiName Register
 * @apiGroup User
@@ -27,10 +27,10 @@
 * @apiParam {String} [callback] The name of the callback function.
 *
 * @apiExample Default example:
-*     curl -X POST 'https://inb4.us/api/user/register' -d 'email=mockuser@inb4.us&password=mockpassword'
+*     curl -X POST 'https://inb4.us/api/user/register' -d 'username=mockuser&email=mockuser@inb4.us&password=mockpassword'
 *
 * @apiExample Default callback example:
-*     curl -X POST 'https://inb4.us/api/user/register' -d 'email=mockuser@inb4.us&password=mockpassword&callback=foo'
+*     curl -X POST 'https://inb4.us/api/user/register' -d 'username=mockuser&email=mockuser@inb4.us&password=mockpassword&callback=foo'
 *
 * @apiSuccess (200 Success) {String} message The response message.
 *
