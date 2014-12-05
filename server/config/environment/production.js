@@ -37,6 +37,10 @@ module.exports = {
     server: process.env.USPS_SERVER || 'https://secure.shippingapis.com/ShippingAPI.dll',
     userId: process.env.USPS_USERID || '' // https://www.usps.com/business/web-tools-apis/welcome.htm
   },
+  smartystreets: {
+    authId: process.env.SMARTYSTREETS_AUTH_ID || '', // https://smartystreets.com/account/keys
+    authToken: process.env.SMARTYSTREETS_AUTH_TOKEN || ''
+  },
   admin: {
     username: process.env.INB4_ADMIN_USERNAME || 'inb4-admin',
     password: process.env.INB4_ADMIN_PASSWORD || 'dxk8Yl*AfDySF9gWDA07Ir9WTopOZGjjLIicY1&ejzPKe3aDbu2Tacc08MeFLI8ARupT@q1ZPKWfsfSFZrt@&@Wuk5!5Cb4@rEa',

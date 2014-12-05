@@ -24,6 +24,8 @@
     "node-uuid": "^1.4.1",
     "nodemailer": "^1.3.0",
     "nodemailer-sendgrid-transport": "^0.1.0",
+    "querystring": "^0.2.0",
+    "request": "^2.49.0",
     "serve-favicon": "~2.0.1",
     "usps-webtools": "0.0.10",
     "validator": "^3.22.1"

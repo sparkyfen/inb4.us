@@ -24,6 +24,10 @@ module.exports = {
     server: 'http://production.shippingapis.com/ShippingAPI.dll',
     userId: '' // https://www.usps.com/business/web-tools-apis/welcome.htm
   },
+  smartystreets: {
+    authId: '', // https://smartystreets.com/account/keys
+    authToken: ''
+  },
   admin: {
     username: 'inb4-admin',
     password: '', // 99+ char password here

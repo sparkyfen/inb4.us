@@ -2,11 +2,13 @@
 
 var should = require('should');
 var bcrypt = require('bcrypt');
+var querystring = require('querystring');
 var fs = require('fs');
 var nock = require('nock');
 var request = require('supertest');
 var uuid = require('node-uuid');
 var app = require('../../../app');
+var config = require('../../../config/environment');
 var db = require('../../../components/database');
 var userSchema = require('../../../components/schema/user');
 var users = db.user;
@@ -29,13 +31,69 @@ describe('POST /api/user/address', function() {
     .get('*')
     .reply(200, fs.readFileSync(__dirname + '/lookup_bad_response.xml', {encoding: 'utf8'}));
 
+    nock('https://api.smartystreets.com')
+    .get('/street-address?' + querystring.stringify({
+      'auth-id': config.smartystreets.authId,
+      'auth-token': config.smartystreets.authToken,
+      street: '1234 E. Melon Rd.',
+      street2: null,
+      city: 'Tempe',
+      state: 'AZ',
+      zipcode: 85281,
+      candidates: 5
+    }))
+    .reply(200, [{
+        "input_index":0,
+        "candidate_index":0,
+        "delivery_line_1":"1234 E. E. Melon Rd.",
+        "last_line":"Tempe AZ 85281-6810",
+        "delivery_point_barcode":"852816810223",
+        "components": {
+          "primary_number":"1234",
+          "street_predirection":"E",
+          "street_name":"Melon",
+          "street_suffix":"Rd",
+          "city_name":"Tempe",
+          "state_abbreviation":"AZ",
+          "zipcode":"85281",
+          "plus4_code":"6810",
+          "delivery_point":"22",
+          "delivery_point_check_digit":"3"
+        },
+        "metadata": {
+          "record_type":"H",
+          "zip_type":"Standard",
+          "county_fips":"04013",
+          "county_name":"Maricopa",
+          "carrier_route":"C015",
+          "congressional_district":"09",
+          "rdi":"Residential",
+          "elot_sequence":"0102",
+          "elot_sort":"A",
+          "latitude":33.00000,
+          "longitude":-111.00000,
+          "precision":"Zip9",
+          "time_zone":"Mountain",
+          "utc_offset":-7
+        },
+        "analysis":{
+          "dpv_match_code":"Y",
+          "dpv_footnotes":"AABB",
+          "dpv_cmra":"N",
+          "dpv_vacant":"N",
+          "active":"Y",
+          "footnotes":"N#"
+        }
+      }
+    ]);
     var userId = uuid.v4();
     userSchema._id = userId;
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
     userSchema.active = true;
-    utils.insert(utils.users, userId, userSchema, function (error) {
+    utils.insert(utils.users,
+     userId, userSchema, function (error) {
       if(error) {
         return done(error);
       }

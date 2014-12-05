@@ -1,13 +1,9 @@
 'use strict';
 
 var validator = require('validator');
-var USPS = require('usps-webtools');
 var config = require('../../../config/environment');
-var usps = new USPS({
-  server: config.usps.server,
-  userId: config.usps.userId
-});
 var db = require('../../../components/database');
+var addresses = require('../../../components/addresses');
 var users = db.user;
 users.initialize();
 var utils = db.utils;
@@ -28,27 +24,21 @@ function _convertState(str) {
   return null;
 }
 
-function _validateAddress(params, callback) {
-  if(validator.isNull(params.address1)) {
+function _validateAddress(address, callback) {
+  if(validator.isNull(address.street1)) {
     return callback({code: 400, message: 'Missing street address.'});
   }
-  if(validator.isNull(params.city)) {
+  if(validator.isNull(address.city)) {
     return callback({code: 400, message: 'Missing city.'});
   }
-  if(validator.isNull(params.state)) {
+  if(validator.isNull(address.state)) {
     return callback({code: 400, message: 'Missing state'});
   }
-  params.state = _convertState(params.state);
-  if(validator.isNull(params.zipcode)) {
+  address.state = _convertState(address.state);
+  if(validator.isNull(address.zipcode)) {
     return callback({code: 400, message: 'Missing zipcode.'});
   }
-  usps.verify({
-    street1: params.address1,
-    street2: params.address2,
-    city: params.city,
-    state: params.state,
-    zip: params.zipcode
-  }, function (error, address) {
+  addresses.smartyVerify(address, function (error, address) {
     if(error) {
       console.log(error);
       return callback({code: 500, message: 'Could not edit the address.'});
@@ -71,8 +61,8 @@ exports.index = function(req, res) {
   var country = 'United States';
   var zipcode = req.body.zipcode;
   _validateAddress({
-    address1: streetAddress,
-    address2: unitAddress,
+    street1: streetAddress,
+    street2: unitAddress,
     city: city,
     state: state,
     zipcode: zipcode
