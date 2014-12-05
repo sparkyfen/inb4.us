@@ -43,7 +43,7 @@
 * @apiError (400 Bad Request) MissingPass The password was missing form the request.
 * @apiError (400 Bad Request) InvalidEmail The email provided in the request is invalid.
 * @apiError (400 Bad Request) EmailExists The email provided already exists in the database.
-* @apiError (400 Bad Request) UserExists The username provided already exists in the user database.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
 * @apiError (400 Bad Request) AdminExists The username provided already exists in the admin database.
 * @apiError (500 Internal Server Error) ServerError There was a problem registering the user.
 *
@@ -107,7 +107,7 @@
 *
 * @apiError (400 Bad Request) MissingUsername The username was missing from the request.
 * @apiError (400 Bad Request) MissingPassword The password was missing from the request.
-* @apiError (400 Bad Request) UserNotExist The username does not exist in the database.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (400 Bad Request) PasswordMismatch The password provided was invalid.
 * @apiError (500 Internal Server Error) ServerError There was a problem logging the user in.
@@ -166,7 +166,7 @@
  * @apiError (400 Bad Request) MissingToken The token was not in the request.
  * @apiError (400 Bad Request) InvalidId The id is not a vaild ID.
  * @apiError (400 Bad Request) InvalidToken The token is not a valid token.
- * @apiError (400 Bad Request) UserNotExist The user does not exist.
+ * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
  * @apiError (400 Bad Request) InvalidIdToken The token for the specified id is invalid.
  * @apiError (500 Internal Server Error) ServerError There has been an issue activating the account.
  *
@@ -261,7 +261,7 @@
  * @apiError (400 Bad Request) MissingNewPassword The new password was not in the request.
  * @apiError (400 Bad Request) MissingConfirmPassword The new confirm password was not in the request.
  * @apiError (400 Bad Request) PasswordMismatch The new and confirm passwords were not the same.
- * @apiError (400 Bad Request) UserNotExist The user does not exist.
+ * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
  * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
  * @apiError (400 Bad Request) HashMismatch The old password did not match what the database has.
  * @apiError (500 Internal Server Error) ServerError There was a problem changing the password.
@@ -384,7 +384,7 @@
 *    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "mockuser@inb4.us","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
 *
 * @apiError (400 Bad Request) MissingId The user id was missing from the session.
-* @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (500 Internal Server Error) ServerError There was a problem getting the user profile.
 *
@@ -541,7 +541,7 @@
 * @apiError (400 Bad Request) PasswordMismatch The new and confirm password were not the same.
 * @apiError (400 Bad Request) InvalidId The user id was not a UUID value.
 * @apiError (400 Bad Request) InvalidToken The reset token was not a UUID value.
-* @apiError (400 Bad Request) UserNotExist The email that was requested could not be found tied to a user in the database.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
 * @apiError (400 Bad Request) TokenNotForUser The reset token was not issued for this user.
 * @apiError (400 Bad Request) InvalidTokenForUser The token in the request did not match the token in the database.
 * @apiError (500 Internal Server Error) ServerError There was a problem resetting the user password.
@@ -589,4 +589,74 @@
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not reset user password."}
+*/
+
+/**
+* @api {post} /api/user/address Edit Address
+* @apiVersion 1.0.0
+* @apiName Edit Address
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Edit the user address
+*
+* @apiParam {String} streetAddress The street address of the user.
+* @apiParam {String} [unitAddress] The unit address of the user.
+* @apiParam {String} city The city of the user.
+* @apiParam {String} state The state of the user.
+* @apiParam {String} zipcode The zipcode of the user.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/address' -d "streetAddress=1234%20E.%20Melon%20Rd.&city=Tempe&state=AZ&zipcode=85251"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/address' -d "streetAddress=1234%20E.%20Melon%20Rd.&city=Tempe&state=AZ&zipcode=85251&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"messsage":"Address updated."}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (400 Bad Request) MissingStreetAddress The street address was missing from the request.
+* @apiError (400 Bad Request) MissingCity The city was missing from the request.
+* @apiError (400 Bad Request) MissingState The state was missing from the request.
+* @apiError (400 Bad Request) MissingZipcode The zipcode was missing from the request.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
+* @apiError (500 Internal Server Error) ServerError There was a problem editing the user address.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Missing Street Address)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing street address."}
+*
+* @apiErrorExample Error-Response: (Missing City)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing city."}
+*
+* @apiErrorExample Error-Response: (Missing State)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing state."}
+*
+* @apiErrorExample Error-Response: (Missing Zipcode)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing zipcode."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not edit the address."}
 */

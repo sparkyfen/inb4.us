@@ -361,6 +361,7 @@ module.exports = function (grunt) {
             'package.json',
             'server/**/*',
             '!server/**/*.spec.js',
+            '!server/**/*.xml',
             '!server/config/environment/development.js',
             '!server/config/environment/development.js.template',
             '!server/config/environment/test.js',

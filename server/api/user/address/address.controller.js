@@ -51,7 +51,7 @@ function _validateAddress(params, callback) {
   }, function (error, address) {
     if(error) {
       console.log(error);
-      return callback({code: 500, message: 'Could not edit address.'});
+      return callback({code: 500, message: 'Could not edit the address.'});
     }
     return callback(null, address);
   });
@@ -83,7 +83,7 @@ exports.index = function(req, res) {
     users.searchByUsername(username, function (error, reply) {
       if(error) {
         console.log(error);
-        return res.status(500).jsonp({message: 'Could not edit address.'});
+        return res.status(500).jsonp({message: 'Could not edit the address.'});
       }
       if(reply.rows.length === 0) {
         return res.status(400).jsonp({message: 'User does not exist.'});
@@ -96,9 +96,9 @@ exports.index = function(req, res) {
       utils.insert(utils.users, user._id, user, function (error) {
         if(error) {
           console.log(error);
-          return res.status(500).jsonp({message: 'Could not edit address.'});
+          return res.status(500).jsonp({message: 'Could not edit the address.'});
         }
-        return res.jsonp({message: 'Addressed updated.'});
+        return res.jsonp({message: 'Address updated.'});
       });
     });
   });
