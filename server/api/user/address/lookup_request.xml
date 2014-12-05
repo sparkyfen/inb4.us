@@ -1,0 +1,1 @@
+<?xml version="1.0"?><AddressValidateRequest USERID="testUserId"><Address><Address1></Address1><Address2>1234 E. Melon Rd.</Address2><City>Tempe</City><State>AZ</State><Zip5>85281</Zip5><Zip4></Zip4></Address</AddressValidateRequest>

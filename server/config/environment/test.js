@@ -12,7 +12,7 @@ module.exports = {
     keywords: 'inb4-test-keywords'
   },
   usps: {
-    server: 'http://production.shippingapis.com/ShippingAPI.dll',
+    server: 'https://secure.shippingapis.com/ShippingAPI.dll',
     userId: 'testUserId' // https://www.usps.com/business/web-tools-apis/welcome.htm
   },
   admin: {

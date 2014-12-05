@@ -7,6 +7,7 @@
 var express = require('express');
 var favicon = require('serve-favicon');
 var morgan = require('morgan');
+var multer  = require('multer');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -26,6 +27,7 @@ module.exports = function(app) {
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
+  app.use(multer({ dest: '/tmp/'}));
   app.use(methodOverride());
   app.use(cookieParser(config.cookie.secret));
   app.use(helmet.noSniff());

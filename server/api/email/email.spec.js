@@ -6,7 +6,7 @@ var request = require('supertest');
 
 describe('POST /api/email', function() {
 
-  it('should respond with JSON array', function(done) {
+  it('should successfully forward an email', function(done) {
     request(app)
       .post('/api/email')
       .expect(200)

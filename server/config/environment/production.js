@@ -26,13 +26,15 @@ module.exports = {
         username: process.env.INB4_SENDGRID_USERNAME || '',
         password: process.env.INB4_SENDGRID_PASSWORD || ''
       },
-      info: {
-        username: process.env.INB4_EMAIL_INFO_USERNAME || ''
+      info: process.env.INB4_EMAIL_INFO_USERNAME || 'info@inb4.us',
+      forward: {
+        from: process.env.INB4_EMAIL_FORWARD_FROM || 'forward@inb4.us',
+        to: process.env.INB4_EMAIL_FORWARD_TO || ''
       }
     }
   },
   usps: {
-    server: process.env.USPS_SERVER || 'http://production.shippingapis.com/ShippingAPI.dll',
+    server: process.env.USPS_SERVER || 'https://secure.shippingapis.com/ShippingAPI.dll',
     userId: process.env.USPS_USERID || '' // https://www.usps.com/business/web-tools-apis/welcome.htm
   },
   admin: {
