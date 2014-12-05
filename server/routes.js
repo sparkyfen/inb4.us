@@ -19,6 +19,7 @@ module.exports = function(app) {
   app.use('/api/user/logout', require('./api/user/logout'));
   app.use('/api/user/register', require('./api/user/register'));
   app.use('/api/user/login', require('./api/user/login'));
+  app.use('/api/user/friends', require('./api/user/friends'));
   app.use('/api/user/address', require('./api/user/address'));
 
   app.use('/api/dibs', require('./api/dibs'));

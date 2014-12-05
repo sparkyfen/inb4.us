@@ -52,6 +52,15 @@ exports.searchPartialId = function(id, callback) {
   });
 };
 
+exports.getMultipleUsernames = function(usernames, callback) {
+  this.users.view('users', 'by_username', {reduce: false, keys: usernames}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
 exports.searchByEmail = function (email, callback) {
   this.users.view('users', 'by_email', {reduce: false, key: email}, function (error, reply, headers) {
     if(error) {

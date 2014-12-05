@@ -660,3 +660,74 @@
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not edit the address."}
 */
+
+/**
+* @api {post} /api/user/friends Add Friend
+* @apiVersion 1.0.0
+* @apiName Add Friend
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Add a friend to your friends list
+*
+* @apiParam {String} username Your friends username
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/friends' -d "username=mockfriend"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/friends' -d "username=mockfriend&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"messsage":"Friend added."}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (400 Bad Request) MissingUsername Your friend's username was missing from the request.
+* @apiError (400 Bad Request) CannotFriendYourself Your friends username was your own.
+* @apiError (400 Bad Request) UserFriendNotExist Your friends username and yours do not exist in the database.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
+* @apiError (400 Bad Request) FriendNotExist Your friends username does not exist in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
+* @apiError (400 Bad Request) FriendActivationNeeded Your friend must activate their account first before you can add them as a friend.
+* @apiError (500 Internal Server Error) ServerError There was a problem adding your new friend.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Missing Username)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing friend name."}
+*
+* @apiErrorExample Error-Response: (Cannot Friend Yourself)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Cannot add yourself as a friend."}
+*
+* @apiErrorExample Error-Response: (User Friend Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User and friend do not exist."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Friend Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Friend does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Friend Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Your friend must activate their account before adding them."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not add friend."}
+*/
