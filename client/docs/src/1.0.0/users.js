@@ -731,3 +731,53 @@
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not add friend."}
 */
+
+/**
+* @api {get} /api/user/friends Get Friends
+* @apiVersion 1.0.0
+* @apiName Get Friends
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Get your friends.
+*
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X GET 'https://inb4.us/api/user/friends'
+*
+* @apiExample Default callback example:
+*     curl -X GET 'https://inb4.us/api/user/friends' -d "callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+* @apiSuccess (200 Success) {String[]} results The usernames of your friends.
+*
+* @apiSuccessExample Success-Response: (Results Found)
+*     HTTP/1.1 200 OK
+*     {"messsage":"Results found.", results: ["mockfriend"]}
+*
+* @apiSuccessExample Success-Response: (No Results)
+*     HTTP/1.1 200 OK
+*     {"messsage":"No results.", results: []}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
+* @apiError (500 Internal Server Error) ServerError There was a problem adding your new friend.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not get friends."}
+*/
