@@ -14,6 +14,8 @@ utils.initialize();
 
 var cookie;
 
+// TODO Update delete user tests to account for when a user has dibs and make sure that runs properly.
+// TODO Update delete user tests to account for when a user has friends and make sure that runs properly as well.
 describe('POST /api/user/delete', function() {
 
   beforeEach(function (done) {
