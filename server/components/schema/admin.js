@@ -11,5 +11,6 @@ module.exports = {
     reset: null
   },
   active: false,
+  friends: [],
   dibs: []
 };
