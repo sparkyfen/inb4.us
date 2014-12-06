@@ -207,6 +207,40 @@ describe('POST /api/user/friends', function() {
     });
   });
 
+  it('should fail when the user is already friends with the username', function(done) {
+    request(app)
+    .post('/api/user/friends')
+    .set('cookie', cookie)
+    .send({
+      username: 'mockfriend'
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      request(app)
+      .post('/api/user/friends')
+      .set('cookie', cookie)
+      .send({
+        username: 'mockfriend'
+      })
+      .expect(400)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if (err) {
+          return done(err);
+        }
+        res.body.should.be.instanceof(Object);
+        res.body.should.have.property('message');
+        done();
+      });
+    });
+  });
+
   it('should fail when the user does not exist', function(done) {
     users.deleteByUsername('mockuser', function (error, reply) {
       if(error) {

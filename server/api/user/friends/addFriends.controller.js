@@ -78,6 +78,12 @@ exports.index = function(req, res) {
       if(!friend.active) {
         return res.status(400).jsonp({message: 'Your friend must activate their account before adding them.'});
       }
+      var currentFriendIds = user.friends.map(function (friend) {
+        return friend.id;
+      });
+      if(currentFriendIds.indexOf(friend._id) !== -1) {
+        return res.status(400).jsonp({message: 'You are already friends with this user.'});
+      }
       // Add friend id to the user object.
       user.friends.push({id: friend._id, accepted: true});
       friend.friends.push({id: user._id, accepted: false});
