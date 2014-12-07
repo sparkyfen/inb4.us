@@ -82,15 +82,18 @@ exports.index = function(req, res) {
         if(error) {
           return res.status(error.code).jsonp({message: error.message});
         }
-        if(dib.report.reporter.indexOf(user._id) !== -1) {
+        var dibReporters = dib.reports.map(function (report) {
+          return report.reporter;
+        });
+        if(dibReporters.indexOf(user._id) !== -1) {
           return res.status(400).jsonp({message: 'You have already reported this dib.'});
         }
-        dib.report.reported = true;
-        dib.report.count++;
-        dib.report.seen.push(false);
-        dib.report.reporter.push(user._id);
-        dib.report.dates.push(Date.now(Date.UTC()));
-        dib.report.reasons.push(reason);
+        dib.reports.push({
+          seen: false,
+          reporter: user._id,
+          date: Date.now(Date.UTC()),
+          reason: reason
+        });
         utils.insert(utils.dibs, dib._id, dib, function (error) {
           if(error) {
             console.log(error);

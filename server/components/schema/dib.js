@@ -12,14 +12,7 @@ module.exports = {
     created: '',
     edited: null
   },
-  report: {
-    dates: [],
-    reported: false,
-    count: 0,
-    reporter: [],
-    seen: [],
-    reasons: [],
-  },
+  reports: [],
   badges: [],
   viewers: 0,
   active: true
