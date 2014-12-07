@@ -88,7 +88,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"_id":"3cb1126e-80ee-4d26-897b-f0f5016ad590","name":"inb4.us","description":"My website!","type":"thing","image":null,"url":null,"keywords":[],"creator":"volvox","dates":{"created":1417250723705,"edited":null},"report":{"dates":[],"reported":false,"count":0,"reasons":[]},"badges":[],"viewers":0,"active":true}
+*     {"_id":"3cb1126e-80ee-4d26-897b-f0f5016ad590","name":"inb4.us","description":"My website!","type":"thing","image":null,"url":null,"keywords":[],"creator":"volvox","dates":{"created":1417250723705,"edited":null},"reports":[],"badges":[],"viewers":0,"active":true}
 *
 * @apiError (400 Bad Request) MissingId The dib id was not in the request.
 * @apiError (400 Bad Request) InvalidId The dib id was not a UUID value.
