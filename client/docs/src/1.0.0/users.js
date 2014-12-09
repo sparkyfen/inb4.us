@@ -801,10 +801,10 @@
 * @apiParam {String} [callback] The name of the callback function.
 *
 * @apiExample Default example:
-*     curl -X POST 'https://inb4.us/api/user/friends' -d "id=3fa2d253-7794-4b36-8c98-7886efb9473f"
+*     curl -X POST 'https://inb4.us/api/user/friends/delete' -d "id=3fa2d253-7794-4b36-8c98-7886efb9473f"
 *
 * @apiExample Default callback example:
-*     curl -X POST 'https://inb4.us/api/user/friends' -d "id=3fa2d253-7794-4b36-8c98-7886efb9473f&callback=foo"
+*     curl -X POST 'https://inb4.us/api/user/friends/delete' -d "id=3fa2d253-7794-4b36-8c98-7886efb9473f&callback=foo"
 *
 * @apiSuccess (200 Success) {String} message The successful response message.
 *
@@ -862,4 +862,54 @@
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not delete friend."}
+*/
+
+/**
+* @api {post} /api/user/purge Purge Accounts
+* @apiVersion 1.0.0
+* @apiName Purge Accounts
+* @apiGroup User
+* @apiPermission admin
+*
+* @apiDescription Purge all inactive accounts that haven't been activated after the purge time in the config file.
+*
+* @apiParam {Number} datetime The date time to compare against.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/purge' -d "datetime=1418149552680"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/purge' -d "datetime=1418149552680&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response (Results Found):
+*     HTTP/1.1 200 OK
+*     {"messsage":"Accounts purged.", "results": [{"id": "ca683876-e79c-4660-b203-e0ac0df67bc1","username": "mockuser"}]}
+*
+* @apiSuccessExample Success-Response (No Results):
+*     HTTP/1.1 200 OK
+*     {"messsage":"No accounts to purge.", "results": []}
+*
+* @apiError (401 Unauthorized) UnauthorizedAdmin The admin did not sign in.
+* @apiError (401 Unauthorized) UnauthorizedUser The user attempting to use this page is not an admin.
+* @apiError (400 Bad Request) InvalidDatetime The date time was not an integer value.
+* @apiError (500 Internal Server Error) ServerError There was a problem purging the inactive accounts.
+*
+* @apiErrorExample Error-Response: (Unauthorized Admin)
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Unauthorized User)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Admins only."}
+*
+* @apiErrorExample Error-Response: (Invalid Datetime)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid datetime."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not purge inactive accounts."}
 */
