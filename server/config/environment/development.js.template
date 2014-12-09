@@ -8,7 +8,6 @@ module.exports = {
   couchdb: {
     url: 'http://127.0.0.1:5984/',
     users: 'inb4-users',
-    admins: 'inb4-admins',
     dibs: 'inb4-dibs',
     keywords: 'inb4-keywords'
   },

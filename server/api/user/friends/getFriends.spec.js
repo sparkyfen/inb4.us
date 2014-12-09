@@ -7,9 +7,6 @@ var uuid = require('node-uuid');
 var app = require('../../../app');
 var db = require('../../../components/database');
 var userSchema = require('../../../components/schema/user');
-var adminSchema = require('../../../components/schema/admin');
-var admins = db.admin;
-admins.initialize();
 var users = db.user;
 users.initialize();
 var utils = db.utils;
@@ -31,12 +28,12 @@ describe('GET /api/user/friends', function() {
         return done(error);
       }
       var adminId = uuid.v4();
-      adminSchema._id = adminId;
-      adminSchema.password = bcrypt.hashSync('mockpassword', 10);
-      adminSchema.username = 'mockadmin';
-      adminSchema.email = 'mockadmin@inb4.us';
-      adminSchema.active = true;
-      utils.insert(utils.admins, adminId, adminSchema, function (error) {
+      userSchema._id = adminId;
+      userSchema.password = bcrypt.hashSync('mockpassword', 10);
+      userSchema.username = 'mockadmin';
+      userSchema.email = 'mockadmin@inb4.us';
+      userSchema.active = true;
+      utils.insert(utils.users, adminId, userSchema, function (error) {
         if(error) {
           return done(error);
         }
@@ -96,26 +93,7 @@ describe('GET /api/user/friends', function() {
           if(error) {
             return done(error);
           }
-          admins.getAll(function (error, reply) {
-            if(error) {
-              return done(error);
-            }
-            var docs = reply.rows.map(function (row) {
-              row.value._deleted = true;
-              return row.value;
-            });
-            admins.bulk(docs, function (error) {
-              if(error) {
-                return done(error);
-              }
-              admins.compact(function (error) {
-                if(error) {
-                  return done(error);
-                }
-                done();
-              });
-            });
-          });
+          done();
         });
       });
     });

@@ -6,13 +6,10 @@ var uuid = require('node-uuid');
 var request = require('supertest');
 var app = require('../../../app');
 var userSchema = require('../../../components/schema/user');
-var adminSchema = require('../../../components/schema/admin');
 var dibSchema = require('../../../components/schema/dib');
 var db = require('../../../components/database');
 var users = db.user;
 users.initialize();
-var admins = db.admin;
-admins.initialize();
 var dibs = db.dib;
 dibs.initialize();
 var utils = db.utils;
@@ -25,12 +22,13 @@ describe('POST /api/dibs/deactivate', function() {
 
   beforeEach(function (done) {
     var adminId = uuid.v4();
-    adminSchema._id = adminId;
-    adminSchema.password = bcrypt.hashSync('mockpassword', 10);
-    adminSchema.username = 'mockadmin';
-    adminSchema.email = 'mockadmin@inb4.us';
-    adminSchema.active = true;
-    utils.insert(utils.admins, adminId, adminSchema, function (error) {
+    userSchema._id = adminId;
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.username = 'mockadmin';
+    userSchema.email = 'mockadmin@inb4.us';
+    userSchema.active = true;
+    userSchema.admin = true;
+    utils.insert(utils.users, adminId, userSchema, function (error) {
       if(error) {
         return done(error);
       }
@@ -38,14 +36,14 @@ describe('POST /api/dibs/deactivate', function() {
       dibSchema._id = dibId;
       dibSchema.name = 'inb4.us';
       dibSchema.type = 'thing';
-      dibSchema.creator = adminId;
+      dibSchema.creator = uuid.v4();
       dibSchema.dates.created = Date.now(Date.UTC());
       utils.insert(utils.dibs, dibId, dibSchema, function (error) {
         if(error) {
           return done(error);
         }
         request(app)
-        .post('/api/admin/login')
+        .post('/api/user/login')
         .send({
           username: 'mockadmin',
           password: 'mockpassword'
@@ -82,7 +80,7 @@ describe('POST /api/dibs/deactivate', function() {
           if(error) {
             return done(error);
           }
-          admins.getAll(function (error, reply) {
+          dibs.getAll(function (error, reply) {
             if(error) {
               return done(error);
             }
@@ -90,34 +88,15 @@ describe('POST /api/dibs/deactivate', function() {
               row.value._deleted = true;
               return row.value;
             });
-            admins.bulk(docs, function (error) {
+            dibs.bulk(docs, function (error) {
               if(error) {
                 return done(error);
               }
-              admins.compact(function (error) {
+              dibs.compact(function (error) {
                 if(error) {
                   return done(error);
                 }
-                dibs.getAll(function (error, reply) {
-                  if(error) {
-                    return done(error);
-                  }
-                  var docs = reply.rows.map(function (row) {
-                    row.value._deleted = true;
-                    return row.value;
-                  });
-                  dibs.bulk(docs, function (error) {
-                    if(error) {
-                      return done(error);
-                    }
-                    dibs.compact(function (error) {
-                      if(error) {
-                        return done(error);
-                      }
-                      done();
-                    });
-                  });
-                });
+                done();
               });
             });
           });
@@ -165,15 +144,16 @@ describe('POST /api/dibs/deactivate', function() {
 
   it('should fail when an user is signed in but not an admin', function(done) {
     var userId = uuid.v4();
-      userSchema._id = userId;
-      userSchema.password = bcrypt.hashSync('mockpassword', 10);
-      userSchema.username = 'mockuser';
-      userSchema.email = 'mockuser@inb4.us';
-      userSchema.active = true;
-      utils.insert(utils.users, userId, userSchema, function (error) {
-        if(error) {
-          return done(error);
-        }
+    userSchema._id = userId;
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.username = 'mockuser';
+    userSchema.email = 'mockuser@inb4.us';
+    userSchema.active = true;
+    userSchema.admin = false;
+    utils.insert(utils.users, userId, userSchema, function (error) {
+      if(error) {
+        return done(error);
+      }
       request(app)
       .post('/api/user/login')
       .send({

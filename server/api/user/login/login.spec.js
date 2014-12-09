@@ -71,6 +71,37 @@ describe('POST /api/user/login', function() {
     });
   });
 
+  it('should successfully log the admin in', function(done) {
+    var adminId = uuid.v4();
+    userSchema._id = adminId;
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.username = 'mockadmin';
+    userSchema.email = 'mockadmin@inb4.us';
+    userSchema.active = true;
+    userSchema.admin = true;
+    utils.insert(utils.users, adminId, userSchema, function (error) {
+      if(error) {
+        return done(error);
+      }
+      request(app)
+      .post('/api/user/login')
+      .send({
+        username: 'mockadmin',
+        password: 'mockpassword'
+      })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if (err) {
+          return done(err);
+        }
+        res.body.should.be.instanceof(Object);
+        res.body.should.have.property('message');
+        done();
+      });
+    });
+  });
+
   it('should fail on an missing username', function(done) {
     request(app)
     .post('/api/user/login')

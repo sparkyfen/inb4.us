@@ -31,10 +31,19 @@
 
 ## server/api/search/admins/admins.controller.js
 
--  **TODO** `(line 28)`  If we want more data on the admins, we can update the usernames list with these values.
--  **TODO** `(line 46)`  If we want more data on the users, we can update the usernames list with these values.
+-  **TODO** `(line 26)`  If we want more data on the admins, we can update the usernames list with these values.
+-  **TODO** `(line 44)`  If we want more data on the users, we can update the usernames list with these values.
 
 ## server/api/search/users/users.controller.js
 
 -  **TODO** `(line 28)`  If we want more data on the users, we can update the usernames list with these values.
 -  **TODO** `(line 46)`  If we want more data on the users, we can update the usernames list with these values.
+
+## server/api/user/delete/delete.spec.js
+
+-  **TODO** `(line 17)`  Update delete user tests to account for when a user has dibs and make sure that runs properly.
+-  **TODO** `(line 18)`  Update delete user tests to account for when a user has friends and make sure that runs properly as well.
+
+## server/api/user/friends/delete/delete.spec.js
+
+-  **TODO** `(line 8)`  Write this unit test.

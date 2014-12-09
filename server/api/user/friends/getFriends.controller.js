@@ -3,8 +3,6 @@
 var validator = require('validator');
 var _ = require('lodash');
 var db = require('../../../components/database');
-var admins = db.admin;
-admins.initialize();
 var users = db.user;
 users.initialize();
 
@@ -47,39 +45,11 @@ exports.index = function(req, res) {
       var usersList = reply.rows.map(function (row) {
         return row.value;
       });
-      // Get the user ids.
-      var userIds = usersList.map(function (user) {
-        return user._id;
+      // Get the user names
+      var usernames = usersList.map(function (user) {
+        return user.username;
       });
-      // Get the difference between the friend list and the user list to get the admins.
-      var adminIds = _.difference(friendIds, userIds);
-      // If the users length that came back from the database does not match our original request,
-      // we have users in the list that are admins.
-      if(adminIds.length > 0) {
-        // Get admins from the database
-        admins.getMultipleIds(adminIds, function (error, reply) {
-          if(error) {
-            console.log(error);
-            return res.status(500).jsonp({message: 'Could not get friends.'});
-          }
-          // Get the user names
-          var usernames = usersList.map(function (user) {
-            return user.username;
-          });
-          // Get admin usernames
-          var adminUsernames = reply.rows.map(function (row) {
-            return row.value.username;
-          });
-          var usernames = usernames.concat(adminUsernames);
-          return res.jsonp({message: 'Results found.', results: usernames});
-        });
-      } else {
-        // Get the user names
-        var usernames = usersList.map(function (user) {
-          return user.username;
-        });
-        return res.jsonp({message: 'Results found.', results: usernames});
-      }
+      return res.jsonp({message: 'Results found.', results: usernames});
     });
   });
 };

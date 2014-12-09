@@ -61,11 +61,17 @@ exports.index = function(req, res) {
             }
             // Passwords are the same, lets log the user in.
             req.session.username = username;
+            if(user.admin) {
+              req.session.admin = true;
+            }
             return res.jsonp({message: 'Logged in.'});
           });
         } else {
           // Passwords are the same, lets log the user in.
           req.session.username = username;
+          if(user.admin) {
+            req.session.admin = true;
+          }
           return res.jsonp({message: 'Logged in.'});
         }
       });

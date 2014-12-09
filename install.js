@@ -5,12 +5,10 @@ var fs =  require('fs');
 var uuid = require('node-uuid');
 var bcrypt = require('bcrypt');
 var config = require('./server/config/environment');
+var userSchema = require('./server/components/schema/user');
 var db = require('./server/components/database');
-var adminSchema = require('./server/components/schema/admin');
 var user = db.user;
 user.initialize();
-var admin = db.admin;
-admin.initialize();
 var dibs = db.dib;
 dibs.initialize();
 var keywords = db.keyword;
@@ -27,10 +25,9 @@ if(process.env.NODE_ENV === 'development') {
   }
 }
 
-var userView = {views: {"all": {"map": "function(doc) {emit(null, doc)}","reduce": "_count"}, "by_username": {"map": "function(doc) {emit(doc.username, doc)}","reduce": "_count"}, "by_email": {"map": "function(doc) {emit(doc.email, doc)}","reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}}};
-var adminView = {views: {"all": {"map": "function(doc) {emit(null, doc)}","reduce": "_count"}, "by_username": {"map": "function(doc) {emit(doc.username, doc)}","reduce": "_count"}, "by_email": {"map": "function(doc) {emit(doc.email, doc)}","reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}}};
-var dibView = {views: {"all": {"map": "function(doc) {emit(null, doc)}","reduce": "_count"}, "by_name": {"map": "function(doc) {emit(doc.name, doc)}","reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}, "by_creator": {"map": "function(doc) {emit(doc.creator, doc)}", "reduce": "_count"}, "by_date_created": {"map": "function(doc) {emit(doc.dates.created, doc)}", "reduce": "_count"}, "by_reported": {"map": "function(doc) {emit(doc.report.reported, doc)}", "reduce": "_count"}}};
-var keywordsView = {views: {"all": {"map": "function(doc) {emit(null, doc)}", "reduce": "_count"}, "by_name": {"map": "function(doc) {emit(doc.name, doc)}", "reduce": "_count"}, "by_id": {"map": "function(doc) {emit(doc._id, doc)}","reduce": "_count"}}};
+var userView = require('./server/components/views/user');
+var dibView = require('./server/components/views/dib');
+var keywordsView = require('./server/components/views/keyword');
 
 utils.create(config.couchdb.users, function (err) {
   if(err && err.statusCode !== 412) {
@@ -43,55 +40,43 @@ utils.create(config.couchdb.users, function (err) {
       console.log('Error inserting user view.'.red);
       return console.log(err);
     }
-    utils.create(config.couchdb.admins, function (err) {
-      if(err && err.statusCode !== 412) {
-        console.log('Error creating admins database.'.red);
+    userSchema._id = uuid.v4();
+    userSchema.username = config.admin.username,
+    userSchema.password = bcrypt.hashSync(config.admin.password, 10);
+    userSchema.email = config.admin.email;
+    userSchema.firstname = 'Admin';
+    userSchema.lastname = 'Admin';
+    userSchema.active = true;
+    userSchema.admin = true;
+    utils.insert(utils.users, userSchema._id, userSchema, function (err) {
+      // 409 is Document update conflict.
+      if(err && err.statusCode !== 409) {
+        console.log('Error inserting new admin.'.red);
         return console.log(err);
       }
-      utils.insert(admin.admins, '_design/admins', adminView, function (err) {
-        // 409 is Document update conflict.
-        if(err && err.statusCode !== 409) {
-          console.log('Error inserting admins view.'.red);
+      utils.create(config.couchdb.dibs, function (err) {
+        if(err && err.statusCode !== 412) {
+          console.log('Error creating dibs database.'.red);
           return console.log(err);
         }
-        adminSchema._id = uuid.v4();
-        adminSchema.username = config.admin.username,
-        adminSchema.password = bcrypt.hashSync(config.admin.password, 10);
-        adminSchema.email = config.admin.email;
-        adminSchema.firstname = 'Admin';
-        adminSchema.lastname = 'Admin';
-        adminSchema.active = true;
-        utils.insert(utils.admins, adminSchema._id, adminSchema, function (err) {
+        utils.insert(dibs.dibs, '_design/dibs', dibView, function (err) {
           // 409 is Document update conflict.
           if(err && err.statusCode !== 409) {
-            console.log('Error inserting admins view.'.red);
+            console.log('Error inserting dibs view.'.red);
             return console.log(err);
           }
-          utils.create(config.couchdb.dibs, function (err) {
+          utils.create(config.couchdb.keywords, function (err) {
             if(err && err.statusCode !== 412) {
-              console.log('Error creating dibs database.'.red);
+              console.log('Error creating keywords database.'.red);
               return console.log(err);
             }
-            utils.insert(dibs.dibs, '_design/dibs', dibView, function (err) {
+            utils.insert(keywords.keywords, '_design/keywords', keywordsView, function (err) {
               // 409 is Document update conflict.
               if(err && err.statusCode !== 409) {
                 console.log('Error inserting dibs view.'.red);
                 return console.log(err);
               }
-              utils.create(config.couchdb.keywords, function (err) {
-                if(err && err.statusCode !== 412) {
-                  console.log('Error creating keywords database.'.red);
-                  return console.log(err);
-                }
-                utils.insert(keywords.keywords, '_design/keywords', keywordsView, function (err) {
-                  // 409 is Document update conflict.
-                  if(err && err.statusCode !== 409) {
-                    console.log('Error inserting dibs view.'.red);
-                    return console.log(err);
-                  }
-                  console.log('DB Installation successful.'.green);
-                });
-              });
+              console.log('DB Installation successful.'.green);
             });
           });
         });

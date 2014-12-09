@@ -5,7 +5,6 @@ var config = require('../../config/environment');
 exports.initialize = function() {
   this.nano = require('nano')({url: config.couchdb.url});
   this.users = this.nano.use(config.couchdb.users);
-  this.admins = this.nano.use(config.couchdb.admins);
   this.dibs = this.nano.use(config.couchdb.dibs);
   this.keywords = this.nano.use(config.couchdb.keywords);
 };

@@ -2,8 +2,6 @@
 
 var validator = require('validator');
 var db = require('../../../components/database');
-var admins = db.admin;
-admins.initialize();
 var users = db.user;
 users.initialize();
 var utils = db.utils;
@@ -32,22 +30,11 @@ function _getAccounts(friendName, username, callback) {
       return callback({code: 400, message: 'User does not exist.'});
     }
     if(reply.rows.length === 1 && reply.rows[0].value.username === username) {
-      var user = reply.rows[0].value;
-      admins.searchByUsername(friendName, function (error, reply) {
-        if(error) {
-          console.log(error);
-          return callback({code: 500, message: 'Could not add friend.'});
-        }
-        if(reply.rows.length === 0) {
-          return callback({code: 400, message: 'Friend does not exist.'});
-        }
-        var friend = reply.rows[0].value;
-        return callback(null, {user: user, friend: friend, isAdmin: true});
-      });
+      return callback({code: 400, message: 'Friend does not exist.'});
     } else {
       var user = reply.rows[0].value;
       var friend = reply.rows[1].value;
-      return callback(null, {user: user, friend: friend, isAdmin: false});
+      return callback(null, {user: user, friend: friend});
     }
   });
 }
@@ -71,7 +58,6 @@ exports.index = function(req, res) {
       }
       var user = userList.user;
       var friend = userList.friend;
-      var isAdmin = userList.isAdmin;
       if(!user.active) {
         return res.status(400).jsonp({message: 'You must activate this account before using it.'});
       }
@@ -87,29 +73,13 @@ exports.index = function(req, res) {
       // Add friend id to the user object.
       user.friends.push({id: friend._id, accepted: true});
       friend.friends.push({id: user._id, accepted: false});
-      if(isAdmin) {
-        utils.insert(utils.admins, friend._id, friend, function (error) {
-          if(error) {
-            console.log(error);
-            return res.status(500).jsonp({message: 'Could not add friend.'});
-          }
-          utils.insert(utils.users, user._id, user, function (error) {
-            if(error) {
-              console.log(error);
-              return res.status(500).jsonp({message: 'Could not add friend.'});
-            }
-            return res.jsonp({message: 'Friend added.'});
-          });
-        });
-      } else {
-        users.bulk([user, friend], function (error) {
-          if(error) {
-            console.log(error);
-            return res.status(500).jsonp({message: 'Could not add friend.'});
-          }
-          return res.jsonp({message: 'Friend added.'});
-        });
-      }
+      users.bulk([user, friend], function (error) {
+        if(error) {
+          console.log(error);
+          return res.status(500).jsonp({message: 'Could not add friend.'});
+        }
+        return res.jsonp({message: 'Friend added.'});
+      });
     });
   });
 };

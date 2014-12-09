@@ -11,6 +11,7 @@ module.exports = {
     reset: null
   },
   active: false,
+  admin: false,
   friends: [], // {id: '', accepted: true/false}
   dibs: [],
   address: {

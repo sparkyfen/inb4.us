@@ -2,8 +2,8 @@
 
 var validator = require('validator');
 var db = require('../../../components/database');
-var admins = db.admin;
-admins.initialize();
+var users = db.user;
+users.initialize();
 var dibs = db.dib;
 dibs.initialize();
 var utils = db.utils;
@@ -26,7 +26,7 @@ exports.index = function(req, res) {
   if(!validator.isUUID(id)) {
     return res.status(400).jsonp({message: 'Invalid id.'});
   }
-  admins.searchByUsername(username, function (error, reply) {
+  users.searchByUsername(username, function (error, reply) {
     if(error) {
       console.log(error);
       return res.status(500).jsonp({message: 'Could not deactivate dib.'});

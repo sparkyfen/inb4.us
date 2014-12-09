@@ -85,4 +85,46 @@ describe('GET /api/user/logout', function() {
       done();
     });
   });
+
+  it('should successfully log the admin out', function(done) {
+    var userId = uuid.v4();
+    userSchema._id = userId;
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.username = 'mockadmin';
+    userSchema.email = 'mockadmin@inb4.us';
+    userSchema.active = true;
+    userSchema.admin = true;
+    utils.insert(utils.users, userId, userSchema, function (error) {
+      if(error) {
+        return done(error);
+      }
+      request(app)
+      .post('/api/user/login')
+      .send({
+        username: 'mockuser',
+        password: 'mockpassword'
+      })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if (err) {
+          return done(err);
+        }
+        cookie = res.headers['set-cookie'];
+        request(app)
+        .get('/api/user/logout')
+        .set('cookie', cookie)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          res.body.should.be.instanceof(Object);
+          res.body.should.have.property('message');
+          done();
+        });
+      });
+    });
+  });
 });

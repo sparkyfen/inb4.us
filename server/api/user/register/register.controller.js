@@ -16,8 +16,6 @@ var utils = db.utils;
 utils.initialize();
 var users = db.user;
 users.initialize();
-var admins = db.admin;
-admins.initialize();
 
 function _validateRegistration(username, email, password, callback) {
   if(validator.isNull(username)) {
@@ -43,7 +41,7 @@ function _getEmailTemplate(options, callback) {
     if(error) {
       return callback(error);
     }
-    templates('register', {
+    templates(options.isAdmin ? 'adminRegister' : 'register', {
       activateUrl: activateUrl
     }, function (error, html, text) {
       if(error) {
@@ -56,6 +54,10 @@ function _getEmailTemplate(options, callback) {
 
 // Registers a new user.
 exports.index = function(req, res) {
+  var isAdmin = false;
+  if(req.session.admin) {
+    isAdmin = true;
+  }
   var username = req.body.username;
   var email = req.body.email;
   var password = req.body.password;
@@ -64,8 +66,8 @@ exports.index = function(req, res) {
     if(error) {
       return res.status(400).jsonp({message: error});
     }
-    // Check if email exists in admin database.
-    admins.searchByEmail(email, function (error, reply) {
+    // Check if email exists in database.
+    users.searchByEmail(email, function (error, reply) {
       if(error) {
         console.log(error);
         return res.status(500).jsonp({message: 'Could not register user.'});
@@ -73,79 +75,63 @@ exports.index = function(req, res) {
       if(reply.rows.length !== 0) {
         return res.status(400).jsonp({message: 'Email already registered.'});
       }
-      // Check if email exists in database.
-      users.searchByEmail(email, function (error, reply) {
+      // Check if username exists in database.
+      users.searchByUsername(username, function (error, reply) {
         if(error) {
           console.log(error);
           return res.status(500).jsonp({message: 'Could not register user.'});
         }
         if(reply.rows.length !== 0) {
-          return res.status(400).jsonp({message: 'Email already registered.'});
+          return res.status(400).jsonp({message: 'User already registered with that username.'});
         }
-        // Check if username exists in admin database.
-        admins.searchByUsername(username, function (error, reply) {
+        // Encrypt password
+        bcrypt.hash(password, 10, function (error, hash) {
           if(error) {
             console.log(error);
             return res.status(500).jsonp({message: 'Could not register user.'});
           }
-          if(reply.rows.length !== 0) {
-            return res.status(400).jsonp({message: 'Admin already registered with that username.'});
+          var userId = uuid.v4();
+          userSchema.username = username;
+          userSchema.password = hash;
+          userSchema.email = email;
+          userSchema.tokens.activate = uuid.v4();
+          if(isAdmin) {
+            userSchema.admin = true;
           }
-          // Check if username exists in database.
-          users.searchByUsername(username, function (error, reply) {
+          _getEmailTemplate({
+            userId: userId,
+            token: userSchema.tokens.activate,
+            isAdmin: isAdmin
+          }, function (error, emailBody) {
             if(error) {
               console.log(error);
               return res.status(500).jsonp({message: 'Could not register user.'});
             }
-            if(reply.rows.length !== 0) {
-              return res.status(400).jsonp({message: 'User already registered with that username.'});
+            if(config.env !== 'test') {
+              var transport = nodemailer.createTransport(sgTransport({
+                auth: {
+                  api_user: config.email.accounts.sendgrid.username,
+                  api_key: config.email.accounts.sendgrid.password
+                }
+              }));
+              transport.sendMail({
+                from: config.email.accounts.info,
+                to: email,
+                subject: isAdmin ? 'New Admin Account' : 'New Account',
+                html: emailBody
+              }, function (error, reply) {
+                if(error) {
+                  console.log(error);
+                }
+                console.log('Register user email sent for email '+ email + ' with email server reply of ' + reply.message);
+              });
             }
-            // Encrypt password
-            bcrypt.hash(password, 10, function (error, hash) {
+            utils.insert(utils.users, userId, userSchema, function (error) {
               if(error) {
                 console.log(error);
                 return res.status(500).jsonp({message: 'Could not register user.'});
               }
-              var userId = uuid.v4();
-              userSchema.username = username;
-              userSchema.password = hash;
-              userSchema.email = email;
-              userSchema.tokens.activate = uuid.v4();
-              _getEmailTemplate({
-                userId: userId,
-                token: userSchema.tokens.activate
-              }, function (error, emailBody) {
-                if(error) {
-                  console.log(error);
-                  return res.status(500).jsonp({message: 'Could not register user.'});
-                }
-                if(config.env !== 'test') {
-                  var transport = nodemailer.createTransport(sgTransport({
-                    auth: {
-                      api_user: config.email.accounts.sendgrid.username,
-                      api_key: config.email.accounts.sendgrid.password
-                    }
-                  }));
-                  transport.sendMail({
-                    from: config.email.accounts.info,
-                    to: email,
-                    subject: 'New Account',
-                    html: emailBody
-                  }, function (error, reply) {
-                    if(error) {
-                      console.log(error);
-                    }
-                    console.log('Register user email sent for email '+ email + ' with email server reply of ' + reply.message);
-                  });
-                }
-                utils.insert(utils.users, userId, userSchema, function (error) {
-                  if(error) {
-                    console.log(error);
-                    return res.status(500).jsonp({message: 'Could not register user.'});
-                  }
-                  return res.jsonp({message: 'Registered, please check your email to activate your account.'});
-                });
-              });
+              return res.jsonp({message: 'Registered, please check your email to activate your account.'});
             });
           });
         });

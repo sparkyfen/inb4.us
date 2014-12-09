@@ -70,6 +70,15 @@ exports.searchByEmail = function (email, callback) {
   });
 };
 
+exports.searchByAdmin = function(callback) {
+  this.users.view('users', 'by_admin', {reduce: false}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
 exports.getMultipleIds = function (ids, callback) {
   this.users.view('users', 'by_id', {reduce: false, keys: ids}, function (error, reply, headers) {
     if(error) {

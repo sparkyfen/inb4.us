@@ -6,13 +6,10 @@ var request = require('supertest');
 var uuid = require('node-uuid');
 var app = require('../../../app');
 var userSchema = require('../../../components/schema/user');
-var adminSchema = require('../../../components/schema/admin');
 var config = require('../../../config/environment');
 var db = require('../../../components/database');
 var utils = db.utils;
 utils.initialize();
-var admins = db.admin;
-admins.initialize();
 var users = db.user;
 users.initialize();
 
@@ -39,26 +36,7 @@ describe('POST /api/user/register', function() {
           if(error) {
             return done(error);
           }
-          admins.getAll(function (error, reply) {
-            if(error) {
-              return done(error);
-            }
-            var docs = reply.rows.map(function (row) {
-              row.value._deleted = true;
-              return row.value;
-            });
-            admins.bulk(docs, function (error) {
-              if(error) {
-                return done(error);
-              }
-              admins.compact(function (error) {
-                if(error) {
-                  return done(error);
-                }
-                done();
-              });
-            });
-          });
+          done();
         });
       });
     });
@@ -81,6 +59,55 @@ describe('POST /api/user/register', function() {
       res.body.should.be.instanceof(Object);
       res.body.should.have.property('message');
       done();
+    });
+  });
+
+  it('should successfully register an admin', function(done) {
+    var adminId = uuid.v4();
+    userSchema._id = adminId;
+    userSchema.username = 'mockadmin';
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.email = 'mockadmin@inb4.us';
+    userSchema.active = true;
+    userSchema.admin = true;
+    utils.insert(utils.users, adminId, userSchema, function (error) {
+      if(error) {
+        return done(error);
+      }
+      request(app)
+      .post('/api/user/login')
+      .send({
+        username: 'mockadmin',
+        password: 'mockpassword'
+      })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) {
+          return done(err);
+        }
+        var cookie = res.headers['set-cookie'];
+        res.body.should.be.instanceof(Object);
+        res.body.should.have.property('message');
+        request(app)
+        .post('/api/user/register')
+        .set('cookie', cookie)
+        .send({
+          username: 'newmockadmin',
+          password: 'mockpassword',
+          email: 'newmockadmin@inb4.us'
+        })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          res.body.should.be.instanceof(Object);
+          res.body.should.have.property('message');
+          done();
+        });
+      });
     });
   });
 
@@ -194,12 +221,13 @@ describe('POST /api/user/register', function() {
 
   it('should fail on existing admin email', function(done) {
     var adminId = uuid.v4();
-    adminSchema._id = adminId;
-    adminSchema.username = 'newmockadmin';
-    adminSchema.password = bcrypt.hashSync('mockpassword', 10);
-    adminSchema.email = 'mockadmin@inb4.us';
-    adminSchema.tokens.activate = uuid.v4();
-    utils.insert(utils.admins, adminId, adminSchema, function (error) {
+    userSchema._id = adminId;
+    userSchema.username = 'newmockadmin';
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.email = 'mockadmin@inb4.us';
+    userSchema.tokens.activate = uuid.v4();
+    userSchema.admin = true;
+    utils.insert(utils.users, adminId, userSchema, function (error) {
       if(error) {
         return done(error);
       }
@@ -256,12 +284,13 @@ describe('POST /api/user/register', function() {
 
   it('should fail on existing admin username', function(done) {
     var adminId = uuid.v4();
-    adminSchema._id = adminId;
-    adminSchema.password = bcrypt.hashSync('mockpassword', 10);
-    adminSchema.username = 'mockadmin';
-    adminSchema.email = 'newmockadmin@inb4.us';
-    adminSchema.tokens.activate = uuid.v4();
-    utils.insert(utils.admins, adminId, adminSchema, function (error) {
+    userSchema._id = adminId;
+    userSchema.password = bcrypt.hashSync('mockpassword', 10);
+    userSchema.username = 'mockadmin';
+    userSchema.email = 'newmockadmin@inb4.us';
+    userSchema.tokens.activate = uuid.v4();
+    userSchema.admin = true;
+    utils.insert(utils.users, adminId, userSchema, function (error) {
       if(error) {
         return done(error);
       }

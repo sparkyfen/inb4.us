@@ -13,13 +13,20 @@
  */
 
 /**
+ * @apiDefine admin Authenticated access is required.
+ * An admin session is required.
+ *
+ * @apiVersion 1.0.0
+ */
+
+/**
 * @api {post} /api/user/register Register
 * @apiVersion 1.0.0
 * @apiName Register
 * @apiGroup User
 * @apiPermission public
 *
-* @apiDescription Registers a new user.
+* @apiDescription Registers a new user or admin. If an admin session in provided, an admin account will be created.
 *
 * @apiParam {String} username The username the user wants.
 * @apiParam {String} email The email the user wants.
@@ -28,6 +35,9 @@
 *
 * @apiExample Default example:
 *     curl -X POST 'https://inb4.us/api/user/register' -d 'username=mockuser&email=mockuser@inb4.us&password=mockpassword'
+*
+* @apiExample Default admin example (with admin session):
+*     curl -X POST 'https://inb4.us/api/user/register' -d 'username=mockadmin&email=mockadmin@inb4.us&password=mockpassword'
 *
 * @apiExample Default callback example:
 *     curl -X POST 'https://inb4.us/api/user/register' -d 'username=mockuser&email=mockuser@inb4.us&password=mockpassword&callback=foo'
@@ -71,10 +81,6 @@
 *     HTTP/1.1 400 Bad Request
 *     {"message":"User already registered with that username."}
 *
-* @apiErrorExample Error-Response: (Admin Exists)
-*     HTTP/1.1 400 Bad Request
-*     {"message":"Admin already registered with that username."}
-*
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not register user."}
@@ -87,7 +93,7 @@
 * @apiGroup User
 * @apiPermission public
 *
-* @apiDescription Log the user into the site.
+* @apiDescription Log the user into the site. A session with be provided upon successful sign in. If the user is an admin, an extra admin session with be provided.
 *
 * @apiParam {String} username The user's username that they used to register to the site.
 * @apiParam {String} password The user's passsword they used to register to the site.
@@ -670,7 +676,7 @@
 *
 * @apiDescription Add a friend to your friends list
 *
-* @apiParam {String} username Your friends username
+* @apiParam {String} username Your friends username.
 * @apiParam {String} [callback] The name of the callback function.
 *
 * @apiExample Default example:
@@ -780,4 +786,80 @@
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not get friends."}
+*/
+
+/**
+* @api {post} /api/user/friends/delete Delete Friend
+* @apiVersion 1.0.0
+* @apiName Delete Friend
+* @apiGroup User
+* @apiPermission user
+*
+* @apiDescription Delete a friend to your friends list.
+*
+* @apiParam {String} id Your friends id.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/friends' -d "id=3fa2d253-7794-4b36-8c98-7886efb9473f"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/friends' -d "id=3fa2d253-7794-4b36-8c98-7886efb9473f&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"messsage":"Friend added."}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (400 Bad Request) MissingId Your friend's user id was missing from the request.
+* @apiError (400 Bad Request) InvalidId Your friend's user id was not a UUID value.
+* @apiError (400 Bad Request) UserNoFriends The user does not any friends to delete.
+* @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
+* @apiError (400 Bad Request) FriendNotExistForUser The user does not have the requested id in their friends list.
+* @apiError (400 Bad Request) FriendNotExist Your friends username does not exist in the database.
+* @apiError (400 Bad Request) UserNotExistForFriend The friend does not have the user id requesting the delete in their friends list.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
+* @apiError (500 Internal Server Error) ServerError There was a problem deleting your friend.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Missing Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing id."}
+*
+* @apiErrorExample Error-Response: (Invalid Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid id."}
+*
+* @apiErrorExample Error-Response: (User No Friends)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User has no friends to delete."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Friend Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Friend does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Friend Not Exist For User)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Friend does not exist for user."}
+*
+* @apiErrorExample Error-Response: (User Not Exist For Friend)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist for friend."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not delete friend."}
 */
