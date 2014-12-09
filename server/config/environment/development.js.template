@@ -28,6 +28,9 @@ module.exports = {
     authId: '', // https://smartystreets.com/account/keys
     authToken: ''
   },
+  catpcha: {
+    secretKey: '' // https://www.google.com/recaptcha/admin
+  },
   dates: {
     purgeTime: 86400000 // Time in milliseconds
   },

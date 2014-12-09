@@ -40,6 +40,9 @@ module.exports = {
     authId: process.env.INB4_SMARTYSTREETS_AUTH_ID || '', // https://smartystreets.com/account/keys
     authToken: process.env.INB4_SMARTYSTREETS_AUTH_TOKEN || ''
   },
+  catpcha: {
+    secretKey: process.env.INB4_CAPTCHA_SECRET_KEY || '' // https://www.google.com/recaptcha/admin
+  },
   dates: {
     purgeTime: process.env.INB4_PURGE_TIME || 86400000 // Time in milliseconds
   },

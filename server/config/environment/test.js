@@ -23,6 +23,9 @@ module.exports = {
     password: 'testpassword',
     email: 'test-admin@inb4.us'
   },
+  catpcha: {
+    secretKey: 'mySecretKey' // https://www.google.com/recaptcha/admin
+  },
   dates: {
     purgeTime: 86400000 // Time in milliseconds
   },

@@ -23,6 +23,7 @@
       <!-- injector:css -->
       <link rel="stylesheet" href="app/admin/activate/activate.css">
       <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/captchaTest/captchaTest.css">
       <link rel="stylesheet" href="app/main/main.css">
       <link rel="stylesheet" href="app/user/activate/activate.css">
       <link rel="stylesheet" href="app/user/reset/reset.css">
@@ -53,6 +54,7 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
+    <script src="//www.google.com/recaptcha/api.js"></script>
     <!-- build:js({client,node_modules}) app/vendor.js -->
       <!-- bower:js -->
       <script src="bower_components/jquery/jquery.js"></script>
@@ -65,6 +67,7 @@
       <script src="bower_components/snackbarjs/src/snackbar.js"></script>
       <script src="bower_components/semantic-ui/dist/semantic.js"></script>
       <script src="bower_components/angular-semantic-ui/dist/angular-semantic-ui-0.0.1.js"></script>
+      <script src="bower_components/angular-no-captcha/src/angular-no-captcha.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 
@@ -74,6 +77,8 @@
           <script src="app/Userservice/Userservice.service.js"></script>
           <script src="app/admin/activate/activate.controller.js"></script>
           <script src="app/admin/activate/activate.js"></script>
+          <script src="app/captchaTest/captchaTest.controller.js"></script>
+          <script src="app/captchaTest/captchaTest.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="app/user/activate/activate.controller.js"></script>
