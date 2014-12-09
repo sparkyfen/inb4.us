@@ -176,6 +176,37 @@ describe('POST /api/user/login', function() {
     });
   });
 
+  it('should fail if the account is locked', function(done) {
+    users.searchByUsername('mockuser', function (error, reply) {
+      if(error) {
+        return done(error);
+      }
+      var user = reply.rows[0].value;
+      user.locked = true;
+      utils.insert(utils.users, user._id, user, function (error) {
+        if(error) {
+          return done(error);
+        }
+        request(app)
+        .post('/api/user/login')
+        .send({
+          username: 'mockuser',
+          password: 'mockpassword'
+        })
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if (err) {
+            return done(err);
+          }
+          res.body.should.be.instanceof(Object);
+          res.body.should.have.property('message');
+          done();
+        });
+      });
+    });
+  });
+
   it('should fail on an unactivated account', function(done) {
     users.searchByUsername('mockuser', function (error, reply) {
       if(error) {

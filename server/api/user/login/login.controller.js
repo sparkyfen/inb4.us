@@ -43,15 +43,31 @@ exports.index = function(req, res) {
       if(!user.active) {
         return res.status(400).jsonp({message: 'You must activate this account before signing in.'});
       }
+      if(user.locked) {
+        return res.status(400).jsonp({message: 'Account is locked, please reset your password.'});
+      }
       bcrypt.compare(password, user.password, function (error, isSame) {
         if(error) {
           console.log(error);
           return res.status(500).jsonp({message: 'Could not log user in.'});
         }
         if(!isSame) {
-          return res.status(400).jsonp({message: 'Passwords do not match.'});
-        }
-        if(!validator.isNull(user.tokens.reset)) {
+          user.loginAttempts++;
+          if(user.loginAttempts >= 10) {
+            user.locked = true;
+          }
+          utils.insert(utils.users, user._id, user, function (error) {
+            if(error) {
+              console.log(error);
+              return res.status(500).jsonp({message: 'Could not log user in.'});
+            }
+            if(user.locked) {
+              return res.status(400).jsonp({message: 'Account is locked, please reset your password.'});
+            } else {
+              return res.status(400).jsonp({message: 'Passwords do not match.'});
+            }
+          });
+        } else if(!validator.isNull(user.tokens.reset)) {
           // The reset token was set, we can unset it here cause the user signed in successfully.
           user.tokens.reset = null;
           utils.insert(utils.users, user._id, user, function (error) {

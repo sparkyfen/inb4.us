@@ -15,6 +15,8 @@ module.exports = {
     created: null,
     activated: null
   },
+  locked: false,
+  loginAttempts: 0,
   admin: false,
   friends: [], // {id: '', accepted: true/false}
   dibs: [],

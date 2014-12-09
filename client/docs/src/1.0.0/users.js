@@ -119,6 +119,7 @@
 * @apiError (400 Bad Request) MissingUsername The username was missing from the request.
 * @apiError (400 Bad Request) MissingPassword The password was missing from the request.
 * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
+* @apiError (400 Bad Request) AccountLocked The user account has been locked for too many login attempts.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (400 Bad Request) PasswordMismatch The password provided was invalid.
 * @apiError (500 Internal Server Error) ServerError There was a problem logging the user in.
@@ -135,6 +136,10 @@
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Username does not exist."}
 *
+* @apiErrorExample Error-Response: (Account Locked)
+*     HTTP/1.1 400 Bad Request
+*     {"message": "Account is locked, please reset your password."}
+*
 * @apiErrorExample Error-Response: (Activatation Needed)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"You must activate this account before signing in."}
@@ -146,6 +151,7 @@
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not log user in."}
+*
 */
 
 /**

@@ -73,6 +73,8 @@ exports.index = function(req, res) {
         }
         user.password = hash;
         user.tokens.reset = null;
+        user.locked = false;
+        user.loginAttempts = 0;
         utils.insert(utils.users, user._id, user, function (error, reply) {
           if(error) {
             console.log(error);
