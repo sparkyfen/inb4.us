@@ -47,7 +47,7 @@ exports.index = function(req, res) {
     if(error) {
       return res.status(error.code).jsonp({message: error.message});
     }
-    dib.searchById(id, function (error, reply) {
+    dibs.searchById(id, function (error, reply) {
       if(error) {
         console.log(error);
         return res.status(500).jsonp({message: 'Could not delete dib.'});
