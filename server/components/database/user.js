@@ -79,6 +79,24 @@ exports.searchByAdmin = function(callback) {
   });
 };
 
+exports.searchByCreatedDate = function(date, callback) {
+  this.users.view('users', 'by_created_date', {reduce: false, startkey: date}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
+exports.searchByInactiveCreatedDate = function(callback) {
+  this.users.view('users', 'by_inactive_created_date', {reduce: false}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
 exports.getMultipleIds = function (ids, callback) {
   this.users.view('users', 'by_id', {reduce: false, keys: ids}, function (error, reply, headers) {
     if(error) {

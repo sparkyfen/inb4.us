@@ -7,8 +7,8 @@ var bcrypt = require('bcrypt');
 var config = require('./server/config/environment');
 var userSchema = require('./server/components/schema/user');
 var db = require('./server/components/database');
-var user = db.user;
-user.initialize();
+var users = db.user;
+users.initialize();
 var dibs = db.dib;
 dibs.initialize();
 var keywords = db.keyword;
@@ -34,25 +34,36 @@ utils.create(config.couchdb.users, function (err) {
     console.log('Error creating users database.'.red);
     return console.log(err);
   }
-  utils.insert(user.users, '_design/users', userView, function (err) {
+  utils.insert(utils.users, '_design/users', userView, function (err) {
     // 409 is Document update conflict.
     if(err && err.statusCode !== 409) {
       console.log('Error inserting user view.'.red);
       return console.log(err);
     }
-    userSchema._id = uuid.v4();
-    userSchema.username = config.admin.username,
-    userSchema.password = bcrypt.hashSync(config.admin.password, 10);
-    userSchema.email = config.admin.email;
-    userSchema.firstname = 'Admin';
-    userSchema.lastname = 'Admin';
-    userSchema.active = true;
-    userSchema.admin = true;
-    utils.insert(utils.users, userSchema._id, userSchema, function (err) {
-      // 409 is Document update conflict.
-      if(err && err.statusCode !== 409) {
-        console.log('Error inserting new admin.'.red);
+    users.searchByUsername(config.admin.username, function (error, reply) {
+      if(error) {
+        console.log('Error searching for known admin username.'.red);
         return console.log(err);
+      }
+      if(reply.rows.length === 0) {
+        userSchema._id = uuid.v4();
+        userSchema.username = config.admin.username,
+        userSchema.password = bcrypt.hashSync(config.admin.password, 10);
+        userSchema.email = config.admin.email;
+        userSchema.firstname = 'Admin';
+        userSchema.lastname = 'Admin';
+        userSchema.active = true;
+        userSchema.admin = true;
+        userSchema.dates.created = Date.now(Date.UTC());
+        userSchema.dates.activated = Date.now(Date.UTC());
+        utils.insert(utils.users, userSchema._id, userSchema, function (err) {
+          // 409 is Document update conflict.
+          if(err && err.statusCode !== 409) {
+            console.log('Error inserting new admin.'.red);
+            return console.log(err);
+          }
+          console.log('Admin added successfully.'.green);
+        });
       }
       utils.create(config.couchdb.dibs, function (err) {
         if(err && err.statusCode !== 412) {

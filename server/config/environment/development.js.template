@@ -28,6 +28,9 @@ module.exports = {
     authId: '', // https://smartystreets.com/account/keys
     authToken: ''
   },
+  dates: {
+    purgeTime: 86400000 // Time in milliseconds
+  },
   admin: {
     username: 'inb4-admin',
     password: '', // 99+ char password here

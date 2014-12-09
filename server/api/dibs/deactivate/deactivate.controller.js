@@ -15,7 +15,7 @@ exports.index = function(req, res) {
     return res.status(401).jsonp({message: 'Please sign in.'});
   }
   if(!req.session.admin && req.session.username) {
-    console.log('User ' + req.session.username + ' attempted to access the admin page.');
+    console.log('User ' + req.session.username + ' attempted to access the dib deactivate page.');
     return res.status(401).jsonp({message: 'Admins only.'});
   }
   var username = req.session.username;

@@ -33,12 +33,15 @@ module.exports = {
     }
   },
   usps: {
-    server: process.env.USPS_SERVER || 'https://secure.shippingapis.com/ShippingAPI.dll',
-    userId: process.env.USPS_USERID || '' // https://www.usps.com/business/web-tools-apis/welcome.htm
+    server: process.env.INB4_USPS_SERVER || 'https://secure.shippingapis.com/ShippingAPI.dll',
+    userId: process.env.INB4_USPS_USERID || '' // https://www.usps.com/business/web-tools-apis/welcome.htm
   },
   smartystreets: {
-    authId: process.env.SMARTYSTREETS_AUTH_ID || '', // https://smartystreets.com/account/keys
-    authToken: process.env.SMARTYSTREETS_AUTH_TOKEN || ''
+    authId: process.env.INB4_SMARTYSTREETS_AUTH_ID || '', // https://smartystreets.com/account/keys
+    authToken: process.env.INB4_SMARTYSTREETS_AUTH_TOKEN || ''
+  },
+  dates: {
+    purgeTime: process.env.INB4_PURGE_TIME || 86400000 // Time in milliseconds
   },
   admin: {
     username: process.env.INB4_ADMIN_USERNAME || 'inb4-admin',

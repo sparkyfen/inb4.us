@@ -21,6 +21,14 @@ module.exports = {
     "by_admin": {
       "map": "function(doc) {if(doc.admin) {emit(null, doc)}}",
       "reduce": "_count"
+    },
+    "by_created_date": {
+      "map": "function(doc) {emit(doc.dates.created, doc)}",
+      "reduce": "_count"
+    },
+    "by_inactive_created_date": {
+      "map": "function(doc) {if(!doc.active) {emit(doc.dates.created, doc)}}",
+      "reduce": "_count"
     }
   }
 };

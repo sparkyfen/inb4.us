@@ -94,6 +94,7 @@ exports.index = function(req, res) {
           userSchema.username = username;
           userSchema.password = hash;
           userSchema.email = email;
+          userSchema.dates.created = Date.now(Date.UTC());
           userSchema.tokens.activate = uuid.v4();
           if(isAdmin) {
             userSchema.admin = true;

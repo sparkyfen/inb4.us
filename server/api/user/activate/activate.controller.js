@@ -47,6 +47,7 @@ exports.index = function(req, res) {
       }
       // Change values in the object and save to database.
       user.tokens.activate = null;
+      user.dates.activated = Date.now(Date.UTC());
       user.active = true;
       utils.insert(utils.users, user._id, user, function (error) {
         if(error) {

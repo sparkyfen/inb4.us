@@ -23,6 +23,9 @@ module.exports = {
     password: 'testpassword',
     email: 'test-admin@inb4.us'
   },
+  dates: {
+    purgeTime: 86400000 // Time in milliseconds
+  },
   cookie: {
     secret: 'mySecret'
   }
