@@ -188,6 +188,26 @@ describe('POST /api/user/register', function() {
     });
   });
 
+  it('should fail on short password', function(done) {
+    request(app)
+    .post('/api/user/register')
+    .send({
+      username: 'mockuser',
+      password: 'short',
+      email: 'mockuser@inb4.us'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
   it('should fail on existing user email', function(done) {
     var userId = uuid.v4();
     userSchema._id = userId;

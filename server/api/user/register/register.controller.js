@@ -30,6 +30,9 @@ function _validateRegistration(username, email, password, callback) {
   if(validator.isNull(password)) {
     return callback('Missing password.');
   }
+  if(!validator.isLength(password, 7)) {
+    return callback('Password must a minimum of 7 characters long.');
+  }
   return callback();
 }
 

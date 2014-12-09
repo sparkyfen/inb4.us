@@ -185,6 +185,28 @@ describe('POST /api/user/reset', function() {
     });
   });
 
+  it('should fail on a short password', function(done) {
+    request(app)
+    .post('/api/user/reset')
+    .send({
+      id: userId,
+      token: resetToken,
+      new: 'short',
+      confirm: 'short'
+    })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        console.log(res.body);
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
+    });
+  });
+
   it('should fail when user does not exist', function(done) {
     request(app)
     .post('/api/user/reset')

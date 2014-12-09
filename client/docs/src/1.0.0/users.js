@@ -50,7 +50,8 @@
 *
 * @apiError (400 Bad Request) MissingUsername The username was missing from the request
 * @apiError (400 Bad Request) MissingEmail The email was missing from the request
-* @apiError (400 Bad Request) MissingPass The password was missing form the request.
+* @apiError (400 Bad Request) MissingPassword The password was missing form the request.
+* @apiError (400 Bad Request) PasswordTooShort The password length was too short (must be 7 characters or greater).
 * @apiError (400 Bad Request) InvalidEmail The email provided in the request is invalid.
 * @apiError (400 Bad Request) EmailExists The email provided already exists in the database.
 * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
@@ -68,6 +69,10 @@
 * @apiErrorExample Error-Response: (Missing Password)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Missing password."}
+*
+* @apiErrorExample Error-Response: (Password Too Short)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Password must a minimum of 7 characters long."}
 *
 * @apiErrorExample Error-Response: (Invalid Email)
 *     HTTP/1.1 400 Bad Request
@@ -545,6 +550,7 @@
 * @apiError (400 Bad Request) MissingNewPassword The new password was missing from the request.
 * @apiError (400 Bad Request) MissingConfirmPassword The confirm password was missing from the request.
 * @apiError (400 Bad Request) PasswordMismatch The new and confirm password were not the same.
+* @apiError (400 Bad Request) PasswordTooShort The password length was too short (must be 7 characters or greater).
 * @apiError (400 Bad Request) InvalidId The user id was not a UUID value.
 * @apiError (400 Bad Request) InvalidToken The reset token was not a UUID value.
 * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
@@ -571,6 +577,10 @@
 * @apiErrorExample Error-Response: (Password Mismatch)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"New passwords do not match."}
+*
+* @apiErrorExample Error-Response: (Password Too Short)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Password must a minimum of 7 characters long."}
 *
 * @apiErrorExample Error-Response: (Invalid id)
 *     HTTP/1.1 400 Bad Request

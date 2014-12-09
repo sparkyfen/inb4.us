@@ -24,6 +24,9 @@ function _validateRequest(obj, callback) {
   if(obj.new !== obj.confirm) {
     return callback('New passwords do not match.');
   }
+  if(!validator.isLength(obj.new, 7)) {
+    return callback('Password must a minimum of 7 characters long.');
+  }
   if(!validator.isUUID(obj.id)) {
     return callback('Invalid user id.');
   }
