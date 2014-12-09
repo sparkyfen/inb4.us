@@ -228,21 +228,33 @@ describe('POST /api/dibs/delete', function() {
         if(error) {
           return done(error);
         }
-        request(app)
-        .post('/api/dibs/delete')
-        .set('cookie', cookie)
-        .send({
-          id: dibId
-        })
-        .expect(400)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if (err) {
-            return done(err);
+        dibs.searchById(dibId, function (error, reply) {
+          if(error) {
+            return done(error);
           }
-          res.body.should.be.instanceof(Object);
-          res.body.should.have.property('message');
-          done();
+          var dib = reply.rows[0].value;
+          dib.creator = uuid.v4();
+          utils.insert(utils.dibs, dib._id, dib, function (error) {
+            if(error) {
+              return done(error);
+            }
+            request(app)
+            .post('/api/dibs/delete')
+            .set('cookie', cookie)
+            .send({
+              id: dibId
+            })
+            .expect(400)
+            .expect('Content-Type', /json/)
+            .end(function(err, res) {
+              if (err) {
+                return done(err);
+              }
+              res.body.should.be.instanceof(Object);
+              res.body.should.have.property('message');
+              done();
+            });
+          });
         });
       });
     });
