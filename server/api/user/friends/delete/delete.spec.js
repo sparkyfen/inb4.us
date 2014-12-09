@@ -15,7 +15,7 @@ utils.initialize();
 var cookie;
 var adminId, userId, friendId;
 
-describe('GET /api/user/friends/delete', function() {
+describe('POST /api/user/friends/delete', function() {
 
   beforeEach(function (done) {
     friendId = uuid.v4();

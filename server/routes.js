@@ -25,6 +25,7 @@ module.exports = function(app) {
 
   app.use('/api/dibs', require('./api/dibs'));
   app.use('/api/dibs/edit', require('./api/dibs/edit'));
+  app.use('/api/dibs/reset', require('./api/dibs/reset'));
   app.use('/api/dibs/report', require('./api/dibs/report'));
   app.use('/api/dibs/deactivate', require('./api/dibs/deactivate'));
   app.use('/api/dibs/delete', require('./api/dibs/delete'));

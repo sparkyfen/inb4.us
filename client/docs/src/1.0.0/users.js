@@ -810,7 +810,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Friend added."}
+*     {"messsage":"Friend deleted."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
 * @apiError (400 Bad Request) MissingId Your friend's user id was missing from the request.

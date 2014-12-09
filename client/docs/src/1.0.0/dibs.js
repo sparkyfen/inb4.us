@@ -34,8 +34,8 @@
 * @apiError (500 Internal Server Error) ServerError There was a problem adding the new dib.
 *
 * @apiErrorExample Error-Response: (Unauthorized)
-*      HTTP/1.1 401 Unauthorized
-*      {"message": "Please sign in."}
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
 *
 * @apiErrorExample Error-Response: (Missing Name)
 *     HTTP/1.1 400 Bad Request
@@ -164,8 +164,8 @@
 * @apiError (500 Internal Server Error) ServerError There was a problem editing the dib.
 *
 * @apiErrorExample Error-Response: (Unauthorized)
-*      HTTP/1.1 401 Unauthorized
-*      {"message": "Please sign in."}
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
 *
 * @apiErrorExample Error-Response: (Missing Id)
 *     HTTP/1.1 400 Bad Request
@@ -223,7 +223,7 @@
 * @apiGroup Dib
 * @apiPermission user
 *
-* @apiDescription Delete a dib from the database.
+* @apiDescription Delete a dib from the database if you created it or if you're an admin.
 *
 * @apiParam {String} id The dib id.
 * @apiParam {String} [callback] The name of the callback function.
@@ -247,12 +247,12 @@
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (400 Bad Request) UserNoDibs The user does not have any dibs to delete.
 * @apiError (400 Bad Request) DibNotExist The dib requested was not in the database.
-* @apiError (400 Bad Request) NoDibsForUser The dib is not tied to that user.
-* @apiError (500 Internal Server Error) ServerError There was a problem adding the new dib.
+* @apiError (400 Bad Request) DeletionUnauthorized The current user is not allowed to delete the dib.
+* @apiError (500 Internal Server Error) ServerError There was a problem deleting the dib.
 *
 * @apiErrorExample Error-Response: (Unauthorized)
-*      HTTP/1.1 401 Unauthorized
-*      {"message": "Please sign in."}
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
 *
 * @apiErrorExample Error-Response: (Missing Id)
 *     HTTP/1.1 400 Bad Request
@@ -278,9 +278,9 @@
 *     HTTP/1.1 400 Bad Request
 *     {"message":"Dib does not exist."}
 *
-* @apiErrorExample Error-Response: (No Dibs For User)
+* @apiErrorExample Error-Response: (Deletion Unauthorized)
 *     HTTP/1.1 400 Bad Request
-*     {"message":"No dib with that id is found for user."}
+*     {"message":"You are not allowed to delete this dib."}
 *
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
@@ -325,8 +325,8 @@
 * @apiError (500 Internal Server Error) ServerError There was a problem reporting the dib.
 *
 * @apiErrorExample Error-Response: (Unauthorized)
-*      HTTP/1.1 401 Unauthorized
-*      {"message": "Please sign in."}
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
 *
 * @apiErrorExample Error-Response: (Missing Id)
 *     HTTP/1.1 400 Bad Request
@@ -403,8 +403,8 @@
 * @apiError (500 Internal Server Error) ServerError There was a problem deactivating the dib.
 *
 * @apiErrorExample Error-Response: (Unauthorized Admin)
-*      HTTP/1.1 401 Unauthorized
-*      {"message": "Please sign in."}
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
 *
 * @apiErrorExample Error-Response: (Unauthorized User)
 *      HTTP/1.1 401 Unauthorized
@@ -435,3 +435,68 @@
 *     {"message":"Could not deactivate dib."}
 */
 
+/**
+* @api {post} /api/dibs/reset Reset Dib View Count
+* @apiVersion 1.0.0
+* @apiName Reset Dib View Count
+* @apiGroup Dib
+* @apiPermission user
+*
+* @apiDescription Reset the dib view count if you created it or if you're an admin.
+*
+* @apiParam {String} id The dib id.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default id example:
+*     curl -X POST 'https://inb4.us/api/dibs/delete' -d "id=3cb1126e-80ee-4d26-897b-f0f5016ad590"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/dibs/delete' -d "id=3cb1126e-80ee-4d26-897b-f0f5016ad590&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Dib view count reset."}
+*
+* @apiError (401 Unauthorized) Unauthorized The user did not sign in.
+* @apiError (400 Bad Request) MissingId The dib id was not in the request.
+* @apiError (400 Bad Request) InvalidId The dib id was not a UUID value.
+* @apiError (400 Bad Request) DibNotExist The dib requested was not in the database.
+* @apiError (400 Bad Request) UserNotExist The username tied to the dib was not in the database.
+* @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
+* @apiError (400 Bad Request) DeletionUnauthorized The current user is not allowed to delete the dib.
+* @apiError (500 Internal Server Error) ServerError There was a problem resetting the dib view count.
+*
+* @apiErrorExample Error-Response: (Unauthorized)
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Missing Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing id."}
+*
+* @apiErrorExample Error-Response: (Invalid Id)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid id."}
+*
+* @apiErrorExample Error-Response: (User Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (Activation Needed)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (Dib Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Dib does not exist."}
+*
+* @apiErrorExample Error-Response: (Deletion Unauthorized)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"You are not allowed to delete this dib."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not reset dib view count."}
+*/
