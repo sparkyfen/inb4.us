@@ -929,3 +929,43 @@
 *     HTTP/1.1 500 Internal Server Error
 *     {"message":"Could not purge inactive accounts."}
 */
+
+/**
+* @api {get} /api/user/check Check Session
+* @apiVersion 1.0.0
+* @apiName Check Session
+* @apiGroup User
+* @apiPermission public
+*
+* @apiDescription Checks the current user session if there is one to see if its valid.
+*
+* @apiParam {Boolean} [admin] Whether the session checked should be an admin or not.
+* @apiParam {String} [callback] The name of the callback funciton.
+*
+* @apiExample Default example:
+*     curl -X GET 'https://inb4.us/api/user/check'
+*
+* @apiExample Default admin example:
+*     curl -X GET 'https://inb4.us/api/user/check?admin=true'
+*
+* @apiExample Default callback example:
+*     curl -X GET 'https://inb4.us/api/user/check?callback=foo'
+*
+* @apiSuccess (200 Success) {String} message The user has been logged out.
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {"message":"Valid session."}
+*
+* @apiError (401 Unauthorized) UnauthorizedAdmin The admin or user did not sign in.
+* @apiError (401 Unauthorized) UnauthorizedUser The user attempting to use this page is not an admin.
+*
+* @apiErrorExample Error-Response: (Unauthorized Admin)
+*     HTTP/1.1 401 Unauthorized
+*     {"message": "Please sign in."}
+*
+* @apiErrorExample Error-Response: (Unauthorized User)
+*      HTTP/1.1 401 Unauthorized
+*      {"message": "Admins only."}
+*
+*/

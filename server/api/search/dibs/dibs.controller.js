@@ -37,17 +37,23 @@ exports.index = function(req, res) {
        if(reply.rows.length === 0) {
          return res.jsonp({message: 'No results.', results: []});
        }
-       var dibNames = [];
-       for (var i = 0; i < reply.rows.length; i++) {
-         var dib = reply.rows[i].value;
-         if(dib.type === type) {
-           dibNames.push(dib.name);
+       if(type === 'all') {
+         var dibItems = reply.rows.map(function (row) {
+           return {id: row.value._id, url: '/beta/dibs/' + row.value._id, title: row.value.name, description: row.value.description};
+         });
+       } else {
+         var dibItems = [];
+         for (var i = 0; i < reply.rows.length; i++) {
+           var dib = reply.rows[i].value;
+           if(dib.type === type) {
+             dibItems.push({id: dib._id, url: '/beta/dibs/' + dib._id, title: dib.name, description: dib.description});
+           }
          }
        }
-       if(dibNames.length === 0) {
+       if(dibItems.length === 0) {
          return res.jsonp({message: 'No results.', results: []});
        }
-       return res.jsonp({message: 'Results found.', results: dibNames});
+       return res.jsonp({message: 'Results found.', results: dibItems});
      });
    });
   } else {
@@ -62,10 +68,10 @@ exports.index = function(req, res) {
       if(reply.rows.length === 0) {
         return res.jsonp({message: 'No results.', results: []});
       }
-      var dibNames = reply.rows.map(function (row) {
-        return row.value.name;
+      var dibItems = reply.rows.map(function (row) {
+        return {id: row.value._id, url: '/beta/dibs/' + row.value._id, title: row.value.name, description: row.value.description};
       });
-      return res.jsonp({message: 'Results found.', results: dibNames});
+      return res.jsonp({message: 'Results found.', results: dibItems});
     });
   }
 };
@@ -75,6 +81,7 @@ validator.extend('isType', function (str) {
     case 'person':
     case 'place':
     case 'thing':
+    case 'all':
     return true;
     default:
     return false;

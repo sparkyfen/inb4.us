@@ -1,7 +1,6 @@
 'use strict';
 
 var should = require('should');
-var bcrypt = require('bcrypt');
 var uuid = require('node-uuid');
 var request = require('supertest');
 var app = require('../../../app');

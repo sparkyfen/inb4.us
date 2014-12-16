@@ -25,6 +25,15 @@ exports.searchByName = function (name, callback) {
   });
 };
 
+exports.searchPartialName = function(name, callback) {
+  this.keywords.view('keywords', 'by_name', {reduce: false, startkey: name, limit: 50}, function (error, reply, headers) {
+    if(error) {
+      return callback(error);
+    }
+    return callback(null, reply);
+  });
+};
+
 exports.searchById = function (id, callback) {
   this.keywords.view('keywords', 'by_id', {reduce: false, key: id}, function (error, reply, headers) {
     if(error) {

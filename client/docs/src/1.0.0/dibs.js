@@ -94,6 +94,8 @@
 * @apiError (400 Bad Request) InvalidId The dib id was not a UUID value.
 * @apiError (400 Bad Request) DibNotExist The dib requested was not in the database.
 * @apiError (400 Bad Request) UserNotExist The username tied to the dib was not in the database.
+* @apiError (400 Bad Request) NoReportsExist The reports tied to the dib are not in the database.
+* @apiError (400 Bad Request) OneOrMoreReportersMissing One or more of the reporters tied to the dib are not in the database.
 * @apiError (500 Internal Server Error) ServerError There was a problem getting the dib.
 *
 * @apiErrorExample Error-Response: (Missing Id)
@@ -111,6 +113,14 @@
 * @apiErrorExample Error-Response: (User Not Exist)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"User does not exist."}
+*
+* @apiErrorExample Error-Response: (No Reports Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"No reporters exist."}
+*
+* @apiErrorExample Error-Response: (One Or More Reporters Missing)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"One or more reporters do not exist."}
 *
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error
