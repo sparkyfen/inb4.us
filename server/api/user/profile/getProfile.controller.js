@@ -91,7 +91,7 @@ exports.index = function(req, res) {
         delete user.tokens;
         delete user.active;
         delete user.password;
-        user.email = crypto.ceateHash('md5').update(user.email).digest('hex');
+        user.email = crypto.createHash('md5').update(user.email).digest('hex');
         return res.jsonp(user);
       });
     });
