@@ -1,0 +1,16 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="hero-unit-center">
+  <h1 id="logo">in <span id="logo">b4</span></h1>
+  <form ng-submit="loadDib()">
+    <sm-search
+    ng-model="query"
+    min-characters="3"
+    cache="true"
+    debug="true",
+    verbose="true"
+    results="resp"
+    value="value"
+    placeholder="'Search for something...'">
+    </sm-search>
+  </form>
+</div>

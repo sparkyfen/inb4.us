@@ -1,5 +1,11 @@
-<ul class="nav nav-tabs" style="margin-bottom: 15px;" ng-controller="NavbarCtrl">
-    <li ng-class="{'active': isActive(item.link)}" ng-repeat="item in menu">
-        <a ng-href="{{item.link}}">{{item.title}}</a>
-    </li>
-</ul>
+<div ng-class="{'ui': true, 'blue': true, 'menu': true, 'secondary': true, 'pointing': true}" ng-controller="NavbarCtrl">
+  <a ng-class="{'active': isActive(item.link), 'item': true}" ng-href="{{item.link}}" ng-repeat="item in menu">
+    <i ng-class="{'{{item.icon}}': true, 'icon': true}"></i> {{item.title}}
+  </a>
+  <a class="ui item right" ng-click="openModal()" ng-show="!username">
+    <div class="ui primary button">Log-in/Register</div>
+  </a>
+  <a class="ui item right" ng-click="logout()" ng-show="username">
+    <div class="ui red button">Logout</div>
+  </a>
+</div>

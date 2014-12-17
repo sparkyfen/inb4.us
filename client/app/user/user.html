@@ -1,0 +1,72 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid padded">
+  <div class="ui grid">
+    <div class="two column row">
+      <div class="column">
+        <div class="ui card">
+          <div class="dimmable image">
+            <div class="ui dimmer">
+              <div class="content">
+                <div class="center">
+                  <div class="ui inverted button">Edit Image</div>
+                </div>
+              </div>
+            </div>
+            <img gravatar-src-once="user.email" gravatar-size="200">
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui card">
+          <div class="content">
+          <div class="header">
+            {{user.username}}
+            <a class="ui blue tag label" ng-show="user.admin">Admin</a>
+          </div>
+            <div class="meta">
+              <p>
+                {{user.firstname}} {{user.lastname}}
+              </p>
+            </div>
+          </div>
+          <div class="extra content">
+            <div class="ui mini statistics horizontal">
+              <div class="statistic">
+                <div class="value">
+                  <i class="cloud icon"></i> <span am-time-ago="user.dates.created"></span>
+                </div>
+                <div class="label">
+                  Created
+                </div>
+              </div>
+              <div class="statistic">
+                <div class="value">
+                  <i class="check icon"></i> <span am-time-ago="user.dates.activated"></span>
+                </div>
+                <div class="label">
+                  Activated
+                </div>
+              </div>
+              <div class="statistic">
+                <div class="value">
+                  <i class="icon" ng-class="{'smile': user.friends.length !== 0, 'meh': user.friends.length === 0}"></i> {{user.friends.length}}
+                </div>
+                <div class="label">
+                  Friends
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ui bottom attached blue button" ng-show="user.username === username" ng-click="editUser()">
+            <i class="configure icon"></i>
+            Edit
+          </div>
+          <div class="ui bottom attached green button" ng-show="user.username !== username &amp; &amp; !isFriends()" ng-click="addFriend()">
+            <i class="plus icon"></i>
+            Add Friend
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
