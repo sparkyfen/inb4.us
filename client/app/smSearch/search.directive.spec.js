@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: popup', function () {
+describe('Directive: sm-search', function () {
 
   // load the directive's module and view
   beforeEach(module('inb4usApp'));
-  beforeEach(module('app/popup/popup.html'));
+  beforeEach(module('app/smSearch/smSearch.html'));
 
   var element, scope;
 
@@ -13,9 +13,9 @@ describe('Directive: popup', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<popup></popup>');
+    element = angular.element('<sm-search></sm-search>');
     element = $compile(element)(scope);
     scope.$apply();
-    expect(element.text()).toBe('this is the popup directive');
+    expect(element.text()).toBe('this is the search directive');
   }));
 });

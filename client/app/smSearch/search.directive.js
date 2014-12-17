@@ -2,7 +2,7 @@
 
 angular.module('inb4usApp').directive('smSearch', function () {
     return {
-      templateUrl: 'app/search/search.html',
+      templateUrl: 'app/smSearch/smSearch.html',
       restrict: 'E',
       require: '?ngModel',
       scope: {

@@ -2,7 +2,7 @@
 
 angular.module('inb4usApp').directive('smPopup', function () {
     return {
-      templateUrl: 'app/popup/popup.html',
+      templateUrl: 'app/smPopup/smPopup.html',
       replace: true,
       scope: {
         header: '@',
