@@ -55,9 +55,9 @@ exports.index = function(req, res) {
   // We don't have a session so we expect the user id value.
   if(validator.isNull(userId)) {
     // We have a session, look them up via username.
-    var username = req.session.username;
+    var username = req.param('username');
     if(!username) {
-      username = req.param('username');
+      username = req.session.username;
       if(!username) {
         return res.status(400).jsonp({message: 'Missing username.'});
       }

@@ -380,16 +380,20 @@
 * @apiGroup User
 * @apiPermission user
 *
-* @apiDescription Get a specific user based on their id or on current user based on their session. The email returned is an md5 hash of the value and some other values from the database has been ommited.
+* @apiDescription Get a specific user based on their id or username or on current user based on their session. The email returned is an md5 hash of the value and some other values from the database has been ommited.
 *
 * @apiParam {String} [id] The user id value of the profile requested.
+* @apiParam {String} [username] The username value of the profile requested.
 * @apiParam {String} [callback] The name of the callback function.
 *
 * @apiExample Session-Based example:
 *     curl -X GET 'https://inb4.us/api/user'
 *
-* @apiExample Default example:
+* @apiExample Default id example:
 *     curl -X GET 'https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da'
+*
+* @apiExample Default username example:
+*     curl -X GET 'https://inb4.us/api/user/?username=mockuser'
 *
 * @apiExample Default callback example:
 *     curl -X GET 'https://inb4.us/api/user/62759d40-8f5a-47e2-b711-c3af6859c1da/?callback=foo'
@@ -400,7 +404,8 @@
 *     HTTP/1.1 200 OK
 *    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "0c6de13ccb6398e67c34bfd9e8b7d284","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
 *
-* @apiError (400 Bad Request) MissingId The user id was missing from the session.
+* @apiError (400 Bad Request) MissingUsername The user name was missing in the request.
+* @apiError (400 Bad Request) InvalidId The user id was not a UUID value.
 * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
 * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
 * @apiError (500 Internal Server Error) ServerError There was a problem getting the user profile.

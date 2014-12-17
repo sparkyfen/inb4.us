@@ -12,6 +12,7 @@ exports.index = function(req, res) {
     return res.status(401).jsonp({message: 'Please sign in.'});
   }
   var username = req.session.username;
+  console.log(req);
   // Get user from the database
   users.searchByUsername(username, function (error, reply) {
     if(error) {
