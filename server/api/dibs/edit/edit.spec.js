@@ -14,6 +14,8 @@ var dibs = db.dib;
 dibs.initialize();
 var utils = db.utils;
 utils.initialize();
+var keywords = db.keyword;
+keywords.initialize();
 
 var dibId;
 var cookie;
@@ -95,7 +97,26 @@ describe('POST /api/dibs/edit', function() {
                 if(error) {
                   return done(error);
                 }
-                done();
+                keywords.getAll(function (error, reply) {
+                  if(error) {
+                    return done(error);
+                  }
+                  var docs = reply.rows.map(function (row) {
+                    row.value._deleted = true;
+                    return row.value;
+                  });
+                  keywords.bulk(docs, function (error) {
+                    if(error) {
+                      return done(error);
+                    }
+                    keywords.compact(function (error) {
+                      if(error) {
+                        return done(error);
+                      }
+                      done();
+                    });
+                  });
+                });
               });
             });
           });
