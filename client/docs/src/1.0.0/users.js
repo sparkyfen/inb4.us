@@ -380,7 +380,7 @@
 * @apiGroup User
 * @apiPermission user
 *
-* @apiDescription Get a specific user based on their id or on current user based on their session.
+* @apiDescription Get a specific user based on their id or on current user based on their session. The email returned is an md5 hash of the value and some other values from the database has been ommited.
 *
 * @apiParam {String} [id] The user id value of the profile requested.
 * @apiParam {String} [callback] The name of the callback function.
@@ -398,7 +398,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "mockuser@inb4.us","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
+*    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "0c6de13ccb6398e67c34bfd9e8b7d284","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
 *
 * @apiError (400 Bad Request) MissingId The user id was missing from the session.
 * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.

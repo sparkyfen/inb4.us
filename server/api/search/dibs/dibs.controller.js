@@ -53,7 +53,7 @@ exports.index = function(req, res) {
        if(dibItems.length === 0) {
          return res.jsonp({message: 'No results.', results: []});
        }
-       return res.jsonp({message: 'Results found.', results: dibItems});
+       return res.jsonp({message: 'Results found.', results: dibItems, action: {url: '/beta/add',text: 'Call dibs!'}});
      });
    });
   } else {
@@ -71,7 +71,7 @@ exports.index = function(req, res) {
       var dibItems = reply.rows.map(function (row) {
         return {id: row.value._id, url: '/beta/dibs/' + row.value._id, title: row.value.name, description: row.value.description};
       });
-      return res.jsonp({message: 'Results found.', results: dibItems});
+      return res.jsonp({message: 'Results found.', results: dibItems, action: {url: '/beta/add',text: 'Call dibs!'}});
     });
   }
 };

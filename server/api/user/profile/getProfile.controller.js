@@ -1,6 +1,7 @@
 'use strict';
 
 var validator = require('validator');
+var crypto = require('crypto');
 var db = require('../../../components/database');
 var utils = db.utils;
 utils.initialize();
@@ -55,8 +56,11 @@ exports.index = function(req, res) {
   if(validator.isNull(userId)) {
     // We have a session, look them up via username.
     var username = req.session.username;
-    if(!req.session.username) {
-      return res.status(400).jsonp({message: 'Missing user id.'});
+    if(!username) {
+      username = req.param('username');
+      if(!username) {
+        return res.status(400).jsonp({message: 'Missing username.'});
+      }
     }
     // Get user from database.
     _getUserByName(username, function (error, user) {
@@ -68,6 +72,7 @@ exports.index = function(req, res) {
       delete user.tokens;
       delete user.active;
       delete user.password;
+      user.email = crypto.createHash('md5').update(user.email).digest('hex');
       return res.jsonp(user);
     });
   } else {
@@ -86,6 +91,7 @@ exports.index = function(req, res) {
         delete user.tokens;
         delete user.active;
         delete user.password;
+        user.email = crypto.ceateHash('md5').update(user.email).digest('hex');
         return res.jsonp(user);
       });
     });
