@@ -71,8 +71,8 @@ exports.index = function(req, res) {
         return res.status(400).jsonp({message: 'You are already friends with this user.'});
       }
       // Add friend id to the user object.
-      user.friends.push({id: friend._id, accepted: true});
-      friend.friends.push({id: user._id, accepted: false});
+      user.friends.push({id: friend._id, accepted: true, requestor: user._id});
+      friend.friends.push({id: user._id, accepted: false, requestor: user._id});
       users.bulk([user, friend], function (error) {
         if(error) {
           console.log(error);

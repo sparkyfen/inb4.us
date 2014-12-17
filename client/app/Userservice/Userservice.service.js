@@ -2,8 +2,14 @@
 
 angular.module('inb4usApp').service('Userservice', ['$http', function ($http) {
   return  {
-    get: function (id) {
-      return $http.get('/api/user' + (id ? '/' + id : ''))
+    getById: function (id) {
+      return $http.get('/api/user' + id);
+    },
+    getByUsername: function (username) {
+      return $http.get('/api/user?username=' + username);
+    },
+    getBySession: function () {
+      return $http.get('/api/user');
     },
     login: function (loginData) {
       return $http({
@@ -37,6 +43,13 @@ angular.module('inb4usApp').service('Userservice', ['$http', function ($http) {
         method: 'POST',
         url: '/api/user/register',
         data: registerData
+      });
+    },
+    addFriend: function(friendData) {
+      return $http({
+        method: 'POST',
+        url: '/api/user/friends',
+        data: friendData
       });
     }
   };

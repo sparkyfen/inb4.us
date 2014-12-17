@@ -25,6 +25,7 @@ describe('GET /api/user', function() {
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
     userSchema.active = true;
+    userSchema.friends = [];
     utils.insert(utils.users, userId, userSchema, function (error) {
       if(error) {
         return done(error);

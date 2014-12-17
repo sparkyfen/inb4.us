@@ -402,7 +402,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "0c6de13ccb6398e67c34bfd9e8b7d284","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null}}
+*    { "_id": "62759d40-8f5a-47e2-b711-c3af6859c1da","username": "mockuser","firstname": "","lastname": "","email": "0c6de13ccb6398e67c34bfd9e8b7d284","dibs": [],"address":{"streetAddress": null,"unitAddress": null,"city": null,"state": null,"country": "United States","zipcode": null},"friends":[],"admin":false}
 *
 * @apiError (400 Bad Request) MissingUsername The user name was missing in the request.
 * @apiError (400 Bad Request) InvalidId The user id was not a UUID value.
@@ -421,6 +421,10 @@
 * @apiErrorExample Error-Response: (Activation Needed)
 *     HTTP/1.1 400 Bad Request
 *     {"message":"You must activate this account before using it."}
+*
+* @apiErrorExample Error-Response: (OneOrMoreFriendsDoesNotExist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"One or more friends do no exist."}
 *
 * @apiErrorExample Error-Response: (Server Error)
 *     HTTP/1.1 500 Internal Server Error

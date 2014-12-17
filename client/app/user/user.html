@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="ui page grid padded">
   <div class="ui grid">
-    <div class="two column row">
+    <div class="two column row" ng-show="user">
       <div class="column">
         <div class="ui card">
           <div class="dimmable image">
@@ -49,10 +49,10 @@
               </div>
               <div class="statistic">
                 <div class="value">
-                  <i class="icon" ng-class="{'smile': user.friends.length !== 0, 'meh': user.friends.length === 0}"></i> {{user.friends.length}}
+                  <i class="icon" ng-class="{'smile': user.friends.length !== 0, 'meh': user.friends.length === 0}"></i> <a ng-href="/beta/user/{{user.username}}/friends">{{user.friends.length}}</a>
                 </div>
                 <div class="label">
-                  Friends
+                  {{user.friends.length === 1 ? 'Friend' : 'Friends'}}
                 </div>
               </div>
             </div>
@@ -61,12 +61,23 @@
             <i class="configure icon"></i>
             Edit
           </div>
-          <div class="ui bottom attached green button" ng-show="user.username !== username &amp; &amp; !isFriends()" ng-click="addFriend()">
+          <div class="ui bottom attached green button" ng-show="username &amp;&amp; user.username !== username &amp;&amp; !isFriends() &amp;&amp; !isPending()" ng-click="addFriend()">
             <i class="plus icon"></i>
             Add Friend
           </div>
+          <div class="ui bottom attached blue button" ng-show="username &amp;&amp; user.username !== username &amp;&amp; isPending()">
+            <i class="clock icon"></i>
+            Friend Request Pending
+          </div>
+          <div class="ui bottom attached red button" ng-show="isFriends() &amp;&amp; !isPending()" ng-click="removeFriend()">
+            <i class="minus icon"></i>
+            Remove Friend
+          </div>
         </div>
       </div>
+    </div>
+    <div ng-show="!user &amp;&amp; error">
+      <h2 class="ui header">{{error}}</h2>
     </div>
   </div>
 </div>

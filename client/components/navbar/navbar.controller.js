@@ -23,6 +23,8 @@ angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ng
       $window.localStorage.clear();
       $route.reload();
     }).error(function (error) {
+      $window.localStorage.clear();
+      $route.reload();
       // TODO Show error notification on failed logout.
     });
   }
