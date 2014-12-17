@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('inb4usApp').controller('UserCtrl', ['$scope', 'Userservice', '$window', '$routeParams', function ($scope, Userservice, $window, $routeParams) {
+angular.module('inb4usApp').controller('UserCtrl', ['$scope', 'Userservice', '$window', '$routeParams', '$location', '$route', function ($scope, Userservice, $window, $routeParams, $location, $route) {
   $scope.username = $window.localStorage.getItem('username') || null;
   Userservice.getByUsername($routeParams.username).success(function (userResp) {
     $scope.user = userResp;
@@ -13,13 +13,34 @@ angular.module('inb4usApp').controller('UserCtrl', ['$scope', 'Userservice', '$w
       username: $routeParams.username
     };
     Userservice.addFriend(friendData).success(function (friendResp) {
+      $route.reload();
       // TODO Show success notification on successful friend request.
     }).error(function (error, statusCode) {
       // TODO Show error notification on failed friend request.
     });
   };
   $scope.removeFriend = function () {
-    // TODO Write remove friend function call
+    Userservice.getFriends().success(function (friendResp) {
+      var friends = friendResp.results;
+      for (var i = 0; i < friends.length; i++) {
+        var friend = friends[i];
+        if(friend.username === $routeParams.username) {
+          var friendId = friend.id;
+          break;
+        }
+      }
+      var friendData = {
+        id: friendId
+      };
+      Userservice.removeFriend(friendData).success(function (friendResp) {
+        $route.reload();
+        // TODO Show success notification on successful friend request.
+      }).error(function (error, statusCode) {
+        // TODO Show error notification on failed friend request.
+      });
+    }).error(function (error, statusCode) {
+
+    });
   };
   $scope.editUser = function () {
     $location.path('/beta/user/' + $routeParams.username + '/edit');

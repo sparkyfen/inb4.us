@@ -12,7 +12,7 @@ angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ng
       title: 'Account',
       icon: 'user',
       link: '/beta/user/' + $scope.username
-    })
+    });
   }
   $scope.isActive = function(route) {
     return route === $location.path();
@@ -27,7 +27,7 @@ angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ng
       $route.reload();
       // TODO Show error notification on failed logout.
     });
-  }
+  };
   $scope.openModal = function () {
     var loginModal = ngDialog.open({
       template: 'components/navbar/modal.html',
@@ -49,6 +49,9 @@ angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ng
           }).error(function (error) {
             // TODO Show error notification on failed login.
           });
+        };
+        $scope.closeModal = function () {
+          loginModal.close();
         };
         $scope.openRegister = function () {
           var registerModal = ngDialog.open({

@@ -9,7 +9,7 @@ angular.module('inb4usApp', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute',
   });
   $locationProvider.html5Mode(true);
 }]).run(['$rootScope', '$location', 'Userservice', '$window', 'Dibservice', function ($rootScope, $location, Userservice, $window, Dibservice) {
-  var protectedUserRoutes = [new RegExp(/\/beta\/dibs\/(.*)\/edit/)];
+  var protectedUserRoutes = [new RegExp(/\/beta\/dibs\/(.*)\/edit/), new RegExp(/\/beta\/user\/(.*)\/edit/)];
   $rootScope.$on('$locationChangeStart', function (event, toState, fromState, toParams, fromParams) {
     var username = $window.localStorage.getItem('username') || null;
     for (var i = 0; i < protectedUserRoutes.length; i++) {
@@ -22,20 +22,26 @@ angular.module('inb4usApp', ['ngCookies', 'ngResource', 'ngSanitize', 'ngRoute',
         });
       }
     }
-    for (var i = 0; i < protectedUserRoutes.length; i++) {
-      var route = new RegExp(/\/beta\/dibs\/(.*)\/edit/);
-      if(route.test($location.path())) {
-        var id = route.exec($location.path())[1];
-        Dibservice.getDib(id).success(function (dibResp) {
-          if(dibResp.creator !== username) {
-            event.preventDefault();
-            // TODO Show unauthorized notification.
-            $location.path('/beta');
-          }
-        }).error(function (error) {
-          // TODO Show error notification.
-        });
+    var userRoute = new RegExp(/\/beta\/user\/(.*)\/edit/);
+    if(route.test($location.path())) {
+      var routeUser = userRoute.exec($location.path())[1];
+      if(username !== routeUser) {
+        event.preventDefault();
+        $location.path('/beta');
       }
-    };
+    }
+    var route = new RegExp(/\/beta\/dibs\/(.*)\/edit/);
+    if(route.test($location.path())) {
+      var id = route.exec($location.path())[1];
+      Dibservice.getDib(id).success(function (dibResp) {
+        if(dibResp.creator !== username) {
+          event.preventDefault();
+          // TODO Show unauthorized notification.
+          $location.path('/beta');
+        }
+      }).error(function (error) {
+        // TODO Show error notification.
+      });
+    }
   });
 }]);

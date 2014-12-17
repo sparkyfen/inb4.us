@@ -99,13 +99,13 @@ exports.index = function(req, res) {
       delete user.locked;
       if(!req.session.username) {
         delete user.address;
+        user.email = crypto.createHash('md5').update(user.email).digest('hex');
       }
       _getFriends(user.friends, function (error, friends) {
         if(error) {
           return res.status(error.status).jsonp({message: error.message});
         }
         user.friends = friends;
-        user.email = crypto.createHash('md5').update(user.email).digest('hex');
         return res.jsonp(user);
       });
     });

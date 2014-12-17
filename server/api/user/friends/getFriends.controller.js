@@ -1,6 +1,7 @@
 'use strict';
 
 var validator = require('validator');
+var crypto = require('crypto');
 var _ = require('lodash');
 var db = require('../../../components/database');
 var users = db.user;
@@ -8,10 +9,13 @@ users.initialize();
 
 // Get friends for user.
 exports.index = function(req, res) {
-  if(!req.session.username) {
-    return res.status(401).jsonp({message: 'Please sign in.'});
+  var username = req.param('username');
+  if(!username) {
+    username = req.session.username;
+    if(!username) {
+      return res.status(400).jsonp({message: 'Missing username.'});
+    }
   }
-  var username = req.session.username;
   // Get user from the database
   users.searchByUsername(username, function (error, reply) {
     if(error) {
@@ -46,10 +50,16 @@ exports.index = function(req, res) {
         return row.value;
       });
       // Get the user names
-      var usernames = usersList.map(function (user) {
-        return user.username;
+      var userObjs = usersList.map(function (user) {
+        return {
+          id: user._id,
+          username: user.username,
+          email: crypto.createHash('md5').update(user.email).digest('hex'),
+          firstname: user.firstname,
+          lastname: user.lastname
+        };
       });
-      return res.jsonp({message: 'Results found.', results: usernames});
+      return res.jsonp({message: 'Results found.', results: userObjs});
     });
   });
 };

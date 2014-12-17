@@ -1,0 +1,30 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid">
+  <div class="ui grid">
+    <div class="ui one column grid">
+      <div class="column">
+        <div class="ui fluid form segment" ng-class="{'error': hasError}">
+          <h2 class="ui dividing header">Forgetting Something?</h2>
+          <form ng-submit="lostPassword()" class="ui form" ng-class="{'loading': isLoading}">
+            <div class="ui message">
+              That's alright! Type your email into this field to receive a reset email.
+            </div>
+            <div class="one field">
+              <div class="field required" ng-class="{'error': hasError}">
+                <label>Email</label>
+                <div class="ui icon input">
+                  <input type="email" ng-model="email" placeholder="The email address you signed up with" tabindex="10" required autofocus>
+                  <i class="mail icon"></i>
+                </div>
+                <span class="ui red header">{{errorMessage}}</span>
+              </div>
+              <div class="field">
+                <button type="submit" class="ui big green button" ng-class="{'loading': isLoading}" tabindex="15">Send Email</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

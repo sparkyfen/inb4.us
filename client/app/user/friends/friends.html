@@ -1,0 +1,23 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid padded">
+  <div class="ui grid">
+    <div class="one column row">
+      <div class="column">
+        <div class="ui divided items">
+          <div class="item" ng-repeat="friend in friends">
+            <a class="ui tiny image">
+              <img gravatar-src-once="friend.email" gravatar-size="100">
+            </a>
+            <div class="content">
+              <a class="header">{{friend.username}}</a>
+              <div class="description">
+                <p>{{friend.firstname}} {{friend.lastname}}</p>
+                <a ng-href="/beta/user/{{friend.username}}">View Profile</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

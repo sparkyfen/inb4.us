@@ -1,6 +1,10 @@
 'use strict';
 
-angular.module('inb4usApp').controller('AddCtrl', ['$scope', 'Dibservice', '$location', function ($scope, Dibservice, $location) {
+angular.module('inb4usApp').controller('AddCtrl', ['$scope', 'Dibservice', '$location', '$window', function ($scope, Dibservice, $location, $window) {
+  $scope.username = $window.localStorage.getItem('username');
+  if(!$scope.username) {
+    $scope.hasWarning = true;
+  }
   $scope.dib = {
     type: 'person'
   };
@@ -15,11 +19,18 @@ angular.module('inb4usApp').controller('AddCtrl', ['$scope', 'Dibservice', '$loc
     value: 'thing'
   }];
   $scope.callDibs = function() {
-    Dibservice.add($scope.dib).success(function (dibResp) {
-      // TODO Show notification if success.
-      $location.path('/beta');
-    }).error(function (error, statusCode) {
-      // TODO Show notification on error.
-    })
+    if(!$scope.username) {
+      $scope.hasWarning = false;
+      $scope.hasError = true;
+    } else {
+      $scope.hasWarning = false;
+      $scope.hasError = false;
+      Dibservice.add($scope.dib).success(function (dibResp) {
+        // TODO Show notification if success.
+        $location.path('/beta');
+      }).error(function (error, statusCode) {
+        // TODO Show notification on error.
+      });
+    }
   };
 }]);

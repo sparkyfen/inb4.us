@@ -51,6 +51,37 @@ angular.module('inb4usApp').service('Userservice', ['$http', function ($http) {
         url: '/api/user/friends',
         data: friendData
       });
+    },
+    removeFriend: function(friendData) {
+      return $http({
+        method: 'POST',
+        url: '/api/user/friends/delete',
+        data: friendData
+      });
+    },
+    getFriends: function(username) {
+      return $http.get('/api/user/friends' + (username ? '/?username=' + username : ''));
+    },
+    edit: function (editData) {
+      return $http({
+        method: 'POST',
+        url: '/api/user',
+        data: editData
+      });
+    },
+    changePassword: function(passData) {
+      return $http({
+        method: 'POST',
+        url: '/api/user/change',
+        data: passData
+      });
+    },
+    lostPassword: function (lostData) {
+      return $http({
+        method: 'POST',
+        url: '/api/user/lost',
+        data: lostData
+      });
     }
   };
 }]);

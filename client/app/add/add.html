@@ -3,8 +3,13 @@
   <div class="ui grid">
     <div class="ui one column grid">
       <div class="column">
-        <div class="ui form">
+        <div class="ui form" ng-class="{'warning': hasWarning, 'error': hasError}">
           <h2 class="ui dividing header">Call Dibs</h2>
+          <div class="ui warning message">
+            <div class="header">
+              You need to sign in before you can call dibs!
+            </div>
+          </div>
           <div class="one field">
             <form ng-submit="callDibs()" ng-class="{'ui': true, 'form': true, 'loading': isLoading}">
             <div class="field required">

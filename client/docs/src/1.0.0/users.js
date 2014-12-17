@@ -278,6 +278,7 @@
  * @apiError (400 Bad Request) MissingNewPassword The new password was not in the request.
  * @apiError (400 Bad Request) MissingConfirmPassword The new confirm password was not in the request.
  * @apiError (400 Bad Request) PasswordMismatch The new and confirm passwords were not the same.
+ * @apiError (400 Bad Request) PasswordTooShort The password length was too short (must be 7 characters or greater).
  * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
  * @apiError (400 Bad Request) ActivationNeeded You must activate your account first beforehand.
  * @apiError (400 Bad Request) HashMismatch The old password did not match what the database has.
@@ -303,6 +304,10 @@
  *      HTTP/1.1 400 Bad Request
  *      {"message": "New passwords do not match."}
  *
+ * @apiErrorExample Error-Response: (Password Too Short)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Password must a minimum of 7 characters long."}
+*
  * @apiErrorExample Error-Response: (User Not Exist)
  *    HTTP/1.1 400 Bad Request
  *    {"message":"User does not exist."}
@@ -768,14 +773,18 @@
 * @apiVersion 1.0.0
 * @apiName Get Friends
 * @apiGroup User
-* @apiPermission user
+* @apiPermission public
 *
-* @apiDescription Get your friends.
+* @apiDescription Get friends based on the username.
 *
+* @apiParam {String} [username] The username to get their friends.
 * @apiParam {String} [callback] The name of the callback function.
 *
-* @apiExample Default example:
+* @apiExample Default session example:
 *     curl -X GET 'https://inb4.us/api/user/friends'
+*
+* @apiExample Default username example:
+*     curl -X GET 'https://inb4.us/api/user/friends?username=mockuser'
 *
 * @apiExample Default callback example:
 *     curl -X GET 'https://inb4.us/api/user/friends' -d "callback=foo"
@@ -785,7 +794,7 @@
 *
 * @apiSuccessExample Success-Response: (Results Found)
 *     HTTP/1.1 200 OK
-*     {"messsage":"Results found.", results: ["mockfriend"]}
+*     {"messsage":"Results found.", results: [{"id":"df67be53-9f73-4d6b-bcd9-2d9091354549","username":"mockfriend","03151b5d34743419c4786164b27d6314","firstname":"","lastname":""}]}
 *
 * @apiSuccessExample Success-Response: (No Results)
 *     HTTP/1.1 200 OK
