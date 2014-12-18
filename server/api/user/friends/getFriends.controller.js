@@ -50,13 +50,15 @@ exports.index = function(req, res) {
         return row.value;
       });
       // Get the user names
-      var userObjs = usersList.map(function (user) {
+      var userObjs = usersList.map(function (userObj) {
+        var acceptedIndex = friendIds.indexOf(userObj._id);
         return {
-          id: user._id,
-          username: user.username,
-          email: crypto.createHash('md5').update(user.email).digest('hex'),
-          firstname: user.firstname,
-          lastname: user.lastname
+          id: userObj._id,
+          username: userObj.username,
+          email: crypto.createHash('md5').update(userObj.email).digest('hex'),
+          firstname: userObj.firstname,
+          lastname: userObj.lastname,
+          accepted: user.friends[acceptedIndex].accepted
         };
       });
       return res.jsonp({message: 'Results found.', results: userObjs});

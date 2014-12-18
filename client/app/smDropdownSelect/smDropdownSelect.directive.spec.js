@@ -1,10 +1,10 @@
 'use strict';
 
-describe('Directive: smDropdown', function () {
+describe('Directive: smDropdownSelect', function () {
 
   // load the directive's module and view
   beforeEach(module('inb4usApp'));
-  beforeEach(module('app/smDropdown/smDropdown.html'));
+  beforeEach(module('app/smDropdownSelect/smDropdownSelect.html'));
 
   var element, scope;
 
@@ -13,7 +13,7 @@ describe('Directive: smDropdown', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<sm-dropdown></sm-dropdown>');
+    element = angular.element('<sm-dropdown-select></sm-dropdown-select>');
     element = $compile(element)(scope);
     scope.$apply();
     expect(1).toBe(1);

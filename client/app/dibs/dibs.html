@@ -1,7 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div class="ui page grid padded">
-  <div class="ui grid">
-    <div class="two column row">
+  <div class="ui middle aligned one column grid">
+    <div class="row">
       <div class="column">
         <div class="ui card">
           <div class="dimmable image">
@@ -14,69 +14,64 @@
             </div>
             <img ng-src="{{dib.image || '//placehold.it/200x200&amp;text=Image+Unavailable'}}">
           </div>
-          <div class="ui bottom attached button red" ng-show="isReported(dib.reports, username)" ng-click="viewReport()">
-            <i class="warning circle icon"></i>
-            Reported
-          </div>
-          <div class="ui bottom attached button green" ng-show="!isReported(dib.reports, username) &amp;&amp; (username &amp;&amp; dib.creator !== username)" ng-click="reportDib()">
-            <i class="add icon"></i>
-            Report Dib
-          </div>
-        </div>
-      </div>
-      <div class="column">
-        <div class="ui card">
           <div class="content">
-            <div class="header">{{dib.name}}</div>
+            <div class="header">
+              {{dib.name}}
+            </div>
             <div class="meta">
-              <p>
-                {{dib.type}}
-              </p>
-              <p>
+              <span>{{dib.type}}</span>
+              <p class="category">
                 <a target="_blank" ng-href="{{dib.url}}">{{dib.url}}</a>
               </p>
             </div>
             <div class="description">
               {{dib.description}}
             </div>
-          </div>
-          <div class="extra content">
-            <div class="ui mini statistics horizontal">
-              <div class="statistic">
-                <div class="value">
-                  <i class="like icon"></i> {{dib.creator}}
-                </div>
-                <div class="label">
-                  Creator
-                </div>
+        </div>
+        <div class="extra content">
+          <div class="ui mini statistics horizontal">
+            <div class="statistic">
+              <div class="value">
+                <i class="like icon"></i> {{dib.creator}}
               </div>
-              <div class="statistic">
-                <div class="value">
-                  <i class="cloud icon"></i> <span am-time-ago="dib.dates.created"></span>
-                </div>
-                <div class="label">
-                  Created
-                </div>
+              <div class="label">
+                Creator
               </div>
-              <div class="statistic">
-                <div class="value">
-                  <i class="unhide icon"></i> {{dib.viewers}}
-                </div>
-                <div class="label">
-                  Views
-                </div>
+            </div>
+            <div class="statistic">
+              <div class="value">
+                <i class="cloud icon"></i> <span am-time-ago="dib.dates.created"></span>
+              </div>
+              <div class="label">
+                Created
+              </div>
+            </div>
+            <div class="statistic">
+              <div class="value">
+                <i class="unhide icon"></i> {{dib.viewers}}
+              </div>
+              <div class="label">
+                Views
               </div>
             </div>
           </div>
-          <div class="ui bottom attached button blue" ng-show="dib.creator === username" ng-click="editDib()">
-            <i class="configure icon"></i>
-            Edit
-          </div>
+        </div>
+        <div class="ui bottom attached button blue" ng-show="dib.creator === username" ng-click="editDib()">
+          <i class="configure icon"></i>
+          Edit
+        </div>
+        <div class="ui bottom attached button red" ng-show="isReported(dib.reports, username)" ng-click="viewReport()">
+          <i class="warning circle icon"></i>
+          Reported
+        </div>
+        <div class="ui bottom attached button green" ng-show="!isReported(dib.reports, username) &amp;&amp; (username &amp;&amp; dib.creator !== username)" ng-click="reportDib()">
+          <i class="add icon"></i>
+          Report Dib
         </div>
       </div>
-      <div class="column padded">
-        {{dib}}
-      </div>
+      <div class="column padded" ng-show="isAdmin">
+          {{dib}}
+       </div>
     </div>
   </div>
 </div>

@@ -4,14 +4,31 @@ angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ng
   $scope.menu = [{
     title: 'inb4',
     icon: 'home',
-    link: '/beta'
+    link: '/beta',
+    dropdown: false,
+    hasLabel: false
   }];
   if($window.localStorage.getItem('username')) {
     $scope.username = $window.localStorage.getItem('username');
     $scope.menu.push({
       title: 'Account',
       icon: 'user',
-      link: '/beta/user/' + $scope.username
+      link: '/beta/user/' + $scope.username,
+      dropdown: false,
+      hasLabel: false
+    });
+    $scope.items = [];
+    Userservice.getFriends().success(function (friendResp) {
+      $scope.pendingCount = 0;
+      for (var i = 0; i < friendResp.results.length; i++) {
+        var friend = friendResp.results[i];
+        if(!friend.accepted) {
+          $scope.items.push({label: friend.username + ' added you as a friend, click to accept!', link: '/beta/friend/accept?username=' + friend.username});
+          $scope.pendingCount++;
+        }
+      }
+    }).error(function (error, statusCode) {
+      // TODO Handle error in notifications.
     });
   }
   $scope.isActive = function(route) {

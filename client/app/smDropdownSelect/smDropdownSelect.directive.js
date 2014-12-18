@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('inb4usApp').directive('smDropdown', ['$timeout', function ($timeout) {
+angular.module('inb4usApp').directive('smDropdownSelect', ['$timeout', function ($timeout) {
     return {
-      templateUrl: 'app/smDropdown/smDropdown.html',
+      templateUrl: 'app/smDropdownSelect/smDropdownSelect.html',
       restrict: 'E',
       replace: true,
       scope: {

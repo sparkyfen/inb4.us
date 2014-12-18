@@ -1,7 +1,14 @@
-<div ng-class="{'ui': true, 'blue': true, 'menu': true, 'secondary': true, 'pointing': true}" ng-controller="NavbarCtrl">
-  <a ng-class="{'active': isActive(item.link), 'item': true}" ng-href="{{item.link}}" ng-repeat="item in menu">
-    <i ng-class="{'{{item.icon}}': true, 'icon': true}"></i> {{item.title}}
+<div class="ui blue menu secondary pointing" ng-controller="NavbarCtrl">
+  <a class="item" ng-class="{'active': isActive(item.link)}" ng-href="{{item.link}}" ng-repeat="item in menu">
+    <i class="icon" ng-class="{'{{item.icon}}': true}"></i> {{item.title}}
   </a>
+  <sm-dropdown-menu
+    icon="bell"
+    name="Notifications"
+    label="pendingCount > 0 ? pendingCount : ''"
+    items="items"
+    ng-show="username">
+  </sm-dropdown-menu>
   <a class="ui item right" ng-click="openModal()" ng-show="!username">
     <div class="ui primary button">Log-in/Register</div>
   </a>
