@@ -12,7 +12,7 @@ users.initialize();
 var utils = db.utils;
 utils.initialize();
 
-describe('POST /api/user/login', function() {
+describe('POST /api/user/resend', function() {
 
   beforeEach(function (done) {
     var userId = uuid.v4();
@@ -20,13 +20,27 @@ describe('POST /api/user/login', function() {
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
-    userSchema.tokens.activate = null;
-    userSchema.active = true;
+    userSchema.tokens.activate = uuid.v4();
+    userSchema.active = false;
+    userSchema.admin = false;
     utils.insert(utils.users, userId, userSchema, function (error) {
       if(error) {
         return done(error);
       }
-      done();
+      var userId = uuid.v4();
+      userSchema._id = userId;
+      userSchema.password = bcrypt.hashSync('mockpassword', 10);
+      userSchema.username = 'mockadmin';
+      userSchema.email = 'mockadmin@inb4.us';
+      userSchema.tokens.activate = uuid.v4();
+      userSchema.active = false;
+      userSchema.admin = true;
+      utils.insert(utils.users, userId, userSchema, function (error) {
+        if(error) {
+          return done(error);
+        }
+        done();
+      });
     });
   });
 
@@ -53,12 +67,11 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should successfully log the user in', function(done) {
+  it('should successfully resend the activation email', function(done) {
     request(app)
-    .post('/api/user/login')
+    .post('/api/user/resend')
     .send({
-      username: 'mockuser',
-      password: 'mockpassword'
+      email: 'mockuser@inb4.us'
     })
     .expect(200)
     .expect('Content-Type', /json/)
@@ -72,42 +85,28 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should successfully log the admin in', function(done) {
-    var adminId = uuid.v4();
-    userSchema._id = adminId;
-    userSchema.password = bcrypt.hashSync('mockpassword', 10);
-    userSchema.username = 'mockadmin';
-    userSchema.email = 'mockadmin@inb4.us';
-    userSchema.active = true;
-    userSchema.admin = true;
-    utils.insert(utils.users, adminId, userSchema, function (error) {
-      if(error) {
-        return done(error);
+  it('should successfully resend the admin activation email', function(done) {
+    request(app)
+    .post('/api/user/resend')
+    .send({
+      email: 'mockadmin@inb4.us'
+    })
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        return done(err);
       }
-      request(app)
-      .post('/api/user/login')
-      .send({
-        username: 'mockadmin',
-        password: 'mockpassword'
-      })
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if (err) {
-          return done(err);
-        }
-        res.body.should.be.instanceof(Object);
-        res.body.should.have.property('message');
-        done();
-      });
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      done();
     });
   });
 
-  it('should fail on an missing username', function(done) {
+  it('should fail on missing email', function(done) {
     request(app)
-    .post('/api/user/login')
+    .post('/api/user/resend')
     .send({
-      password: 'mockpassword'
     })
     .expect(400)
     .expect('Content-Type', /json/)
@@ -121,11 +120,11 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should fail on an missing password', function(done) {
+  it('should fail on invalid email', function(done) {
     request(app)
-    .post('/api/user/login')
+    .post('/api/user/resend')
     .send({
-      username: 'mockuser'
+      email: 'foobar'
     })
     .expect(400)
     .expect('Content-Type', /json/)
@@ -139,60 +138,22 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should fail on an invalid username', function(done) {
-    request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'invalidusername',
-      password: 'mockpassword'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail on an invalid password', function(done) {
-    request(app)
-    .post('/api/user/login')
-    .send({
-      username: 'mockuser',
-      password: 'invalidpassword'
-    })
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end(function(err, res) {
-      if (err) {
-        return done(err);
-      }
-      res.body.should.be.instanceof(Object);
-      res.body.should.have.property('message');
-      done();
-    });
-  });
-
-  it('should fail if the account is locked', function(done) {
+  it('should fail on already activated account', function(done) {
     users.searchByUsername('mockuser', function (error, reply) {
       if(error) {
         return done(error);
       }
       var user = reply.rows[0].value;
-      user.locked = true;
+      user.tokens.activate = null;
+      user.active = true;
       utils.insert(utils.users, user._id, user, function (error) {
         if(error) {
           return done(error);
         }
         request(app)
-        .post('/api/user/login')
+        .post('/api/user/resend')
         .send({
-          username: 'mockuser',
-          password: 'mockpassword'
+          email: 'mockuser@inb4.us'
         })
         .expect(400)
         .expect('Content-Type', /json/)
@@ -208,22 +169,21 @@ describe('POST /api/user/login', function() {
     });
   });
 
-  it('should fail on an unactivated account', function(done) {
+  it('should fail if the account is locked', function(done) {
     users.searchByUsername('mockuser', function (error, reply) {
       if(error) {
         return done(error);
       }
       var user = reply.rows[0].value;
-      user.active = false;
+      user.locked = true;
       utils.insert(utils.users, user._id, user, function (error) {
         if(error) {
           return done(error);
         }
         request(app)
-        .post('/api/user/login')
+        .post('/api/user/resend')
         .send({
-          username: 'mockuser',
-          password: 'mockpassword'
+          email: 'mockuser@inb4.us'
         })
         .expect(400)
         .expect('Content-Type', /json/)

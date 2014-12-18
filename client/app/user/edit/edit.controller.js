@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('inb4usApp').controller('EditUserCtrl', ['$scope', 'Userservice', '$location', function ($scope, Userservice, $location) {
+angular.module('inb4usApp').controller('EditUserCtrl', ['$scope', 'Userservice', '$location', '$window', function ($scope, Userservice, $location, $window) {
   $scope.passwords = {};
   Userservice.getBySession().success(function (userResp) {
     $scope.user = userResp;
@@ -35,6 +35,12 @@ angular.module('inb4usApp').controller('EditUserCtrl', ['$scope', 'Userservice',
   };
   $scope.deleteUser = function () {
     $scope.isLoading = true;
-    // TODO Write delete user function call.
+    Userservice.delete().success(function (deleteResp) {
+      $window.localStorage.clear();
+      $location.path('/beta');
+      // TODO Show success notification on delete user request.
+    }).error(function (error, statusCode) {
+      // TODO Show error notification on delete user request.
+    });
   };
 }]);

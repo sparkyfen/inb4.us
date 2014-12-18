@@ -14,6 +14,7 @@ module.exports = function(app) {
   app.use('/api/user/check', require('./api/user/check'));
   app.use('/api/user/delete', require('./api/user/delete'));
   app.use('/api/user/reset', require('./api/user/reset'));
+  app.use('/api/user/resend', require('./api/user/resend'));
   app.use('/api/user/change', require('./api/user/change'));
   app.use('/api/user/lost', require('./api/user/lost'));
   app.use('/api/user/activate', require('./api/user/activate'));

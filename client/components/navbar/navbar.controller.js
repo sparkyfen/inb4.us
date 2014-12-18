@@ -23,7 +23,7 @@ angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ng
       for (var i = 0; i < friendResp.results.length; i++) {
         var friend = friendResp.results[i];
         if(!friend.accepted) {
-          $scope.items.push({label: friend.username + ' added you as a friend, click to accept!', link: '/beta/friend/accept?username=' + friend.username});
+          $scope.items.push({label: friend.username + ' added you as a friend, click to accept!', link: '/beta/user/' + $scope.username + '/friends/accept?friend=' + friend.username});
           $scope.pendingCount++;
         }
       }

@@ -460,7 +460,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Profile updated."}
+*     {"message":"Profile updated."}
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
@@ -524,7 +524,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Profile deleted."}
+*     {"message":"Profile deleted."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
 * @apiError (500 Internal Server Error) ServerError There was a problem deleting the user profile.
@@ -563,7 +563,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Password reset."}
+*     {"message":"Password reset."}
 *
 * @apiError (400 Bad Request) MissingId The user id was missing from the request.
 * @apiError (400 Bad Request) MissingToken The reset token was missing from the request.
@@ -653,7 +653,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Address updated."}
+*     {"message":"Address updated."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
 * @apiError (400 Bad Request) MissingStreetAddress The street address was missing from the request.
@@ -704,7 +704,7 @@
 * @apiGroup User
 * @apiPermission user
 *
-* @apiDescription Add a friend to your friends list
+* @apiDescription Add a friend to your friends list. If a friends request has been made for that friend on their end, this will accept their friendship.
 *
 * @apiParam {String} username Your friends username.
 * @apiParam {String} [callback] The name of the callback function.
@@ -719,7 +719,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Friend added."}
+*     {"message":"Friend added."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
 * @apiError (400 Bad Request) MissingUsername Your friend's username was missing from the request.
@@ -794,11 +794,11 @@
 *
 * @apiSuccessExample Success-Response: (Results Found)
 *     HTTP/1.1 200 OK
-*     {"messsage":"Results found.", results: [{"id":"df67be53-9f73-4d6b-bcd9-2d9091354549","username":"mockfriend","03151b5d34743419c4786164b27d6314","firstname":"","lastname":""}]}
+*     {"message":"Results found.", results: [{"id":"df67be53-9f73-4d6b-bcd9-2d9091354549","username":"mockfriend","03151b5d34743419c4786164b27d6314","firstname":"","lastname":""}]}
 *
 * @apiSuccessExample Success-Response: (No Results)
 *     HTTP/1.1 200 OK
-*     {"messsage":"No results.", results: []}
+*     {"message":"No results.", results: []}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
 * @apiError (400 Bad Request) UserNotExist The user does not exist in the database.
@@ -844,7 +844,7 @@
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
-*     {"messsage":"Friend deleted."}
+*     {"message":"Friend deleted."}
 *
 * @apiError (401 Unauthorized) Unauthorized The user did not sign in.
 * @apiError (400 Bad Request) MissingId Your friend's user id was missing from the request.
@@ -917,14 +917,17 @@
 *     curl -X POST 'https://inb4.us/api/user/purge' -d "datetime=1418149552680&callback=foo"
 *
 * @apiSuccess (200 Success) {String} message The successful response message.
+* @apiSuccess (200 Success) {Object[]} results The list of users that got purged.
+* @apiSuccess (200 Success) {String} results.id The user id that got purged.
+* @apiSuccess (200 Success) {String} results.username The username that got purged.
 *
 * @apiSuccessExample Success-Response (Results Found):
 *     HTTP/1.1 200 OK
-*     {"messsage":"Accounts purged.", "results": [{"id": "ca683876-e79c-4660-b203-e0ac0df67bc1","username": "mockuser"}]}
+*     {"message":"Accounts purged.", "results": [{"id": "ca683876-e79c-4660-b203-e0ac0df67bc1","username": "mockuser"}]}
 *
 * @apiSuccessExample Success-Response (No Results):
 *     HTTP/1.1 200 OK
-*     {"messsage":"No accounts to purge.", "results": []}
+*     {"message":"No accounts to purge.", "results": []}
 *
 * @apiError (401 Unauthorized) UnauthorizedAdmin The admin did not sign in.
 * @apiError (401 Unauthorized) UnauthorizedUser The user attempting to use this page is not an admin.
@@ -985,5 +988,62 @@
 * @apiErrorExample Error-Response: (Unauthorized User)
 *      HTTP/1.1 401 Unauthorized
 *      {"message": "Admins only."}
+*
+*/
+
+/**
+* @api {post} /api/user/resend Resend Activation Email
+* @apiVersion 1.0.0
+* @apiName Resend Activation Email
+* @apiGroup User
+* @apiPermission public
+*
+* @apiDescription Resends an activation email for a user to activate their account.
+*
+* @apiParam {String} email The email address associated with the account.
+* @apiParam {String} [callback] The name of the callback function.
+*
+* @apiExample Default example:
+*     curl -X POST 'https://inb4.us/api/user/resend' -d "email=mockuser@inb4.us"
+*
+* @apiExample Default callback example:
+*     curl -X POST 'https://inb4.us/api/user/resend' -d "email=mockuser@inb4.us&callback=foo"
+*
+* @apiSuccess (200 Success) {String} message The successful response message.
+*
+* @apiSuccessExample Success-Response (Results Found):
+*     HTTP/1.1 200 OK
+*     {"message":"Activation email sent."}
+*
+* @apiError (400 Bad Request) MissingEmail The email was missing from the request
+* @apiError (400 Bad Request) InvalidEmail The email provided in the request is invalid.
+* @apiError (400 Bad Request) EmailNotExist The email provided in the request was not associated with any user in the database.
+* @apiError (400 Bad Request) UserAlreadyActive The username associated with the email is already activated.
+* @apiError (400 Bad Request) AccountLocked The user account has been locked for too many login attempts.
+* @apiError (500 Internal Server Error) ServerError There was a problem resending the activation email.
+*
+* @apiErrorExample Error-Response: (Missing Email)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Missing email."}
+*
+* @apiErrorExample Error-Response: (Invalid Email)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Invalid email."}
+*
+* @apiErrorExample Error-Response: (Email Not Exist)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"Email is not registered."}
+*
+* @apiErrorExample Error-Response: (User Already Active)
+*     HTTP/1.1 400 Bad Request
+*     {"message":"User is already active."}
+*
+* @apiErrorExample Error-Response: (Account Locked)
+*     HTTP/1.1 400 Bad Request
+*     {"message": "Account is locked, please reset your password."}
+*
+* @apiErrorExample Error-Response: (Server Error)
+*     HTTP/1.1 500 Internal Server Error
+*     {"message":"Could not resend activation email."}
 *
 */

@@ -3,8 +3,8 @@
 
 ## client/app/add/add.controller.js
 
--  **TODO** `(line 19)`  Show notification if success.
--  **TODO** `(line 22)`  Show notification on error.
+-  **TODO** `(line 29)`  Show notification if success.
+-  **TODO** `(line 32)`  Show notification on error.
 
 ## client/app/app.js
 
@@ -35,7 +35,13 @@
 -  **TODO** `(line 22)`  Show error notification on edit user request.
 -  **TODO** `(line 30)`  Show success notification on change password request.
 -  **TODO** `(line 33)`  Show error notification on change password request.
--  **TODO** `(line 38)`  Write delete user function call.
+-  **TODO** `(line 41)`  Show success notification on delete user request.
+-  **TODO** `(line 43)`  Show error notification on delete user request.
+
+## client/app/user/forgot/forgot.controller.js
+
+-  **TODO** `(line 13)`  Show success notification on lost password request.
+-  **TODO** `(line 18)`  Show error notification on lost password request.
 
 ## client/app/user/friends/friends.controller.js
 
@@ -56,12 +62,13 @@
 
 ## client/components/navbar/navbar.controller.js
 
--  **TODO** `(line 22)`  Show success notification on successful logout.
--  **TODO** `(line 28)`  Show error notification on failed logout.
--  **TODO** `(line 45)`  Show success notification on successful login.
--  **TODO** `(line 50)`  Show error notification on failed login.
--  **TODO** `(line 75)`  Show success notification on successful registration.
--  **TODO** `(line 79)`  Show error notification on failed registration.
+-  **TODO** `(line 31)`  Handle error in notifications.
+-  **TODO** `(line 39)`  Show success notification on successful logout.
+-  **TODO** `(line 45)`  Show error notification on failed logout.
+-  **TODO** `(line 62)`  Show success notification on successful login.
+-  **TODO** `(line 67)`  Show error notification on failed login.
+-  **TODO** `(line 92)`  Show success notification on successful registration.
+-  **TODO** `(line 96)`  Show error notification on failed registration.
 
 ## server/api/dibs/addDibs.controller.js
 
