@@ -367,6 +367,13 @@ module.exports = function (grunt) {
             '!server/config/environment/test.js',
             'install.js'
           ]
+        }, {
+          expand: true,
+          dest: '<%= yeoman.dist %>/public/app/themes',
+          cwd: 'client/bower_components/semantic-ui/dist/themes',
+          src: [
+          '**/*'
+          ]
         }]
       },
       styles: {

@@ -88,9 +88,9 @@ exports.getAll = function (callback) {
   });
 };
 
-exports.deleteByCreator = function (creator, callback) {
+exports.deleteByCreator = function (creatorId, callback) {
   var _self = this;
-  _self.dibs.view('dibs', 'by_creator', {reduce: false, key: creator}, function (error, reply, headers) {
+  _self.dibs.view('dibs', 'by_creator', {reduce: false, key: creatorId}, function (error, reply, headers) {
     if(error) {
       return callback(error);
     }
@@ -102,7 +102,7 @@ exports.deleteByCreator = function (creator, callback) {
       return row.value;
     });
     console.log('Deleting dibs for user ' + creator + ' from DB.');
-    this.dibs.bulk({docs: docs}, function (error, reply, headers) {
+    _self.dibs.bulk({docs: docs}, function (error, reply, headers) {
       if(error) {
         return callback(error);
       }
