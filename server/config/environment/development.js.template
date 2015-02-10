@@ -11,6 +11,11 @@ module.exports = {
     dibs: 'inb4-dibs',
     keywords: 'inb4-keywords'
   },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379,
+    password: ''
+  },
   email: {
     accounts: {
       sendgrid: {
