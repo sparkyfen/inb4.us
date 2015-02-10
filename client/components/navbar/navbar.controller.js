@@ -2,7 +2,7 @@
 
 angular.module('inb4usApp').controller('NavbarCtrl', ['$scope', '$location', 'ngDialog', '$window', '$route', 'Userservice', function ($scope, $location, ngDialog, $window, $route, Userservice) {
   $scope.menu = [{
-    title: 'inb4',
+    title: 'in b4',
     icon: 'home',
     link: '/beta',
     dropdown: false,
