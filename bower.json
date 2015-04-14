@@ -14,7 +14,7 @@
     "lodash": "~2.4.1",
     "snackbarjs": "~1.0.0",
     "semantic-ui": "~1.0.1",
-    "angular-semantic-ui": "https://github.com/angularify/angular-semantic-ui.git#~0.0.1",
+    "angular-semantic-ui": "https://github.com/angularify/angular-semantic-ui.git#~0.0.2",
     "angular-no-captcha": "~0.1.5",
     "ngDialog": "~0.3.7",
     "angular-moment": "~0.8.3",
@@ -37,7 +37,7 @@
         "semantic-ui": "latest"
       },
       "main": [
-        "dist/angular-semantic-ui-0.0.1.js"
+        "dist/angular-semantic-ui.js"
       ]
     }
   }
