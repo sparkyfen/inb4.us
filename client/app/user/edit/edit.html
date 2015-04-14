@@ -1,0 +1,82 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid">
+  <div class="ui grid">
+    <div class="ui one column grid">
+      <div class="column">
+        <div class="ui fluid form segment">
+          <h2 class="ui dividing header">Edit Your Account</h2>
+          <form ng-submit="editUser()" class="ui form" ng-class="{'loading': isLoading}">
+            <div class="three fields">
+              <div class="field">
+                <label>First Name</label>
+                <div class="ui input">
+                  <input type="text" ng-model="user.firstname" placeholder="Your first name" autofocus>
+                </div>
+              </div>
+              <div class="field">
+                <label>Last Name</label>
+                <div class="ui input">
+                  <input type="text" ng-model="user.lastname" placeholder="Your last name">
+                </div>
+              </div>
+              <div class="field required">
+                <label>Email</label>
+                <div class="ui icon input">
+                  <input type="email" ng-model="user.email" placeholder="Your email address" required>
+                  <i class="mail icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="one field">
+              <div class="field">
+                <button type="submit" class="ui large blue button" ng-class="{'loading': isLoading}">Update</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="ui fluid form segment">
+          <h2 class="ui dividing header">Change Password</h2>
+          <form ng-submit="changePassword()" class="ui form" ng-class="{'loading': isLoading}">
+            <div class="one field">
+              <div class="field required">
+                <label>Current Password</label>
+                <div class="ui icon input">
+                  <input type="password" ng-model="passwords.old" placeholder="Your current password" required>
+                  <i class="lock icon"></i>
+                </div>
+              </div>
+              <div class="field required">
+                <label>New Password</label>
+                <div class="ui icon input">
+                  <input type="password" ng-model="passwords.new" placeholder="Your new password" required>
+                  <i class="lock icon"></i>
+                </div>
+              </div>
+              <div class="field required">
+                <label>New Confirm Password</label>
+                <div class="ui icon input">
+                  <input type="password" ng-model="passwords.confirm" placeholder="Confirm your new password" required>
+                  <i class="lock icon"></i>
+                </div>
+              </div>
+              <div class="field">
+                  <button type="submit" class="ui large blue button" ng-class="{'loading': isLoading}">Change</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="ui fluid form segment">
+          <h2 class="ui dividing header">Delete Account</h2>
+          <div class="ui message">
+            <div class="header">This will completely remove your account from the website.</div>
+          </div>
+          <div class="one field">
+            <div class="field">
+              <button class="ui big red button" ng-class="{'loading': isLoading}" ng-click="deleteUser()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,6 +20,7 @@ describe('POST /api/user/login', function() {
     userSchema.password = bcrypt.hashSync('mockpassword', 10);
     userSchema.username = 'mockuser';
     userSchema.email = 'mockuser@inb4.us';
+    userSchema.tokens.activate = null;
     userSchema.active = true;
     utils.insert(utils.users, userId, userSchema, function (error) {
       if(error) {

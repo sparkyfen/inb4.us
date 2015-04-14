@@ -4,11 +4,14 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="fragment" content="!" />
     <base href="/">
     <title>In B4 Us</title>
     <meta name="description" content="Calling Dibs">
+    <meta name="keywords" content="dibs, dib, inb4, in b4">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1.0, minimum-scale=1.0, maximum-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
@@ -16,16 +19,30 @@
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
       <link rel="stylesheet" href="bower_components/snackbarjs/src/snackbar.css" />
       <link rel="stylesheet" href="bower_components/semantic-ui/dist/semantic.css" />
+      <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog.css" />
+      <link rel="stylesheet" href="bower_components/ngDialog/css/ngDialog-theme-default.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
-    <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
-      <link rel="stylesheet" href="app/admin/activate/activate.css">
+      <link rel="stylesheet" href="app/add/add.css">
       <link rel="stylesheet" href="app/app.css">
+      <link rel="stylesheet" href="app/beta/beta.css">
+      <link rel="stylesheet" href="app/beta/terms/terms.css">
+      <link rel="stylesheet" href="app/dibs/dibs.css">
+      <link rel="stylesheet" href="app/dibs/edit/edit.css">
       <link rel="stylesheet" href="app/main/main.css">
+      <link rel="stylesheet" href="app/smDropdownMenu/smDropdownMenu.css">
+      <link rel="stylesheet" href="app/smDropdownSelect/smDropdownSelect.css">
+      <link rel="stylesheet" href="app/smPopup/smPopup.css">
+      <link rel="stylesheet" href="app/smSearch/smSearch.css">
       <link rel="stylesheet" href="app/user/activate/activate.css">
+      <link rel="stylesheet" href="app/user/edit/edit.css">
+      <link rel="stylesheet" href="app/user/forgot/forgot.css">
+      <link rel="stylesheet" href="app/user/friends/accept/accept.css">
+      <link rel="stylesheet" href="app/user/friends/friends.css">
       <link rel="stylesheet" href="app/user/reset/reset.css">
+      <link rel="stylesheet" href="app/user/user.css">
       <link rel="stylesheet" href="components/modal/modal.css">
       <!-- endinjector -->
     <!-- endbuild -->
@@ -37,15 +54,15 @@
 
     <!-- Add your site or application content here -->
     <div ng-view=""></div>
+    <div ng-include="'components/footer/footer.html'"></div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-      ga('create', 'UA-XXXXX-X');
+      ga('create', 'UA-57769823-1', 'auto');
       ga('send', 'pageview');
     </script>
 
@@ -67,21 +84,49 @@
       <script src="bower_components/semantic-ui/dist/semantic.js"></script>
       <script src="bower_components/angular-semantic-ui/dist/angular-semantic-ui-0.0.1.js"></script>
       <script src="bower_components/angular-no-captcha/src/angular-no-captcha.js"></script>
+      <script src="bower_components/ngDialog/js/ngDialog.js"></script>
+      <script src="bower_components/moment/moment.js"></script>
+      <script src="bower_components/angular-moment/angular-moment.js"></script>
+      <script src="bower_components/angular-gravatar/build/md5.js"></script>
+      <script src="bower_components/angular-gravatar/build/angular-gravatar.js"></script>
       <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
+          <script src="app/Dibservice/Dibservice.service.js"></script>
           <script src="app/Userservice/Userservice.service.js"></script>
-          <script src="app/admin/activate/activate.controller.js"></script>
-          <script src="app/admin/activate/activate.js"></script>
+          <script src="app/add/add.controller.js"></script>
+          <script src="app/add/add.js"></script>
+          <script src="app/beta/beta.controller.js"></script>
+          <script src="app/beta/beta.js"></script>
+          <script src="app/beta/terms/terms.controller.js"></script>
+          <script src="app/beta/terms/terms.js"></script>
+          <script src="app/dibs/dibs.controller.js"></script>
+          <script src="app/dibs/dibs.js"></script>
+          <script src="app/dibs/edit/edit.controller.js"></script>
+          <script src="app/dibs/edit/edit.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
+          <script src="app/smDropdownMenu/smDropdownMenu.directive.js"></script>
+          <script src="app/smDropdownSelect/smDropdownSelect.directive.js"></script>
+          <script src="app/smPopup/smPopup.directive.js"></script>
+          <script src="app/smSearch/smSearch.directive.js"></script>
           <script src="app/user/activate/activate.controller.js"></script>
           <script src="app/user/activate/activate.js"></script>
+          <script src="app/user/edit/edit.controller.js"></script>
+          <script src="app/user/edit/edit.js"></script>
+          <script src="app/user/forgot/forgot.controller.js"></script>
+          <script src="app/user/forgot/forgot.js"></script>
+          <script src="app/user/friends/accept/accept.controller.js"></script>
+          <script src="app/user/friends/accept/accept.js"></script>
+          <script src="app/user/friends/friends.controller.js"></script>
+          <script src="app/user/friends/friends.js"></script>
           <script src="app/user/reset/reset.controller.js"></script>
           <script src="app/user/reset/reset.js"></script>
+          <script src="app/user/user.controller.js"></script>
+          <script src="app/user/user.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
           <!-- endinjector -->

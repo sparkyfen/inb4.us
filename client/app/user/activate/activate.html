@@ -1,8 +1,11 @@
-<header class="hero-unit-center" id="banner">
-  <div class="container">
-    <h2 ng-show="validAccount">Account Activated</h2>
-    <h2 ng-show="!validAccount">Invalid Activation</h2>
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid">
+  <div class="ui grid">
+    <div class="ui one column grid">
+      <div class="column">
+        <h2 class="ui center aligned header" ng-show="validAccount">Account Activated</h2>
+        <h2 class="ui center aligned header" ng-show="!validAccount">Invalid Activation</h2>
+      </div>
+    </div>
   </div>
-</header>
-
-<div ng-include="'components/footer/footer.html'"></div>
+</div>

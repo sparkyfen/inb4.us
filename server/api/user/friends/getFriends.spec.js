@@ -117,6 +117,23 @@ describe('GET /api/user/friends', function() {
     });
   });
 
+  it('should successfully get the friends list based on the incoming username', function(done) {
+    request(app)
+    .get('/api/user/friends?username=mockuser')
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end(function(err, res) {
+      if (err) {
+        return done(err);
+      }
+      res.body.should.be.instanceof(Object);
+      res.body.should.have.property('message');
+      res.body.should.have.property('results');
+      res.body.results.should.be.length(2);
+      done();
+    });
+  });
+
   it('should successfully get the an empty friends list', function(done) {
     users.searchByUsername('mockuser', function (error, reply) {
       if(error) {
@@ -147,10 +164,10 @@ describe('GET /api/user/friends', function() {
     });
   });
 
-  it('should fail when the user is not logged in', function(done) {
+  it('should fail when the username is missing', function(done) {
     request(app)
     .get('/api/user/friends')
-    .expect(401)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end(function(err, res) {
       if (err) {

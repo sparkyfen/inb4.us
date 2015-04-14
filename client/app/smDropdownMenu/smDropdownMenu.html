@@ -1,0 +1,11 @@
+<div class="ui dropdown item">
+<i class="icon" ng-class="{'{{icon}}': true}" ng-if="icon"></i>
+  {{name}} <i class="dropdown icon"></i>
+  <div class="ui teal label" ng-if="label">{{label}}</div>
+  <div class="menu">
+    <a class="item" ng-repeat="item in items" ng-href="{{item.link}}">
+    <i class="check green icon"></i>
+      {{item.label}}
+    </a>
+  </div>
+</div>

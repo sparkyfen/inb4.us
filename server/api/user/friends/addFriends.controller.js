@@ -67,12 +67,17 @@ exports.index = function(req, res) {
       var currentFriendIds = user.friends.map(function (friend) {
         return friend.id;
       });
-      if(currentFriendIds.indexOf(friend._id) !== -1) {
+      var currentFriendIndex = currentFriendIds.indexOf(friend._id);
+      if(currentFriendIndex !== -1 && user.friends[currentFriendIndex].accepted) {
         return res.status(400).jsonp({message: 'You are already friends with this user.'});
       }
-      // Add friend id to the user object.
-      user.friends.push({id: friend._id, accepted: true});
-      friend.friends.push({id: user._id, accepted: false});
+      if(currentFriendIndex !== -1 && !user.friends[currentFriendIndex].accepted) {
+        user.friends[currentFriendIndex].accepted = true;
+      } else {
+        // Add friend id to the user object.
+        user.friends.push({id: friend._id, accepted: true, requestor: user._id});
+        friend.friends.push({id: user._id, accepted: false, requestor: user._id});
+      }
       users.bulk([user, friend], function (error) {
         if(error) {
           console.log(error);
