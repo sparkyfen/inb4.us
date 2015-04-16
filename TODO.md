@@ -1,20 +1,74 @@
 # Grunt TODO
 
 
-## client/app/admin/activate/activate.controller.js
+## client/app/add/add.controller.js
 
--  **TODO** `(line 14)`  Show notification upon success.
--  **TODO** `(line 21)`  Show notification if there is an error.
+-  **TODO** `(line 29)`  Show notification if success.
+-  **TODO** `(line 32)`  Show notification on error.
+
+## client/app/app.js
+
+-  **TODO** `(line 39)`  Show unauthorized notification.
+-  **TODO** `(line 43)`  Show error notification.
+
+## client/app/dibs/dibs.controller.js
+
+-  **TODO** `(line 9)`  Show notification when there is an error.
+
+## client/app/dibs/edit/edit.controller.js
+
+-  **TODO** `(line 10)`  Show notification when there is an error.
+-  **TODO** `(line 25)`  Show notification if we successfully edit the dib.
+-  **TODO** `(line 29)`  Show notification when there is an error.
+-  **TODO** `(line 40)`  Show notification if we successfully delete the dib.
+-  **TODO** `(line 44)`  Show notification when there is an error.
 
 ## client/app/user/activate/activate.controller.js
 
 -  **TODO** `(line 14)`  Show notification upon success.
 -  **TODO** `(line 21)`  Show notification if there is an error.
 
+## client/app/user/edit/edit.controller.js
+
+-  **TODO** `(line 8)`  Show error notification on get user request.
+-  **TODO** `(line 19)`  Show success notificiation on edit user request.
+-  **TODO** `(line 22)`  Show error notification on edit user request.
+-  **TODO** `(line 30)`  Show success notification on change password request.
+-  **TODO** `(line 33)`  Show error notification on change password request.
+-  **TODO** `(line 41)`  Show success notification on delete user request.
+-  **TODO** `(line 43)`  Show error notification on delete user request.
+
+## client/app/user/forgot/forgot.controller.js
+
+-  **TODO** `(line 13)`  Show success notification on lost password request.
+-  **TODO** `(line 18)`  Show error notification on lost password request.
+
+## client/app/user/friends/friends.controller.js
+
+-  **TODO** `(line 7)`  Show error notification on get friend error.
+
 ## client/app/user/reset/reset.controller.js
 
 -  **TODO** `(line 15)`  Show notification upon success.
 -  **TODO** `(line 23)`  Show notification if there is an error.
+
+## client/app/user/user.controller.js
+
+-  **TODO** `(line 8)`  Show error notification on failed user request.
+-  **TODO** `(line 17)`  Show success notification on successful friend request.
+-  **TODO** `(line 19)`  Show error notification on failed friend request.
+-  **TODO** `(line 37)`  Show success notification on successful friend request.
+-  **TODO** `(line 39)`  Show error notification on failed friend request.
+
+## client/components/navbar/navbar.controller.js
+
+-  **TODO** `(line 31)`  Handle error in notifications.
+-  **TODO** `(line 39)`  Show success notification on successful logout.
+-  **TODO** `(line 45)`  Show error notification on failed logout.
+-  **TODO** `(line 62)`  Show success notification on successful login.
+-  **TODO** `(line 67)`  Show error notification on failed login.
+-  **TODO** `(line 92)`  Show success notification on successful registration.
+-  **TODO** `(line 96)`  Show error notification on failed registration.
 
 ## server/api/dibs/addDibs.controller.js
 

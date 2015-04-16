@@ -19,6 +19,11 @@ module.exports = {
     dibs: process.env.INB4_COUCHDB_DIBS || 'inb4-dibs',
     keywords: process.env.INB4_COUCHDB_KEYWORDS || 'inb4-keywords'
   },
+  redis: {
+    host: process.env.INB4_REDIS_HOST || '127.0.0.1',
+    port: process.env.INB4_REDIS_PORT || 6379,
+    password: process.env.INB4_REDIS_PASSWORD || null
+  },
   email: {
     accounts: {
       sendgrid: {

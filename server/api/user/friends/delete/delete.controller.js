@@ -49,6 +49,8 @@ exports.index = function(req, res) {
       var friendIds = user.friends.map(function (friend) {
         return friend.id;
       });
+      console.log(friendIds);
+      console.log(id);
       // Find their friend in the list.
       var friendIdIndex = friendIds.indexOf(id);
       // The requested user is not their friend.

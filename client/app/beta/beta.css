@@ -1,0 +1,11 @@
+.logoblue {
+  color: #3b83c0;
+}
+
+h1#logo {
+  font-size: 48pt;
+}
+
+.ui.search .prompt {
+  border-radius: 0.25em;
+}

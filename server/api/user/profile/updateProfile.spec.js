@@ -206,7 +206,6 @@ describe('POST /api/user', function() {
       .expect('Content-Type', /json/)
       .end(function(err, res) {
         if (err)  {
-          console.log(res.body);
           return done(err);
         }
         res.body.should.be.instanceof(Object);
@@ -239,7 +238,6 @@ describe('POST /api/user', function() {
         .expect('Content-Type', /json/)
         .end(function(err, res) {
           if (err)  {
-            console.log(res.body);
             return done(err);
           }
           res.body.should.be.instanceof(Object);

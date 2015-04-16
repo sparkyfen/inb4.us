@@ -1,0 +1,51 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid">
+  <div class="ui grid">
+    <div class="ui one column grid">
+      <div class="column">
+        <div class="ui form" ng-class="{'warning': hasWarning, 'error': hasError}">
+          <h2 class="ui dividing header">Call Dibs</h2>
+          <div class="ui warning message">
+            <div class="header">
+              You need to sign in before you can call dibs!
+            </div>
+          </div>
+          <div class="one field">
+            <form ng-submit="callDibs()" ng-class="{'ui': true, 'form': true, 'loading': isLoading}">
+            <div class="field required">
+                <label>Type</label>
+                <sm-dropdown-select
+                items="items"
+                selected="dib.type"
+                searchable="true">
+                </sm-dropdown-select>
+              </div>
+              <div class="field required">
+                <label>Name</label>
+                <sm-search
+                ng-model="query"
+                min-characters="0"
+                cache="true"
+                debug="true",
+                verbose="true"
+                results="resp"
+                type="dib.type"
+                value="dib.name"
+                placeholder="'Something to call it!'">
+                </sm-search>
+                <!--<input type="text" ng-model="dib.name" placeholder="Something to call this {{dib.type || 'thing'}}!" required autofocus>-->
+              </div>
+              <div class="field required">
+                <label>Description</label>
+                <textarea ng-model="dib.description" name="description" placeholder="Something about this {{dib.type || 'thing'}}!" autofocus required></textarea>
+              </div>
+              <div class="field">
+                <button type="submit" class="ui blue button">Call Dibs!</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

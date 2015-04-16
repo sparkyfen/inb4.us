@@ -10,6 +10,11 @@ module.exports = {
     dibs: 'inb4-test-dibs',
     keywords: 'inb4-test-keywords'
   },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379,
+    password: 'testpassword'
+  },
   usps: {
     server: 'https://secure.shippingapis.com/ShippingAPI.dll',
     userId: 'testUserId' // https://www.usps.com/business/web-tools-apis/welcome.htm

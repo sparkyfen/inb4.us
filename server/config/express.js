@@ -11,6 +11,7 @@ var multer  = require('multer');
 var compression = require('compression');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
@@ -43,6 +44,11 @@ module.exports = function(app) {
   if ('production' === env) {
     app.set('trust proxy', 1)
     app.use(session({
+      store: new RedisStore({
+        host: config.redis.host,
+        port: config.redis.port,
+        pass: config.redis.password
+      }),
       key: 'user-session',
       proxy: true,
       cookie: {

@@ -22,6 +22,9 @@ function _validatePasswords(oldPass, newPass, confirmNew, callback) {
   if(newPass !== confirmNew) {
     return callback('New passwords do not match.');
   }
+  if(!validator.isLength(newPass, 7)) {
+    return callback('Password must a minimum of 7 characters long.');
+  }
   return callback();
 }
 

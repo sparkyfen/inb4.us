@@ -13,22 +13,22 @@ exports.index = function(req, res) {
     return res.status(401).jsonp({message: 'Please sign in.'});
   }
   var username = req.session.username;
-  // Delete all dibs associated with the user
-  dibs.deleteByCreator(username, function (error) {
+  // Get the user from the database.
+  users.searchByUsername(username, function (error, reply) {
     if(error) {
       console.log(error);
       return res.status(500).jsonp({message: 'Could not delete user profile.'});
     }
-    // Get the user from the database.
-    users.searchByUsername(username, function (error, reply) {
+    if(reply.rows.length === 0) {
+      return res.status(400).jsonp({message: 'User does not exist.'});
+    }
+    var user = reply.rows[0].value;
+    // Delete all dibs associated with the user
+    dibs.deleteByCreator(user._id, function (error) {
       if(error) {
         console.log(error);
         return res.status(500).jsonp({message: 'Could not delete user profile.'});
       }
-      if(reply.rows.length === 0) {
-        return res.status(400).jsonp({message: 'User does not exist.'});
-      }
-      var user = reply.rows[0].value;
       // Remove user immediately if they have no friends. :(
       if(user.friends.length === 0) {
         users.deleteByUsername(username, function (error) {

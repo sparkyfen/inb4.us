@@ -1,0 +1,13 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid">
+  <div class="ui grid">
+    <div class="ui one column grid">
+      <div class="column">
+        <div class="ui fluid form segment">
+          <h2 class="ui dividing header" ng-show="accepted">{{message}}</h2>
+          <h2 class="ui dividing red header" ng-show="!accepted">{{errorMessage}}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

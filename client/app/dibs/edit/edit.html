@@ -1,0 +1,58 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="ui page grid">
+  <div class="ui grid">
+    <div class="ui one column grid">
+      <div class="column">
+        <div class="ui fluid form segment">
+          <h2 class="ui dividing header">Edit Dib</h2>
+          <div class="one field">
+            <form ng-submit="editDib()" class="ui form" ng-class="{'loading': isLoading}">
+              <div class="field required">
+                <label>Description</label>
+                <textarea ng-model="dib.description" name="description" placeholder="Something about this {{dib.type}}!" autofocus required></textarea>
+              </div>
+              <div class="field popup">
+                <label>Image</label>
+                <div class="ui input">
+                  <input type="text" ng-model="dib.image" placeholder="The image for your {{dib.type}}!">
+                </div>
+              </div>
+              <sm-popup
+                header="Preview Image"
+                image="{{dib.image}}"
+                postition="'top left'">
+              </sm-popup>
+              <div class="field">
+                <label>URL</label>
+                <div class="ui input">
+                  <input type="text" ng-model="dib.url" placeholder="The url for your {{dib.type}}!">
+                </div>
+              <div class="field">
+                <label>Keywords</label>
+                <div class="ui input">
+                  <input type="text" ng-model="dib.keywords" ng-list=", " placeholder="Words that identify your {{dib.type}}!">
+                </div>
+              </div>
+              <div class="field">
+                <button type="submit" class="ui blue button" ng-class="{'loading': isLoading}">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui fluid form segment">
+          <h2 class="ui dividing header">Delete Dib</h2>
+          <div class="ui message">
+            <div class="header">This will completely remove the dib from the website.</div>
+          </div>
+          <div class="one field">
+            <div class="field">
+              <button class="ui red big button" ng-class="{'loading': isLoading}" ng-click="deleteDib()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
